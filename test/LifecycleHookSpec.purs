@@ -1,7 +1,6 @@
 module Test.LifecycleHookSpec where
 
 import OutWatch
-import OutWatch.Attributes
 import Control.Applicative (pure)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)

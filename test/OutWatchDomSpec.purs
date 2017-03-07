@@ -1,7 +1,6 @@
 module Test.OutWatchDomSpec where
 
 import OutWatch
-import OutWatch.Attributes
 import Builder (toEmptyIfFalse)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)

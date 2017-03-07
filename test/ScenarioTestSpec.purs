@@ -1,7 +1,6 @@
 module Test.ScenarioTestSpec where
 
 import OutWatch
-import OutWatch.Attributes
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
