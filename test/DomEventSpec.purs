@@ -21,7 +21,7 @@ import DOM.Node.ParentNode (childElementCount, querySelector)
 import DOM.Node.Types (Document, Node, documentToParentNode, elementToEventTarget, elementToNode)
 import Data.Array (length) as Array
 import EmitterBuilder (mapE, override)
-import OutWatch.Sink (createSink)
+import OutWatch.Sink (create)
 import Prelude (Unit, bind, const, map, not, pure, show, (#), ($), (==))
 import RxJS.Observable (fromArray, just)
 import Test.JsHelpers (newEvent)
@@ -60,7 +60,7 @@ domEventSuite =
     test "The DOM Events Api should be able to emit events to a Sink" do
       refFlag <- liftEff (newRef false)
       liftEff createDomRoot
-      let sink = createSink (\_ -> modifyRef refFlag (\_ -> true))
+      let sink = create (\_ -> modifyRef refFlag (\_ -> true))
           root = div [ click ==> sink ]
       flagBeforeAll <- liftEff (readRef refFlag)
       assert "Emitter shouldn't emit before rendering" (not flagBeforeAll)
@@ -79,8 +79,8 @@ domEventSuite =
       refFlag <- liftEff (newRef false)
       refFlag2 <- liftEff (newRef false)
       liftEff createDomRoot
-      let sink = createSink (\_ -> modifyRef refFlag (\_ -> true))
-          sink2 = createSink (\_ -> modifyRef refFlag2 (\_ -> true))
+      let sink = create (\_ -> modifyRef refFlag (\_ -> true))
+          sink2 = create (\_ -> modifyRef refFlag2 (\_ -> true))
           root = div [ click ==> sink , click ==> sink2 ]
       liftEff (render "#app" root)
       doc <- liftEff getDocument
@@ -96,7 +96,7 @@ domEventSuite =
     test "Event emitters should be able to have their values mapped" do
       refFlag <- liftEff (newRef false)
       liftEff createDomRoot
-      let sink = createSink (\b -> modifyRef refFlag (\_ -> b))
+      let sink = create (\b -> modifyRef refFlag (\_ -> b))
           root = div [ mapE click (const true) ==> sink ]
       liftEff (render "#app" root)
       doc <- liftEff getDocument
@@ -110,7 +110,7 @@ domEventSuite =
     test "Event emitters should be able to have their values overriden by another Observable" do
       refFlag <- liftEff (newRef false)
       liftEff createDomRoot
-      let sink = createSink (\b -> modifyRef refFlag (\_ -> b))
+      let sink = create (\b -> modifyRef refFlag (\_ -> b))
           stream = just true
           root = div [ override click stream ==> sink ]
       liftEff (render "#app" root)

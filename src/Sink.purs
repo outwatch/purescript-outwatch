@@ -26,8 +26,8 @@ foreign import createHandlerImpl :: forall a e. Array a -> Handler e a
 createHandler :: forall a e. Array a -> Handler e a
 createHandler = createHandlerImpl
 
-createSink :: forall a e. (a -> Eff e Unit) -> Sink e a
-createSink fn = { sink : Observer fn }
+create :: forall a e. (a -> Eff e Unit) -> Sink e a
+create fn = { sink : Observer fn }
 
 
 foreign import redirect :: forall a b e r. SinkLike e a r -> (Observable b -> Observable a) -> Sink e b

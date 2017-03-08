@@ -18,7 +18,7 @@ import DOM.Node.Element (setAttribute)
 import DOM.Node.Node (appendChild, setTextContent)
 import DOM.Node.Types (Node, elementToNode)
 import Data.Unit (Unit)
-import OutWatch.Sink (createSink)
+import OutWatch.Sink (create)
 import Prelude (bind, not)
 import RxJS.Observable (fromArray)
 import Test.Unit (TestSuite, suite, test)
@@ -34,7 +34,7 @@ lifecycleHookSuite =
     test "insertion hooks should be called when a VNode is inserted" do
       refFlag <- liftEff (newRef false)
       liftEff createDomRoot
-      let sink = createSink (\_ -> modifyRef refFlag (\_ -> true))
+      let sink = create (\_ -> modifyRef refFlag (\_ -> true))
           root = div [ insert ==> sink ]
       flagBeforeRendering <- liftEff (readRef refFlag)
       assert "Insert hook shouldn't be called before rendering" (not flagBeforeRendering)
@@ -45,7 +45,7 @@ lifecycleHookSuite =
     test "destruction hooks should be called when a VNode is destroyed" do
       refFlag <- liftEff (newRef false)
       liftEff createDomRoot
-      let sink = createSink (\_ -> modifyRef refFlag (\_ -> true))
+      let sink = create (\_ -> modifyRef refFlag (\_ -> true))
           innerChild = fromArray [ span [ destroy ==> sink ], h3 [] ]
           root = div [ child <== innerChild ]
       flagBeforeRendering <- liftEff (readRef refFlag)
@@ -57,7 +57,7 @@ lifecycleHookSuite =
     test "update hooks should be called when a VNode is updated" do
       refFlag <- liftEff (newRef false)
       liftEff createDomRoot
-      let sink = createSink (\_ -> modifyRef refFlag (\_ -> true))
+      let sink = create (\_ -> modifyRef refFlag (\_ -> true))
           innerChild = fromArray [ span [ update ==> sink, text "First" ], span [ update ==> sink , text "second" ] ]
           root = div [ child <== innerChild ]
       flagBeforeRendering <- liftEff (readRef refFlag)
