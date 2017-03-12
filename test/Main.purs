@@ -13,8 +13,6 @@ import Test.DomEventSpec (domEventSuite)
 import Test.LifecycleHookSpec (lifecycleHookSuite)
 import Test.OutWatchDomSpec (outWatchDomSuite)
 import Test.ScenarioTestSpec (scenarioSuite)
-import Test.Unit (TestSuite, suite, test)
-import Test.Unit.Assert (assert)
 import Test.Unit.Console (TESTOUTPUT)
 import Test.Unit.Main (exit, runTest)
 
@@ -26,11 +24,3 @@ main = do
     domEventSuite
     scenarioSuite
   (exit 0)
-
-
-attributeSuite :: TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM)
-attributeSuite =
-  suite "Snabbdom" do
-        test "DOM patching" do
-            let message = "Hello World"
-            assert "Message should be patched into the DOM" (2 == 2)
