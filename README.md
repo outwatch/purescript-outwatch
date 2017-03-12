@@ -1,4 +1,4 @@
-# OutWatch - Functional and reactive UIs with Rx, VirtualDom and PureScript [![Build Status](https://travis-ci.org/OutWatch/purescript-outwatch.svg?branch=master)](https://travis-ci.org/OutWatch/purescript-outwatch) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/OutWatch/Lobby)
+# OutWatch - Functional, reactive and type safe UIs [![Build Status](https://travis-ci.org/OutWatch/purescript-outwatch.svg?branch=master)](https://travis-ci.org/OutWatch/purescript-outwatch) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/OutWatch/Lobby)
 
 ## Getting started
 
