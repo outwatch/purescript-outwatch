@@ -1,0 +1,9 @@
+language: node_js
+
+node_js:
+  - "6"
+  - "5"
+
+before_script:
+  - npm install -g pulp bower purescript
+  - bower install
