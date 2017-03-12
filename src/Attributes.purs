@@ -3,6 +3,7 @@ module OutWatch.Attributes where
 import Builder (BoolAttributeBuilder(..), ChildStreamReceiverBuilder(..), ChildStringReceiverBuilder(..), ChildrenStreamReceiverBuilder(..), IntAttributeBuilder, NumberAttributeBuilder, ShowAttributeBuilder(..), StringAttributeBuilder(..), bindFrom, setTo)
 import Data.Unit (unit)
 import EmitterBuilder (BoolEmitterBuilder(..), DestroyHookBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookBuilder(..), emitFrom)
+import VDomModifier (VDom(..), VNode(..))
 
 hidden :: BoolAttributeBuilder
 hidden = BoolAttributeBuilder "hidden"
@@ -277,3 +278,6 @@ childShow = ChildStringReceiverBuilder unit
 infix 5 emitFrom as ==>
 infix 5 bindFrom as <==
 infix 5 setTo as :=
+
+text ::forall e. String -> VDom e
+text str = VNode (StringNode str)
