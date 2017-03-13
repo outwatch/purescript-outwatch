@@ -1,6 +1,6 @@
 {
   "name": "purescript-outwatch",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A reactive and functional UI Library",
   "main": "index.js",
   "directories": {
