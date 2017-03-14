@@ -1,51 +1,46 @@
-module OutWatch.Http ( createHttpHandler
-  , get
+module OutWatch.Http ( get
   , getWithBody
   , post
   , put
   , delete
   , options
   , head
-  , requestWithBody
-  , HttpHandler
+  , request
+  , HttpBus
   ) where
 
 import Control.Monad.Eff.Unsafe (unsafePerformEff)
 import Data.HTTP.Method (Method(..))
 import Data.StrMap (empty)
 import Network.HTTP.Affjax (AJAX)
-import OutWatch.Sink (Handler, Observer, createHandlerImpl)
+import OutWatch.Sink (Observer, createHandlerImpl)
 import Prelude (show, ($))
 import RxJS.Observable (Observable, Request, Response, ajax, ajaxWithBody, switchMap)
 
 
-createHttpHandler :: forall a e. Array a -> Handler (ajax :: AJAX | e) a
-createHttpHandler = createHandlerImpl
-
-
-get :: forall eff a. (Observable a -> Observable String) -> HttpHandler (ajax :: AJAX | eff)  a
+get :: forall eff a. (Observable a -> Observable String) -> HttpBus (ajax :: AJAX | eff) a
 get = requestWithUrl
 
-getWithBody :: forall e a. (Observable a -> Observable Request) -> HttpHandler (ajax :: AJAX | e) a
-getWithBody = request GET
+getWithBody :: forall e a. (Observable a -> Observable Request) -> HttpBus (ajax :: AJAX | e) a
+getWithBody = requestWithBody GET
 
-post :: forall e a. (Observable a -> Observable Request) -> HttpHandler (ajax :: AJAX | e) a
-post = request POST
+post :: forall e a. (Observable a -> Observable Request) -> HttpBus (ajax :: AJAX | e) a
+post = requestWithBody POST
 
-put :: forall e a. (Observable a -> Observable Request) -> HttpHandler (ajax :: AJAX | e) a
-put = request PUT
+put :: forall e a. (Observable a -> Observable Request) -> HttpBus (ajax :: AJAX | e) a
+put = requestWithBody PUT
 
-delete :: forall e a. (Observable a -> Observable Request) -> HttpHandler (ajax :: AJAX | e) a
-delete = request DELETE
+delete :: forall e a. (Observable a -> Observable Request) -> HttpBus (ajax :: AJAX | e) a
+delete = requestWithBody DELETE
 
-options :: forall e a. (Observable a -> Observable Request) -> HttpHandler (ajax :: AJAX | e) a
-options = request OPTIONS
+options :: forall e a. (Observable a -> Observable Request) -> HttpBus (ajax :: AJAX | e) a
+options = requestWithBody OPTIONS
 
-head :: forall e a. (Observable a -> Observable Request) -> HttpHandler (ajax :: AJAX | e) a
-head = request HEAD
+head :: forall e a. (Observable a -> Observable Request) -> HttpBus (ajax :: AJAX | e) a
+head = requestWithBody HEAD
 
-requestWithBody :: String -> String -> Request
-requestWithBody url body =
+request :: Url -> String -> Request
+request url body =
   { url : url
   , body : body
   , timeout : 0
@@ -55,10 +50,14 @@ requestWithBody url body =
   , method : show GET
   }
 
-type HttpHandler eff input = { responses :: Observable Response, sink :: Observer eff input }
+type HttpBus eff input =
+  { responses :: Observable Response
+  , sink :: Observer eff input
+  }
 
+type Url = String
 
-requestWithUrl :: forall e a. (Observable a -> Observable String) -> HttpHandler (ajax :: AJAX | e) a
+requestWithUrl :: forall e a. (Observable a -> Observable Url) -> HttpBus (ajax :: AJAX | e) a
 requestWithUrl transform =
   let handler = createHandlerImpl[]
       transformed = transform handler.src
@@ -66,8 +65,8 @@ requestWithUrl transform =
   in {responses, sink : handler.sink}
 
 
-request :: forall e a. Method -> (Observable a -> Observable Request) -> HttpHandler (ajax :: AJAX | e) a
-request method transform =
+requestWithBody :: forall e a. Method -> (Observable a -> Observable Request) -> HttpBus (ajax :: AJAX | e) a
+requestWithBody method transform =
   let handler = createHandlerImpl[]
       transformed = transform handler.src
       responses = switchMap transformed
