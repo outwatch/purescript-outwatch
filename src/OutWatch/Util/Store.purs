@@ -1,4 +1,4 @@
-module OutWatch.Store where
+module OutWatch.Util.Store where
 
 import OutWatch.Sink (Observer, createHandler)
 import Prelude ((#))

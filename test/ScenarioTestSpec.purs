@@ -1,6 +1,5 @@
 module Test.ScenarioTestSpec where
 
-import OutWatch
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
@@ -18,9 +17,14 @@ import DOM.Node.Element (setAttribute)
 import DOM.Node.Node (appendChild, setTextContent, textContent)
 import DOM.Node.ParentNode (querySelector)
 import DOM.Node.Types (Document, Node, documentToParentNode, elementToEventTarget, elementToNode)
-import EmitterBuilder (mapE)
-import Prelude (Unit, bind, const, pure, (#), ($), (==),(+), negate)
+import OutWatch.Attributes (childShow, click, id, (:=), (<==), (==>))
+import OutWatch.Core (render)
+import OutWatch.Dom.EmitterBuilder (mapE)
+import OutWatch.Sink (createHandler)
+import OutWatch.Tags (button, div, span)
+import Prelude (Unit, bind, const, negate, pure, (#), ($), (+), (==))
 import RxJS.Observable (merge, scan, startWith)
+import Snabbdom (VDOM) as Snabbdom
 import Test.JsHelpers (newEvent)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (assert)
@@ -28,7 +32,7 @@ import Test.Unit.Console (TESTOUTPUT)
 import Unsafe.Coerce (unsafeCoerce)
 
 
-scenarioSuite :: forall e. TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM, err :: EXCEPTION | e)
+scenarioSuite :: forall e. TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR, dom :: DOM, vdom :: Snabbdom.VDOM, random :: RANDOM, err :: EXCEPTION | e)
 scenarioSuite =
   suite "Real Scenario Suite" do
     test "A simple counter application should work correctly" do

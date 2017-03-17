@@ -1,7 +1,5 @@
 module Test.OutWatchDomSpec where
 
-import OutWatch
-import Builder (toEmptyIfFalse)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
@@ -19,18 +17,24 @@ import DOM.Node.Node (appendChild, setTextContent, textContent)
 import DOM.Node.ParentNode (querySelector)
 import DOM.Node.Types (Document, Node, documentToParentNode, elementToNode)
 import Data.String (length)
-import DomUtils (hyperscriptHelper, modifierToVNode)
+import OutWatch.Attributes (className, id, text, value, (:=), (<==))
+import OutWatch.Core (render)
+import OutWatch.Dom.Builder (toEmptyIfFalse)
+import OutWatch.Dom.DomUtils (hyperscriptHelper, modifierToVNode)
+import OutWatch.Dom.VDomModifier (toProxy)
+import OutWatch.Tags (div, input, strong)
 import Prelude (Unit, bind, pure, (#), ($), (==), (>))
 import RxJS.Observable (fromArray)
+import Snabbdom (VDOM)
 import Test.JsHelpers (stringify)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (assert, equal)
 import Test.Unit.Console (TESTOUTPUT)
 import Unsafe.Coerce (unsafeCoerce)
-import VDomModifier (toProxy)
 
 
-outWatchDomSuite :: forall e. TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM | e)
+outWatchDomSuite :: forall e. TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT
+  , avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM | e)
 outWatchDomSuite =
   suite "OutWatch Dom Suite" do
     test "Nested VTrees should be constructed correctly" do

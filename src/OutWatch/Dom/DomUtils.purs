@@ -1,4 +1,4 @@
-module DomUtils (hyperscriptHelper, modifierToVNode, separateModifiers, separateReceivers, separateProperties) where
+module OutWatch.Dom.DomUtils (hyperscriptHelper, modifierToVNode, separateModifiers, separateReceivers, separateProperties) where
 
 import Data.Array (fromFoldable)
 import Data.Foldable (class Foldable, elem, foldr)
@@ -6,11 +6,11 @@ import Data.List (List(..), head, null)
 import Data.Maybe (maybe)
 import Data.Traversable (class Traversable)
 import Data.Tuple (Tuple(..))
-import Helpers (combineLatestAll)
+import OutWatch.Helpers.Helpers (combineLatestAll)
 import Prelude (id, map, (&&), not)
 import RxJS.Observable (Observable, combineLatest)
-import SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties)
-import VDomModifier (Attribute, AttributeStreamReceiver, ChildStreamReceiver, ChildrenStreamReceiver, Emitter, Property(..), Receiver(..), VDom(..), VNode(..))
+import OutWatch.Dom.SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties)
+import OutWatch.Dom.VDomModifier (Attribute, AttributeStreamReceiver, ChildStreamReceiver, ChildrenStreamReceiver, Emitter, Property(..), Receiver(..), VDom(..), VNode(..))
 
 
 hyperscriptHelper :: forall e f. (Traversable f) => String -> f (VDom e) -> VDom e
