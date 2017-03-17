@@ -7,7 +7,4 @@ cache:
   yarn: true
 
 before_install:
-  - npm install -g yarn pulp bower purescript
-
-script:
-  - yarn test
+  - npm install -g pulp bower purescript
