@@ -8,7 +8,7 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Eff.Random (RANDOM)
 import Control.Monad.Eff.Ref (REF)
 import DOM (DOM)
-import OutWatch (VDOM)
+import Snabbdom (VDOM)
 import Test.DomEventSpec (domEventSuite)
 import Test.LifecycleHookSpec (lifecycleHookSuite)
 import Test.OutWatchDomSpec (outWatchDomSuite)
@@ -16,7 +16,8 @@ import Test.ScenarioTestSpec (scenarioSuite)
 import Test.Unit.Console (TESTOUTPUT)
 import Test.Unit.Main (exit, runTest)
 
-main :: forall e. Eff (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM, ref :: REF, err :: EXCEPTION | e) Unit
+main :: forall e. Eff (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR
+  , dom :: DOM, vdom :: VDOM, random :: RANDOM, ref :: REF, err :: EXCEPTION | e) Unit
 main = do
   runTest do
     lifecycleHookSuite

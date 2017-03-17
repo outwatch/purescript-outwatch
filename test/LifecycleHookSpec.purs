@@ -1,6 +1,5 @@
 module Test.LifecycleHookSpec where
 
-import OutWatch
 import Control.Applicative (pure)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
@@ -18,7 +17,10 @@ import DOM.Node.Element (setAttribute)
 import DOM.Node.Node (appendChild, setTextContent)
 import DOM.Node.Types (Node, elementToNode)
 import Data.Unit (Unit)
+import OutWatch.Attributes (child, destroy, insert, text, update, (<==), (==>))
+import OutWatch.Core (VDOM, render)
 import OutWatch.Sink (create)
+import OutWatch.Tags (div, h3, span)
 import Prelude (bind, not)
 import RxJS.Observable (fromArray)
 import Test.Unit (TestSuite, suite, test)
@@ -28,7 +30,8 @@ import Unsafe.Coerce (unsafeCoerce)
 
 
 
-lifecycleHookSuite :: forall e. TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM, ref :: REF | e)
+lifecycleHookSuite :: forall e. TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT
+  , avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM, ref :: REF | e)
 lifecycleHookSuite =
   suite "lifecycle hook suite" do
     test "insertion hooks should be called when a VNode is inserted" do

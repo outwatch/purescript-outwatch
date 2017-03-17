@@ -1,4 +1,4 @@
-module SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties) where
+module OutWatch.Dom.SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties) where
 
 import Prelude
 import Control.Monad.Eff (Eff)
@@ -16,15 +16,15 @@ import Data.List.NonEmpty (NonEmptyList, head)
 import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap, fromFoldable, union)
 import Data.Tuple (Tuple(..), fst, snd)
-import Helpers (forEachMaybe, tupleMaybes)
-import Promise (Promise, foreach, success)
-import Promise (empty) as Promise
+import OutWatch.Helpers.Helpers (forEachMaybe, tupleMaybes)
+import OutWatch.Helpers.Promise (Promise, foreach, success)
+import OutWatch.Helpers.Promise (empty) as Promise
 import RxJS.Observable (Observable, pairwise, startWith, subscribeNext)
 import RxJS.Subscription (Subscription, unsubscribe)
 import OutWatch.Sink (Observer(..))
 import Snabbdom (VDOM, VNodeData, VNodeEventObject, VNodeProxy(..), getElement, h, patch, toVNodeEventObject, toVNodeHookObjectProxy, updateValueHook)
 import Unsafe.Coerce (unsafeCoerce)
-import VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VNode, toProxy)
+import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VNode, toProxy)
 
 
 type Properties e =

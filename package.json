@@ -17,6 +17,7 @@
     "phantomjs" : "^2.1.7"
   },
   "scripts": {
+    "postinstall": "bower cache clean && bower install",
     "test": "pulp browserify -I test -m Test.Main -t index.js && phantomjs index.js"
   },
   "keywords": [

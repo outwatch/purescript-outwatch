@@ -1,13 +1,13 @@
-module Builder where
+module OutWatch.Dom.Builder where
 
 import Data.Functor (map)
 import Data.List (fromFoldable)
 import Data.Show (show)
 import Data.Traversable (class Traversable)
-import DomUtils (modifierToVNode)
+import OutWatch.Dom.DomUtils (modifierToVNode)
 import Prelude (class Show, Unit)
 import RxJS.Observable (Observable)
-import VDomModifier (Property(..), Receiver(..), VDom(..), VNode(..))
+import OutWatch.Dom.VDomModifier (Property(..), Receiver(..), VDom(..), VNode(..))
 
 newtype ShowAttributeBuilder a = ShowAttributeBuilder String
 newtype BoolAttributeBuilder = BoolAttributeBuilder String

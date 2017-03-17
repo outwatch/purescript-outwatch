@@ -20,6 +20,12 @@ Please check out the [documentation](https://outwatch.github.io/) on how to proc
 3. Removing or restricting the need for Higher Order Observables
 
 
+## Run tests
+
+```bash
+npm install
+npm test
+```
 
 ## Bugs and Feedback
 

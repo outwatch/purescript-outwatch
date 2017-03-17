@@ -1,4 +1,4 @@
-module VDomModifier where
+module OutWatch.Dom.VDomModifier where
 
 import DOM.Event.Event (Event)
 import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)

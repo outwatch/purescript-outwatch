@@ -1,4 +1,4 @@
-module Promise where
+module OutWatch.Helpers.Promise where
 
 import Prelude
 import Control.Monad.Eff (Eff)

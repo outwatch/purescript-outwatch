@@ -1,4 +1,4 @@
-module Helpers where
+module OutWatch.Helpers.Helpers where
 
 import Control.Apply ((<*>))
 import Control.Monad.Eff (Eff)

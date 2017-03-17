@@ -1,6 +1,7 @@
 module OutWatch.Sink where
 
 import Control.Monad.Eff (Eff)
+import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)
 import Data.Functor.Contravariant (class Contravariant, cmap)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested (Tuple3, tuple3)
@@ -25,6 +26,24 @@ foreign import createHandlerImpl :: forall a e. Array a -> Handler e a
 
 createHandler :: forall a e. Array a -> Handler e a
 createHandler = createHandlerImpl
+
+createInputHandler :: forall e. Array InputEvent -> Handler e InputEvent
+createInputHandler = createHandlerImpl
+
+createMouseHandler :: forall e. Array MouseEvent -> Handler e MouseEvent
+createMouseHandler = createHandlerImpl
+
+createKeyboardHandler :: forall e. Array KeyboardEvent -> Handler e KeyboardEvent
+createKeyboardHandler = createHandlerImpl
+
+createStringHandler :: forall e. Array String -> Handler e String
+createStringHandler = createHandlerImpl
+
+createBoolHandler :: forall e. Array Boolean -> Handler e Boolean
+createBoolHandler = createHandlerImpl
+
+createNumberHandler :: forall e. Array Number -> Handler e Number
+createNumberHandler = createHandlerImpl
 
 create :: forall a e. (a -> Eff e Unit) -> Sink e a
 create fn = { sink : Observer fn }

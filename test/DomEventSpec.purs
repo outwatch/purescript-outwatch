@@ -1,6 +1,5 @@
 module Test.DomEventSpec where
 
-import OutWatch
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
@@ -20,10 +19,14 @@ import DOM.Node.Node (appendChild, setTextContent, textContent)
 import DOM.Node.ParentNode (childElementCount, querySelector)
 import DOM.Node.Types (Document, Node, documentToParentNode, elementToEventTarget, elementToNode)
 import Data.Array (length) as Array
-import EmitterBuilder (mapE, override)
+import OutWatch.Attributes (childShow, children, click, text, (<==), (==>))
+import OutWatch.Core (render)
+import OutWatch.Dom.EmitterBuilder (mapE, override)
 import OutWatch.Sink (create)
+import OutWatch.Tags (div, span)
 import Prelude (Unit, bind, const, map, not, pure, show, (#), ($), (==))
 import RxJS.Observable (fromArray, just)
+import Snabbdom (VDOM)
 import Test.JsHelpers (newEvent)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (assert)
@@ -31,7 +34,9 @@ import Test.Unit.Console (TESTOUTPUT)
 import Unsafe.Coerce (unsafeCoerce)
 
 
-domEventSuite :: forall e. TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM, ref :: REF, err :: EXCEPTION | e)
+domEventSuite :: forall e. TestSuite (console :: CONSOLE, testOutput :: TESTOUTPUT
+  , avar :: AVAR, dom :: DOM, vdom :: VDOM, random :: RANDOM, ref :: REF,
+   err :: EXCEPTION | e)
 domEventSuite =
   suite "Dom Event Suite" do
     test "The DOM Events Api should be able to update the DOM correctly" do
