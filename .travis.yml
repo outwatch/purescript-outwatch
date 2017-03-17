@@ -1,10 +1,8 @@
 language: node_js
 
 node_js:
-  - "7"
-
-cache:
-  yarn: true
+  - "6"
+  - "5"
 
 before_install:
   - npm install -g pulp bower purescript
