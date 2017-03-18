@@ -22,7 +22,8 @@
     "test": "pulp browserify -I test -m Test.Main -t index.js && phantomjs index.js",
     "clean:output": "./node_modules/.bin/rimraf output",
     "build:example-counter": "npm run clean:output && pulp browserify --optimise --include examples/counter/src --to examples/counter/dist/app.js",
-    "build:example-counter-store": "npm run clean:output && pulp browserify --optimise --include examples/counter-store/src --to examples/counter-store/dist/app.js"
+    "build:example-counter-store": "npm run clean:output && pulp browserify --optimise --include examples/counter-store/src --to examples/counter-store/dist/app.js",
+    "build:example-bmi-calculator": "npm run clean:output && pulp browserify --optimise --include examples/bmi-calculator/src --to examples/bmi-calculator/dist/app.js"
   },
   "keywords": [
     "purescript"
