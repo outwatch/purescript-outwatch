@@ -1,4 +1,4 @@
-## Counter example
+# `counter-store` example
 
 Example to increment a counter by using `store pattern `as described in chapter ["Managing state"](https://outwatch.github.io/managing-state.html?lang=purescript)
 

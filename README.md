@@ -23,7 +23,8 @@ Please check out the [documentation](https://outwatch.github.io/) on how to proc
 
 All examples are located in folder [`examples`](./tree/master/examples/):
 
-- [Counter](./tree/master/examples/counter)
+- [`counter`](./tree/master/examples/counter)
+- [`counter-store`](./tree/master/examples/counter-store)
 - _more coming soon_
 
 ## Run tests
