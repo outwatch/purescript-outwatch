@@ -18,7 +18,9 @@
   },
   "scripts": {
     "postinstall": "bower cache clean && bower install",
-    "test": "pulp browserify -I test -m Test.Main -t index.js && phantomjs index.js"
+    "test": "pulp browserify -I test -m Test.Main -t index.js && phantomjs index.js",
+    "build:example-counter": "pulp browserify --optimise --include examples/counter/src --to examples/counter/dist/app.js"
+
   },
   "keywords": [
     "purescript"
