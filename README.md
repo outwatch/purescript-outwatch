@@ -25,7 +25,7 @@ All examples are located in folder [`examples`](./tree/master/examples/):
 
 - [`counter`](./tree/master/examples/counter)
 - [`counter-store`](./tree/master/examples/counter-store)
-- _more coming soon_
+- [`bmi-calculator`](./tree/master/examples/bmi-calculator)
 
 ## Run tests
 
