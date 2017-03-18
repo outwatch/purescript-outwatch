@@ -19,6 +19,12 @@ Please check out the [documentation](https://outwatch.github.io/) on how to proc
 2. Handling subscriptions automatically
 3. Removing or restricting the need for Higher Order Observables
 
+## Examples
+
+All examples are located in folder [`examples`](./tree/master/examples/):
+
+- [Counter](./tree/master/examples/counter)
+- _more coming soon_
 
 ## Run tests
 
@@ -26,6 +32,7 @@ Please check out the [documentation](https://outwatch.github.io/) on how to proc
 npm install
 npm test
 ```
+
 
 ## Bugs and Feedback
 
