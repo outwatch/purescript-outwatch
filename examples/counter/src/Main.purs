@@ -5,7 +5,7 @@ import OutWatch.Attributes (childShow, click, (<==), (==>))
 import OutWatch.Core (render)
 import OutWatch.Dom.EmitterBuilder (mapE)
 import OutWatch.Sink (createHandler)
-import OutWatch.Tags (button, div, h3, text)
+import OutWatch.Tags (button, div, h1, h3, text)
 import Prelude (Unit, (+), (#), const, negate)
 import RxJS.Observable (merge, scan, startWith)
 import Snabbdom (VDOM)
@@ -19,7 +19,8 @@ main =
           # startWith 0
 
         root = div
-          [ button
+          [ h1 [ text "counter example" ]
+          , button
               [ text "Decrement"
               , mapE click (const (-1)) ==> decrementHandlder
               ]

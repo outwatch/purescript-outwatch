@@ -8,3 +8,4 @@
 /index.html
 /index.js
 .DS_STORE
+yarn.lock

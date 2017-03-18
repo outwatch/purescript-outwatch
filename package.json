@@ -11,16 +11,18 @@
     "snabbdom": "^0.6.6"
   },
   "devDependencies": {
-    "bower" : "^1.8.0",
-    "purescript" : "^0.10.7",
-    "pulp" : "^10.0.1",
-    "phantomjs" : "^2.1.7"
+    "bower": "^1.8.0",
+    "phantomjs": "^2.1.7",
+    "pulp": "^10.0.1",
+    "purescript": "^0.10.7",
+    "rimraf": "^2.6.1"
   },
   "scripts": {
     "postinstall": "bower cache clean && bower install",
     "test": "pulp browserify -I test -m Test.Main -t index.js && phantomjs index.js",
-    "build:example-counter": "pulp browserify --optimise --include examples/counter/src --to examples/counter/dist/app.js"
-
+    "clean:output": "./node_modules/.bin/rimraf output",
+    "build:example-counter": "npm run clean:output && pulp browserify --optimise --include examples/counter/src --to examples/counter/dist/app.js",
+    "build:example-counter-store": "npm run clean:output && pulp browserify --optimise --include examples/counter-store/src --to examples/counter-store/dist/app.js"
   },
   "keywords": [
     "purescript"
