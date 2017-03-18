@@ -1,8 +1,8 @@
-## Counter example
+# `counter` example
 
 Example to increment a counter by clicking buttons.
 
-### Installation
+## Installation
 
 From the root of project:
 
