@@ -21,11 +21,11 @@ Please check out the [documentation](https://outwatch.github.io/) on how to proc
 
 ## Examples
 
-All examples are located in folder [`examples`](./tree/master/examples/):
+All examples are located in folder [`examples`](../tree/master/examples/):
 
-- [`counter`](./tree/master/examples/counter)
-- [`counter-store`](./tree/master/examples/counter-store)
-- [`bmi-calculator`](./tree/master/examples/bmi-calculator)
+- [`counter`](../tree/master/examples/counter)
+- [`counter-store`](../tree/master/examples/counter-store)
+- [`bmi-calculator`](../tree/master/examples/bmi-calculator)
 
 ## Run tests
 
