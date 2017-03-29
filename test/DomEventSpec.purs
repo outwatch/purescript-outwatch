@@ -21,7 +21,7 @@ import DOM.Node.Types (Document, Node, documentToParentNode, elementToEventTarge
 import Data.Array (length) as Array
 import OutWatch.Attributes (childShow, children, click, text, (<==), (==>))
 import OutWatch.Core (render)
-import OutWatch.Dom.EmitterBuilder (mapE, override)
+import OutWatch.Dom.Emitters (mapE, override)
 import OutWatch.Sink (create)
 import OutWatch.Tags (div, span)
 import Prelude (Unit, bind, const, map, not, pure, show, (#), ($), (==))

@@ -3,7 +3,7 @@ module Main where
 import Control.Monad.Eff (Eff)
 import OutWatch.Attributes (childShow, click, (<==), (==>))
 import OutWatch.Core (render)
-import OutWatch.Dom.EmitterBuilder (mapE)
+import OutWatch.Dom.Emitters (mapE)
 import OutWatch.Dom.VDomModifier (VDom)
 import OutWatch.Tags (button, div, h1, h3, text)
 import OutWatch.Util.Store (Store, createStore)

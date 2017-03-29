@@ -3,8 +3,8 @@ module OutWatch.Monadic.Attributes where
 import OutWatch.Attributes as Attr
 import Control.Monad.Eff (Eff)
 import Data.Unit (Unit)
-import OutWatch.Dom.Builder (class AttributeBuilder)
-import OutWatch.Dom.EmitterBuilder (InsertHookBuilder(..))
+import OutWatch.Dom.Receivers (class AttributeBuilder)
+import OutWatch.Dom.Emitters (InsertHookBuilder(..))
 import OutWatch.Monadic.Core (HTML, push, wrapAttribute)
 
 

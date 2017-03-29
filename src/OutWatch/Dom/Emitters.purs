@@ -1,4 +1,4 @@
-module OutWatch.Dom.EmitterBuilder where
+module OutWatch.Dom.Emitters where
 
 import DOM.Event.Event (Event)
 import DOM.Event.KeyboardEvent (KeyboardEvent)

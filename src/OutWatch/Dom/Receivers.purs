@@ -1,4 +1,4 @@
-module OutWatch.Dom.Builder where
+module OutWatch.Dom.Receivers where
 
 import Data.Functor (map)
 import Data.List (fromFoldable)
@@ -16,8 +16,6 @@ class AttributeBuilder builder value | builder -> value where
 
 class ReceiverBuilder builder stream eff | stream -> eff, builder -> stream where
   bindFrom :: builder -> stream -> VDom eff
-
--- Generic
 
 -- Bool
 newtype BoolAttributeBuilder = BoolAttributeBuilder String
