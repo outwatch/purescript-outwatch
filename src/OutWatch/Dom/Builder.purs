@@ -4,7 +4,7 @@ import Data.Functor (map)
 import Data.List (fromFoldable)
 import Data.Show (show)
 import Data.Traversable (class Traversable)
-import OutWatch.Dom.DomUtils (modifierToVNode)
+import OutWatch.Dom.Utils (modifierToVNode)
 import Prelude (class Show, Unit)
 import RxJS.Observable (Observable)
 import OutWatch.Dom.Types (Property(..), Receiver(..), VDom(..), VNode(..))
@@ -17,6 +17,7 @@ class AttributeBuilder builder value | builder -> value where
 class ReceiverBuilder builder stream eff | stream -> eff, builder -> stream where
   bindFrom :: builder -> stream -> VDom eff
 
+-- Generic
 
 -- Bool
 newtype BoolAttributeBuilder = BoolAttributeBuilder String

@@ -1,7 +1,7 @@
 module OutWatch.Tags where
 
 import Data.Traversable (class Traversable)
-import OutWatch.Dom.DomUtils (hyperscriptHelper)
+import OutWatch.Dom.Utils (hyperscriptHelper)
 import OutWatch.Dom.Types (VDom(..), VNode(..))
 
 div :: forall e f. (Traversable f) => f (VDom e) -> VDom e

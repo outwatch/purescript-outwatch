@@ -1,4 +1,4 @@
-module OutWatch.Dom.DomUtils (hyperscriptHelper, modifierToVNode, separateModifiers, separateReceivers, separateProperties) where
+module OutWatch.Dom.Utils (hyperscriptHelper, modifierToVNode, separateModifiers, separateReceivers, separateProperties) where
 
 import Data.Array (fromFoldable)
 import Data.Foldable (class Foldable, elem, foldr)
