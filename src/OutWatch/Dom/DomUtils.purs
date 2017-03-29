@@ -10,7 +10,7 @@ import OutWatch.Helpers.Helpers (combineLatestAll)
 import Prelude (id, map, (&&), not)
 import RxJS.Observable (Observable, combineLatest)
 import OutWatch.Dom.SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties)
-import OutWatch.Dom.VDomModifier (Attribute, AttributeStreamReceiver, ChildStreamReceiver, ChildrenStreamReceiver, Emitter, Property(..), Receiver(..), VDom(..), VNode(..))
+import OutWatch.Dom.Types (Attribute, AttributeStreamReceiver, ChildStreamReceiver, ChildrenStreamReceiver, Emitter, Property(..), Receiver(..), VDom(..), VNode(..))
 
 
 hyperscriptHelper :: forall e f. (Traversable f) => String -> f (VDom e) -> VDom e

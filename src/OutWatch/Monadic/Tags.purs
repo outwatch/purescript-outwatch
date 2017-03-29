@@ -4,7 +4,7 @@ import OutWatch.Attributes as Attr
 import OutWatch.Tags as Tag
 import Control.Monad.State (class MonadState)
 import Data.Unit (Unit)
-import OutWatch.Dom.VDomModifier (VDom)
+import OutWatch.Dom.Types (VDom)
 import OutWatch.Monadic.Core (HTML, push, wrapTag)
 
 a_ :: forall e. HTML e Unit -> HTML e Unit 

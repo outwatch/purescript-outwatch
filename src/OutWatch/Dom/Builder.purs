@@ -7,7 +7,7 @@ import Data.Traversable (class Traversable)
 import OutWatch.Dom.DomUtils (modifierToVNode)
 import Prelude (class Show, Unit)
 import RxJS.Observable (Observable)
-import OutWatch.Dom.VDomModifier (Property(..), Receiver(..), VDom(..), VNode(..))
+import OutWatch.Dom.Types (Property(..), Receiver(..), VDom(..), VNode(..))
 
 
 class AttributeBuilder builder value | builder -> value where

@@ -2,7 +2,7 @@ module OutWatch.Core where
 
 import Control.Monad.Eff (Eff)
 import Data.Unit (Unit)
-import OutWatch.Dom.VDomModifier (VDom(..), VNode(..), toProxy)
+import OutWatch.Dom.Types (VDom(..), VNode(..), toProxy)
 import Snabbdom (patchInitialSelector)
 import Snabbdom (VDOM) as Snabbdom
 
