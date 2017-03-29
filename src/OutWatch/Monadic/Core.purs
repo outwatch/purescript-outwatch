@@ -43,8 +43,6 @@ wrapTag_ :: forall attributes m e. (MonadState (Array (VDom e)) m) =>
    attributes -> (attributes -> VDom e) -> m Unit
 wrapTag_ val tag =  push (tag val)
 
-
-
 -- Emitter -----------------------------------------------------------------
 
 wrapEmitter :: forall builder a e r. EmitterBuilder builder a e => 
@@ -64,9 +62,9 @@ wrapReceiver b s = push (bindFrom b s)
 -- infix 5 bindFrom as <==
 
 -- Static receiver
-wrapReceiver_ :: forall builder value e. AttributeBuilder builder value =>  
+wrapConstantReceiver :: forall builder value e. AttributeBuilder builder value =>  
     builder -> value -> HTML e Unit
-wrapReceiver_ b v = push (setTo b v)
+wrapConstantReceiver b v = push (setTo b v)
 -- infix 5 setTo as :=
 
 

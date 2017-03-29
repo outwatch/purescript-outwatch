@@ -4,14 +4,14 @@ import OutWatch.Attributes as Attr
 import Data.Show (class Show)
 import Data.Unit (Unit)
 import OutWatch.Dom.Types (VDom)
-import OutWatch.Monadic.Core (HTML, push, wrapEmitter, wrapReceiver_, wrapReceiver)
+import OutWatch.Monadic.Core (HTML, push, wrapEmitter, wrapConstantReceiver, wrapReceiver)
 import RxJS.Observable (Observable)
 
 
 -- Stream Receivers
 
 valueShow_ :: forall e a. Show a => a -> HTML e Unit
-valueShow_ = wrapReceiver_ Attr.valueShow
+valueShow_ = wrapConstantReceiver Attr.valueShow
 
 child_ :: forall e. Observable (VDom e) -> HTML e Unit
 child_ = wrapReceiver Attr.child
@@ -29,274 +29,274 @@ text_ t =  push (Attr.text t)
 
 ----hidden_ :: forall e m. MonadState (Array (VDom e)) m => _ -> m Unit
 hidden_ :: forall e. _ -> HTML e Unit
-hidden_ = wrapReceiver_ Attr.hidden
+hidden_ = wrapConstantReceiver Attr.hidden
 
 value_ :: forall e. _ -> HTML e Unit
-value_ = wrapReceiver_ Attr.value
+value_ = wrapConstantReceiver Attr.value
 
 disabled_ :: forall e. _ -> HTML e Unit
-disabled_ = wrapReceiver_ Attr.disabled
+disabled_ = wrapConstantReceiver Attr.disabled
 
 style_ :: forall e. _ -> HTML e Unit
-style_ = wrapReceiver_ Attr.style
+style_ = wrapConstantReceiver Attr.style
 
 alt_ :: forall e. _ -> HTML e Unit
-alt_ = wrapReceiver_ Attr.alt
+alt_ = wrapConstantReceiver Attr.alt
 
 href_ :: forall e. _ -> HTML e Unit
-href_ = wrapReceiver_ Attr.href
+href_ = wrapConstantReceiver Attr.href
 
 autocomplete_ :: forall e. _ -> HTML e Unit
-autocomplete_ = wrapReceiver_ Attr.autocomplete
+autocomplete_ = wrapConstantReceiver Attr.autocomplete
 
 autofocus_ :: forall e. _ -> HTML e Unit
-autofocus_ = wrapReceiver_ Attr.autofocus
+autofocus_ = wrapConstantReceiver Attr.autofocus
 
 autoplay_ :: forall e. _ -> HTML e Unit
-autoplay_ = wrapReceiver_ Attr.autoplay
+autoplay_ = wrapConstantReceiver Attr.autoplay
 
 autosave_ :: forall e. _ -> HTML e Unit
-autosave_ = wrapReceiver_ Attr.autosave
+autosave_ = wrapConstantReceiver Attr.autosave
 
 charset_ :: forall e. _ -> HTML e Unit
-charset_ = wrapReceiver_ Attr.charset
+charset_ = wrapConstantReceiver Attr.charset
 
 challenge_ :: forall e. _ -> HTML e Unit
-challenge_ = wrapReceiver_ Attr.challenge
+challenge_ = wrapConstantReceiver Attr.challenge
 
 cols_ :: forall e. _ -> HTML e Unit
-cols_ = wrapReceiver_ Attr.cols
+cols_ = wrapConstantReceiver Attr.cols
 
 rows_ :: forall e. _ -> HTML e Unit
-rows_ = wrapReceiver_ Attr.rows
+rows_ = wrapConstantReceiver Attr.rows
 
 colspan_ :: forall e. _ -> HTML e Unit
-colspan_ = wrapReceiver_ Attr.colspan
+colspan_ = wrapConstantReceiver Attr.colspan
 
 controls_ :: forall e. _ -> HTML e Unit
-controls_ = wrapReceiver_ Attr.controls
+controls_ = wrapConstantReceiver Attr.controls
 
 contentEditable_ :: forall e. _ -> HTML e Unit
-contentEditable_ = wrapReceiver_ Attr.contentEditable
+contentEditable_ = wrapConstantReceiver Attr.contentEditable
 
 rowspan_ :: forall e. _ -> HTML e Unit
-rowspan_ = wrapReceiver_ Attr.rowspan
+rowspan_ = wrapConstantReceiver Attr.rowspan
 
 download_ :: forall e. _ -> HTML e Unit
-download_ = wrapReceiver_ Attr.download
+download_ = wrapConstantReceiver Attr.download
 
 id_ :: forall e. _ -> HTML e Unit
-id_ = wrapReceiver_ Attr.id
+id_ = wrapConstantReceiver Attr.id
 
 max_ :: forall e. _ -> HTML e Unit
-max_ = wrapReceiver_ Attr.max
+max_ = wrapConstantReceiver Attr.max
 
 maxLength_ :: forall e. _ -> HTML e Unit
-maxLength_ = wrapReceiver_ Attr.maxLength
+maxLength_ = wrapConstantReceiver Attr.maxLength
 
 min_ :: forall e. _ -> HTML e Unit
-min_ = wrapReceiver_ Attr.min
+min_ = wrapConstantReceiver Attr.min
 
 minLength_ :: forall e. _ -> HTML e Unit
-minLength_ = wrapReceiver_ Attr.minLength
+minLength_ = wrapConstantReceiver Attr.minLength
 
 media_ :: forall e. _ -> HTML e Unit
-media_ = wrapReceiver_ Attr.media
+media_ = wrapConstantReceiver Attr.media
 
 method_ :: forall e. _ -> HTML e Unit
-method_ = wrapReceiver_ Attr.method
+method_ = wrapConstantReceiver Attr.method
 
 muted_ :: forall e. _ -> HTML e Unit
-muted_ = wrapReceiver_ Attr.muted
+muted_ = wrapConstantReceiver Attr.muted
 
 name_ :: forall e. _ -> HTML e Unit
-name_ = wrapReceiver_ Attr.name
+name_ = wrapConstantReceiver Attr.name
 
 novalidate_ :: forall e. _ -> HTML e Unit
-novalidate_ = wrapReceiver_ Attr.novalidate
+novalidate_ = wrapConstantReceiver Attr.novalidate
 
 accept_ :: forall e. _ -> HTML e Unit
-accept_ = wrapReceiver_ Attr.accept
+accept_ = wrapConstantReceiver Attr.accept
 
 acceptCharset_ :: forall e. _ -> HTML e Unit
-acceptCharset_ = wrapReceiver_ Attr.acceptCharset
+acceptCharset_ = wrapConstantReceiver Attr.acceptCharset
 
 action_ :: forall e. _ -> HTML e Unit
-action_ = wrapReceiver_ Attr.action
+action_ = wrapConstantReceiver Attr.action
 
 align_ :: forall e. _ -> HTML e Unit
-align_ = wrapReceiver_ Attr.align
+align_ = wrapConstantReceiver Attr.align
 
 src_ :: forall e. _ -> HTML e Unit
-src_ = wrapReceiver_ Attr.src
+src_ = wrapConstantReceiver Attr.src
 
 srcset_ :: forall e. _ -> HTML e Unit
-srcset_ = wrapReceiver_ Attr.srcset
+srcset_ = wrapConstantReceiver Attr.srcset
 
 checked_ :: forall e. _ -> HTML e Unit
-checked_ = wrapReceiver_ Attr.checked
+checked_ = wrapConstantReceiver Attr.checked
 
 coords_ :: forall e. _ -> HTML e Unit
-coords_ = wrapReceiver_ Attr.coords
+coords_ = wrapConstantReceiver Attr.coords
 
 list_ :: forall e. _ -> HTML e Unit
-list_ = wrapReceiver_ Attr.list
+list_ = wrapConstantReceiver Attr.list
 
 multiple_ :: forall e. _ -> HTML e Unit
-multiple_ = wrapReceiver_ Attr.multiple
+multiple_ = wrapConstantReceiver Attr.multiple
 
 datetime_ :: forall e. _ -> HTML e Unit
-datetime_ = wrapReceiver_ Attr.datetime
+datetime_ = wrapConstantReceiver Attr.datetime
 
 default_ :: forall e. _ -> HTML e Unit
-default_ = wrapReceiver_ Attr.default
+default_ = wrapConstantReceiver Attr.default
 
 dirname_ :: forall e. _ -> HTML e Unit
-dirname_ = wrapReceiver_ Attr.dirname
+dirname_ = wrapConstantReceiver Attr.dirname
 
 draggable_ :: forall e. _ -> HTML e Unit
-draggable_ = wrapReceiver_ Attr.draggable
+draggable_ = wrapConstantReceiver Attr.draggable
 
 dropzone_ :: forall e. _ -> HTML e Unit
-dropzone_ = wrapReceiver_ Attr.dropzone
+dropzone_ = wrapConstantReceiver Attr.dropzone
 
 enctype_ :: forall e. _ -> HTML e Unit
-enctype_ = wrapReceiver_ Attr.enctype
+enctype_ = wrapConstantReceiver Attr.enctype
 
 formAction_ :: forall e. _ -> HTML e Unit
-formAction_ = wrapReceiver_ Attr.formAction
+formAction_ = wrapConstantReceiver Attr.formAction
 
 headers_ :: forall e. _ -> HTML e Unit
-headers_ = wrapReceiver_ Attr.headers
+headers_ = wrapConstantReceiver Attr.headers
 
 high_ :: forall e. _ -> HTML e Unit
-high_ = wrapReceiver_ Attr.high
+high_ = wrapConstantReceiver Attr.high
 
 low_ :: forall e. _ -> HTML e Unit
-low_ = wrapReceiver_ Attr.low
+low_ = wrapConstantReceiver Attr.low
 
 icon_ :: forall e. _ -> HTML e Unit
-icon_ = wrapReceiver_ Attr.icon
+icon_ = wrapConstantReceiver Attr.icon
 
 integrity_ :: forall e. _ -> HTML e Unit
-integrity_ = wrapReceiver_ Attr.integrity
+integrity_ = wrapConstantReceiver Attr.integrity
 
 isMap_ :: forall e. _ -> HTML e Unit
-isMap_ = wrapReceiver_ Attr.isMap
+isMap_ = wrapConstantReceiver Attr.isMap
 
 itemProp_ :: forall e. _ -> HTML e Unit
-itemProp_ = wrapReceiver_ Attr.itemProp
+itemProp_ = wrapConstantReceiver Attr.itemProp
 
 keyType_ :: forall e. _ -> HTML e Unit
-keyType_ = wrapReceiver_ Attr.keyType
+keyType_ = wrapConstantReceiver Attr.keyType
 
 kind_ :: forall e. _ -> HTML e Unit
-kind_ = wrapReceiver_ Attr.kind
+kind_ = wrapConstantReceiver Attr.kind
 
 label__ :: forall e. _ -> HTML e Unit
-label__ = wrapReceiver_ Attr.label_
+label__ = wrapConstantReceiver Attr.label_
 
 lang_ :: forall e. _ -> HTML e Unit
-lang_ = wrapReceiver_ Attr.lang
+lang_ = wrapConstantReceiver Attr.lang
 
 loop_ :: forall e. _ -> HTML e Unit
-loop_ = wrapReceiver_ Attr.loop
+loop_ = wrapConstantReceiver Attr.loop
 
 open_ :: forall e. _ -> HTML e Unit
-open_ = wrapReceiver_ Attr.open
+open_ = wrapConstantReceiver Attr.open
 
 optimum_ :: forall e. _ -> HTML e Unit
-optimum_ = wrapReceiver_ Attr.optimum
+optimum_ = wrapConstantReceiver Attr.optimum
 
 placeholder_ :: forall e. _ -> HTML e Unit
-placeholder_ = wrapReceiver_ Attr.placeholder
+placeholder_ = wrapConstantReceiver Attr.placeholder
 
 pattern_ :: forall e. _ -> HTML e Unit
-pattern_ = wrapReceiver_ Attr.pattern
+pattern_ = wrapConstantReceiver Attr.pattern
 
 poster_ :: forall e. _ -> HTML e Unit
-poster_ = wrapReceiver_ Attr.poster
+poster_ = wrapConstantReceiver Attr.poster
 
 preload_ :: forall e. _ -> HTML e Unit
-preload_ = wrapReceiver_ Attr.preload
+preload_ = wrapConstantReceiver Attr.preload
 
 radiogroup_ :: forall e. _ -> HTML e Unit
-radiogroup_ = wrapReceiver_ Attr.radiogroup
+radiogroup_ = wrapConstantReceiver Attr.radiogroup
 
 readonly_ :: forall e. _ -> HTML e Unit
-readonly_ = wrapReceiver_ Attr.readonly
+readonly_ = wrapConstantReceiver Attr.readonly
 
 rel_ :: forall e. _ -> HTML e Unit
-rel_ = wrapReceiver_ Attr.rel
+rel_ = wrapConstantReceiver Attr.rel
 
 required_ :: forall e. _ -> HTML e Unit
-required_ = wrapReceiver_ Attr.required
+required_ = wrapConstantReceiver Attr.required
 
 reversed_ :: forall e. _ -> HTML e Unit
-reversed_ = wrapReceiver_ Attr.reversed
+reversed_ = wrapConstantReceiver Attr.reversed
 
 scope_ :: forall e. _ -> HTML e Unit
-scope_ = wrapReceiver_ Attr.scope
+scope_ = wrapConstantReceiver Attr.scope
 
 shape_ :: forall e. _ -> HTML e Unit
-shape_ = wrapReceiver_ Attr.shape
+shape_ = wrapConstantReceiver Attr.shape
 
 size_ :: forall e. _ -> HTML e Unit
-size_ = wrapReceiver_ Attr.size
+size_ = wrapConstantReceiver Attr.size
 
 selected_ :: forall e. _ -> HTML e Unit
-selected_ = wrapReceiver_ Attr.selected
+selected_ = wrapConstantReceiver Attr.selected
 
 sizes_ :: forall e. _ -> HTML e Unit
-sizes_ = wrapReceiver_ Attr.sizes
+sizes_ = wrapConstantReceiver Attr.sizes
 
 step_ :: forall e. _ -> HTML e Unit
-step_ = wrapReceiver_ Attr.step
+step_ = wrapConstantReceiver Attr.step
 
 spellCheck_ :: forall e. _ -> HTML e Unit
-spellCheck_ = wrapReceiver_ Attr.spellCheck
+spellCheck_ = wrapConstantReceiver Attr.spellCheck
 
 start_ :: forall e. _ -> HTML e Unit
-start_ = wrapReceiver_ Attr.start
+start_ = wrapConstantReceiver Attr.start
 
 summary__ :: forall e. _ -> HTML e Unit
-summary__ = wrapReceiver_ Attr.summary_
+summary__ = wrapConstantReceiver Attr.summary_
 
 target_ :: forall e. _ -> HTML e Unit
-target_ = wrapReceiver_ Attr.target
+target_ = wrapConstantReceiver Attr.target
 
 tabindex_ :: forall e. _ -> HTML e Unit
-tabindex_ = wrapReceiver_ Attr.tabindex
+tabindex_ = wrapConstantReceiver Attr.tabindex
 
 title_ :: forall e. _ -> HTML e Unit
-title_ = wrapReceiver_ Attr.title
+title_ = wrapConstantReceiver Attr.title
 
 usemap_ :: forall e. _ -> HTML e Unit
-usemap_ = wrapReceiver_ Attr.usemap
+usemap_ = wrapConstantReceiver Attr.usemap
 
 wrap_ :: forall e. String -> HTML e Unit
-wrap_ = wrapReceiver_ Attr.wrap
+wrap_ = wrapConstantReceiver Attr.wrap
 
 inputType_ :: forall e. _ -> HTML e Unit
-inputType_ = wrapReceiver_ Attr.inputType
+inputType_ = wrapConstantReceiver Attr.inputType
 
 role_ :: forall e. _ -> HTML e Unit
-role_ = wrapReceiver_ Attr.role
+role_ = wrapConstantReceiver Attr.role
 
 tpe_ :: forall e. _ -> HTML e Unit
-tpe_ = wrapReceiver_ Attr.tpe
+tpe_ = wrapConstantReceiver Attr.tpe
 
 className_ :: forall e. _ -> HTML e Unit
-className_ = wrapReceiver_ Attr.className
+className_ = wrapConstantReceiver Attr.className
 
 class__ :: forall e. _ -> HTML e Unit
-class__ = wrapReceiver_ Attr.class_
+class__ = wrapConstantReceiver Attr.class_
 
 cls_ :: forall e. _ -> HTML e Unit
-cls_ = wrapReceiver_ Attr.cls
+cls_ = wrapConstantReceiver Attr.cls
 
 for_ :: forall e. _ -> HTML e Unit
-for_ = wrapReceiver_ Attr.for
+for_ = wrapConstantReceiver Attr.for
 
 -- insert_ :: forall e. _ -> HTML e Unit
 insert_ = wrapEmitter Attr.insert
