@@ -2,7 +2,7 @@ module OutWatch.Monadic.Core where
 
 import Prelude
 import OutWatch.Attributes as Attr
-import OutWatch.Tags as Tags
+
 import Control.Monad.Eff (Eff)
 import Control.Monad.RWS.Trans (lift)
 import Control.Monad.State (class MonadState, StateT, execStateT, modify)
@@ -37,30 +37,34 @@ createHandlerE a = lift $ pure (createHandler a)
 
 -- Elements ----------------------------------------------------------------
 
-wrapElem :: forall e. (Array (VDom e) -> (VDom e)) -> HTML e Unit -> HTML e Unit
-wrapElem e b = lift (e <$> execStateT b []) >>= push 
+wrapTag :: forall e. (Array (VDom e) -> (VDom e)) -> HTML e Unit -> HTML e Unit
+wrapTag e b = lift (e <$> execStateT b []) >>= push 
 
-ul_ :: forall e. HTML e Unit -> HTML e Unit
-ul_ = wrapElem Tags.ul
+wrapTag_ :: forall attributes m e. (MonadState (Array (VDom e)) m) =>
+   attributes -> (attributes -> VDom e) -> m Unit
+wrapTag_ val tag =  push (tag val)
 
-li_ :: forall e. HTML e Unit -> HTML e Unit
-li_ = wrapElem Tags.li
+-- ul_ :: forall e. HTML e Unit -> HTML e Unit
+-- ul_ = wrapTag Tags.ul
 
-div_ :: forall e. HTML e Unit -> HTML e Unit
-div_ = wrapElem Tags.div
+-- li_ :: forall e. HTML e Unit -> HTML e Unit
+-- li_ = wrapTag Tags.li
 
-input_ :: forall e. HTML e Unit -> HTML e Unit
-input_ = wrapElem Tags.input
+-- div_ :: forall e. HTML e Unit -> HTML e Unit
+-- div_ = wrapTag Tags.div
+
+-- input_ :: forall e. HTML e Unit -> HTML e Unit
+-- input_ = wrapTag Tags.input
 
 -- tags not taking attributes
-br_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
-br_ = push (Tags.br [])
+-- br_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
+-- br_ = push (Tags.br [])
 
-hr_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
-hr_ = push (Tags.hr [])
+-- hr_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
+-- hr_ = push (Tags.hr [])
 
-text_ :: forall e. String -> HTML e Unit
-text_ t =  push (Attr.text t)
+-- text_ :: forall e. String -> HTML e Unit
+-- text_ t =  push (Attr.text t)
 
 -- Attributes --------------------------------------------------------------
 
