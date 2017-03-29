@@ -2,24 +2,23 @@ module OutWatch.Monadic.Core where
 
 import Prelude
 import OutWatch.Attributes as Attr
-
 import Control.Monad.Eff (Eff)
 import Control.Monad.RWS.Trans (lift)
 import Control.Monad.State (class MonadState, StateT, execStateT, modify)
+import DOM (DOM)
 import Data.Array (snoc)
 import Data.Array.Partial (head)
 import OutWatch.Attributes (children)
 import OutWatch.Dom.Builder (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
 import OutWatch.Dom.EmitterBuilder (class EmitterBuilder, emitFrom)
-import OutWatch.Sink (Handler, SinkLike, createHandler)
 import OutWatch.Dom.Types (VDom)
+import OutWatch.Sink (Handler, SinkLike, createHandlerEff)
 import Partial.Unsafe (unsafePartial)
 import RxJS.Observable (Observable)
 
----- types -----------------------------------------------------------------
+---- Core -----------------------------------------------------------------
 
-foreign import data H :: !
-type HTML e a = StateT (Array (VDom e)) (Eff (h::H|e)) a
+type HTML e a = StateT (Array (VDom e)) (Eff (dom::DOM|e)) a
 
 push :: forall vdom m. (MonadState (Array vdom) m) => vdom -> m Unit
 push = (\e l -> snoc l e) >>> modify
@@ -27,13 +26,13 @@ push = (\e l -> snoc l e) >>> modify
 unsafeFirst :: forall a. Array a -> a 
 unsafeFirst a = unsafePartial (head a)
 
-build :: forall e a. HTML e a -> Eff (h::H|e) (Array (VDom e))
+build :: forall e a. HTML e a -> Eff (dom::DOM|e) (Array (VDom e))
 build b = execStateT b []
 
 -- Handlers, Observables, Sinks --------------------------------------------
 
-createHandlerE :: forall a e. Array a -> HTML e (Handler e a)
-createHandlerE a = lift $ pure (createHandler a)
+createHandler_ :: forall a e. Array a -> HTML e (Handler e a)
+createHandler_ a = lift $ (createHandlerEff a)
 
 -- Elements ----------------------------------------------------------------
 
@@ -44,43 +43,21 @@ wrapTag_ :: forall attributes m e. (MonadState (Array (VDom e)) m) =>
    attributes -> (attributes -> VDom e) -> m Unit
 wrapTag_ val tag =  push (tag val)
 
--- ul_ :: forall e. HTML e Unit -> HTML e Unit
--- ul_ = wrapTag Tags.ul
-
--- li_ :: forall e. HTML e Unit -> HTML e Unit
--- li_ = wrapTag Tags.li
-
--- div_ :: forall e. HTML e Unit -> HTML e Unit
--- div_ = wrapTag Tags.div
-
--- input_ :: forall e. HTML e Unit -> HTML e Unit
--- input_ = wrapTag Tags.input
-
--- tags not taking attributes
--- br_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
--- br_ = push (Tags.br [])
-
--- hr_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
--- hr_ = push (Tags.hr [])
-
--- text_ :: forall e. String -> HTML e Unit
--- text_ t =  push (Attr.text t)
-
 -- Attributes --------------------------------------------------------------
 
-wrapAttribyte :: forall builder value e. AttributeBuilder builder value =>  
+wrapAttribute :: forall builder value e. AttributeBuilder builder value =>  
     builder -> value -> HTML e Unit
-wrapAttribyte b v = push (setTo b v)
+wrapAttribute b v = push (setTo b v)
 -- infix 5 setTo as :=
 
-type_ :: forall e. String -> HTML e Unit
-type_ = wrapAttribyte Attr.tpe
+-- type_ :: forall e. String -> HTML e Unit
+-- type_ = wrapAttribute Attr.tpe
 
-valueShow_ :: forall s e. Show s => s -> HTML e Unit
-valueShow_ = wrapAttribyte Attr.valueShow
+-- valueShow_ :: forall s e. Show s => s -> HTML e Unit
+-- valueShow_ = wrapAttribute Attr.valueShow
 
-max_ :: forall e. Number -> HTML e Unit
-max_ = wrapAttribyte Attr.max
+-- max_ :: forall e. Number -> HTML e Unit
+-- max_ = wrapAttribute Attr.max
 
 -- Emitter -----------------------------------------------------------------
 

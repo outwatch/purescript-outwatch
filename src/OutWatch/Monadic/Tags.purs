@@ -1,12 +1,22 @@
 module OutWatch.Monadic.Tags where
 
-import OutWatch.Attributes as Attr
+
 import OutWatch.Tags as Tag
 import Control.Monad.State (class MonadState)
 import Data.Unit (Unit)
 import OutWatch.Dom.Types (VDom)
 import OutWatch.Monadic.Core (HTML, push, wrapTag)
 
+
+-- Without attributes ----------------
+
+br_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
+br_ = push (Tag.br [])
+
+hr_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
+hr_ = push (Tag.hr [])
+
+-- With attributes -----------------
 a_ :: forall e. HTML e Unit -> HTML e Unit 
 a_ = wrapTag Tag.a
 
@@ -264,14 +274,3 @@ video_ = wrapTag Tag.video
 
 wbr_ :: forall e. HTML e Unit -> HTML e Unit 
 wbr_ = wrapTag Tag.wbr
-
--------------------
-
-br_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
-br_ = push (Tag.br [])
-
-hr_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
-hr_ = push (Tag.hr [])
-
-text_ :: forall e. String -> HTML e Unit
-text_ t =  push (Attr.text t)
