@@ -2,15 +2,30 @@ module OutWatch.Attributes where
 
 import OutWatch.Dom.Receivers (BoolAttributeBuilder(..), ChildStreamReceiverBuilder(..), ChildStringReceiverBuilder(..), ChildrenStreamReceiverBuilder(..), IntAttributeBuilder, NumberAttributeBuilder, ShowAttributeBuilder(..), StringAttributeBuilder(..), bindFrom, setTo)
 import Data.Unit (unit)
-import OutWatch.Dom.Emitters (BoolEmitterBuilder(..), DestroyHookBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookBuilder(..), emitFrom)
+import OutWatch.Dom.Emitters (BoolEmitterBuilder(..), DestroyHookEmitterBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookEmitterkBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookEmitterBuilder(..), emitFrom)
 import OutWatch.Dom.Types (VDom(..), VNode(..))
 
 infix 5 emitFrom as ==>
 infix 5 bindFrom as <==
 infix 5 setTo as :=
 
+
+-- Receivers -------------------------------------------------------------
+
 text ::forall e. String -> VDom e
 text str = VNode (StringNode str)
+
+valueShow :: forall s. ShowAttributeBuilder s
+valueShow = ShowAttributeBuilder "value"
+
+child :: ChildStreamReceiverBuilder
+child = ChildStreamReceiverBuilder unit
+
+children :: ChildrenStreamReceiverBuilder
+children = ChildrenStreamReceiverBuilder unit
+
+childShow :: ChildStringReceiverBuilder
+childShow = ChildStringReceiverBuilder unit
 
 hidden :: BoolAttributeBuilder
 hidden = BoolAttributeBuilder "hidden"
@@ -193,14 +208,16 @@ cls = className
 for :: StringAttributeBuilder
 for = StringAttributeBuilder "for"
 
-insert :: InsertHookBuilder
-insert = InsertHookBuilder unit
+-- Emmiter -------------------------------------------------------------
 
-destroy :: DestroyHookBuilder
-destroy = DestroyHookBuilder unit
+insert :: InsertHookEmitterkBuilder
+insert = InsertHookEmitterkBuilder unit
 
-update :: UpdateHookBuilder
-update = UpdateHookBuilder unit
+destroy :: DestroyHookEmitterBuilder
+destroy = DestroyHookEmitterBuilder unit
+
+update :: UpdateHookEmitterBuilder
+update = UpdateHookEmitterBuilder unit
 
 click :: MouseEmitterBuilder
 click = MouseEmitterBuilder "click"
@@ -269,15 +286,3 @@ inputNumber = NumberEmitterBuilder "input"
 
 inputChecked :: BoolEmitterBuilder
 inputChecked = BoolEmitterBuilder "change"
-
-valueShow :: forall s. ShowAttributeBuilder s
-valueShow = ShowAttributeBuilder "value"
-
-child :: ChildStreamReceiverBuilder
-child = ChildStreamReceiverBuilder unit
-
-children :: ChildrenStreamReceiverBuilder
-children = ChildrenStreamReceiverBuilder unit
-
-childShow :: ChildStringReceiverBuilder
-childShow = ChildStringReceiverBuilder unit

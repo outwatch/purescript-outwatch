@@ -142,20 +142,18 @@ instance numberEmitterBuilder :: EmitterBuilder NumberEmitterBuilder Number e wh
     Emitter (NumberEventEmitter { event : event, sink : sink })
 
 
+newtype InsertHookEmitterkBuilder = InsertHookEmitterkBuilder Unit
+newtype DestroyHookEmitterBuilder = DestroyHookEmitterBuilder Unit
+newtype UpdateHookEmitterBuilder = UpdateHookEmitterBuilder Unit
 
-
-newtype InsertHookBuilder = InsertHookBuilder Unit
-newtype DestroyHookBuilder = DestroyHookBuilder Unit
-newtype UpdateHookBuilder = UpdateHookBuilder Unit
-
-instance insertHookBuilder :: EmitterBuilder InsertHookBuilder Element e where
+instance insertHookEmitterkBuilder :: EmitterBuilder InsertHookEmitterkBuilder Element e where
   emitFrom builder {sink} =
     Property (InsertHook sink)
 
-instance destroyHookBuilder :: EmitterBuilder DestroyHookBuilder Element e where
+instance destroyHookEmitterBuilder :: EmitterBuilder DestroyHookEmitterBuilder Element e where
   emitFrom builder {sink} =
     Property (DestroyHook sink)
 
-instance updateHookBuilder :: EmitterBuilder UpdateHookBuilder (Tuple Element Element) e where
+instance updateHookEmitterBuilder :: EmitterBuilder UpdateHookEmitterBuilder (Tuple Element Element) e where
   emitFrom builder {sink} =
     Property (UpdateHook sink)

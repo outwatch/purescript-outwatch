@@ -8,13 +8,13 @@ import Control.Monad.State (class MonadState, StateT, execStateT, modify)
 import DOM (DOM)
 import Data.Array (snoc)
 import Data.Array.Partial (head)
-import OutWatch.Attributes (children)
+
 import OutWatch.Dom.Receivers (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
 import OutWatch.Dom.Emitters (class EmitterBuilder, emitFrom)
 import OutWatch.Dom.Types (VDom)
 import OutWatch.Sink (Handler, SinkLike, createHandlerEff)
 import Partial.Unsafe (unsafePartial)
-import RxJS.Observable (Observable)
+
 
 ---- Core -----------------------------------------------------------------
 
@@ -43,21 +43,7 @@ wrapTag_ :: forall attributes m e. (MonadState (Array (VDom e)) m) =>
    attributes -> (attributes -> VDom e) -> m Unit
 wrapTag_ val tag =  push (tag val)
 
--- Attributes --------------------------------------------------------------
 
-wrapAttribute :: forall builder value e. AttributeBuilder builder value =>  
-    builder -> value -> HTML e Unit
-wrapAttribute b v = push (setTo b v)
--- infix 5 setTo as :=
-
--- type_ :: forall e. String -> HTML e Unit
--- type_ = wrapAttribute Attr.tpe
-
--- valueShow_ :: forall s e. Show s => s -> HTML e Unit
--- valueShow_ = wrapAttribute Attr.valueShow
-
--- max_ :: forall e. Number -> HTML e Unit
--- max_ = wrapAttribute Attr.max
 
 -- Emitter -----------------------------------------------------------------
 
@@ -71,13 +57,22 @@ inputNumber_ = wrapEmitter Attr.inputNumber
 
 -- Receiver ----------------------------------------------------------------
 
+-- Stream receiver
 wrapReceiver :: forall builder stream e. ReceiverBuilder builder stream e => 
   builder -> stream -> HTML e Unit
 wrapReceiver b s = push (bindFrom b s)
 -- infix 5 bindFrom as <==
 
-children_ :: forall e. Observable (Array (VDom e)) -> HTML e Unit
-children_ s = push (bindFrom children s)
+-- Static receiver
+wrapReceiver_ :: forall builder value e. AttributeBuilder builder value =>  
+    builder -> value -> HTML e Unit
+wrapReceiver_ b v = push (setTo b v)
+-- infix 5 setTo as :=
+
+
+
+
+-- TODO
 
 -- -- instance childReceiverBuilder :: ReceiverBuilder ChildStreamReceiverBuilder (Observable (VDom e)) e  where
 -- --   bindFrom builder obs =

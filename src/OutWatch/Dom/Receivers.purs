@@ -13,7 +13,6 @@ import OutWatch.Dom.Types (Property(..), Receiver(..), VDom(..), VNode(..))
 class AttributeBuilder builder value | builder -> value where
   setTo :: forall e. builder -> value -> VDom (|e)
 
-
 class ReceiverBuilder builder stream eff | stream -> eff, builder -> stream where
   bindFrom :: builder -> stream -> VDom eff
 
