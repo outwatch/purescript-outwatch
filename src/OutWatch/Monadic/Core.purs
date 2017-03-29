@@ -56,9 +56,9 @@ inputNumber_ = wrapEmitter Attr.inputNumber
 -- Receiver ----------------------------------------------------------------
 
 -- Stream receiver
-wrapReceiver :: forall builder stream e. ReceiverBuilder builder stream e => 
+wrapStreamReceiver :: forall builder stream e. ReceiverBuilder builder stream e => 
   builder -> stream -> HTML e Unit
-wrapReceiver b s = push (bindFrom b s)
+wrapStreamReceiver b s = push (bindFrom b s)
 -- infix 5 bindFrom as <==
 
 -- Static receiver
@@ -82,7 +82,7 @@ wrapConstantReceiver b v = push (setTo b v)
 -- --     children
 
 -- childShow_ :: forall a e. Show a => Observable a -> HTML e Unit
--- childShow_ = wrapReceiver childShow
+-- childShow_ = wrapStreamReceiver childShow
 -- -- ReceiverBuilder builder stream eff | stream -> eff, builder -> stream where
 -- --   bindFrom :: builder -> stream -> VDom eff
 

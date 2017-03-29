@@ -12,12 +12,7 @@ infix 5 setTo as :=
 
 -- Receivers -------------------------------------------------------------
 
-text ::forall e. String -> VDom e
-text str = VNode (StringNode str)
-
-valueShow :: forall s. ShowAttributeBuilder s
-valueShow = ShowAttributeBuilder "value"
-
+-- Stream
 child :: ChildStreamReceiverBuilder
 child = ChildStreamReceiverBuilder unit
 
@@ -26,6 +21,13 @@ children = ChildrenStreamReceiverBuilder unit
 
 childShow :: ChildStringReceiverBuilder
 childShow = ChildStringReceiverBuilder unit
+
+-- Constant
+text ::forall e. String -> VDom e
+text str = VNode (StringNode str)
+
+valueShow :: forall s. ShowAttributeBuilder s
+valueShow = ShowAttributeBuilder "value"
 
 hidden :: BoolAttributeBuilder
 hidden = BoolAttributeBuilder "hidden"
