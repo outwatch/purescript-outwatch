@@ -1,6 +1,7 @@
 module OutWatch.Sink where
 
 import Control.Monad.Eff (Eff)
+import DOM (DOM)
 import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)
 import Data.Functor.Contravariant (class Contravariant, cmap)
 import Data.Tuple (Tuple(..))
@@ -21,6 +22,11 @@ type Sink e a = { sink :: Observer e a }
 
 instance sinkContravariant :: Contravariant (Observer e) where
   cmap project (Observer observer) = Observer (\b -> observer (project b))
+
+foreign import createHandlerEffImpl :: forall a e. Array a -> Eff (dom::DOM|e) (Handler e a)
+
+createHandlerEff :: forall a e. Array a -> Eff (dom::DOM|e) (Handler e a)
+createHandlerEff = createHandlerEffImpl
 
 foreign import createHandlerImpl :: forall a e. Array a -> Handler e a
 

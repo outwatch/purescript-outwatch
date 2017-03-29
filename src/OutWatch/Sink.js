@@ -12,6 +12,13 @@ exports.createHandlerImpl = function (arr) {
   var sink = function(value) { return function() { subject.next(value)} }
   return { src : startWithMany(arr, subject) , sink : sink }
 }
+exports.createHandlerEffImpl = function (arr) {
+  return function(){
+    var subject = new Rx.Subject()
+    var sink = function(value) { return function() { subject.next(value)} }
+    return { src : startWithMany(arr, subject) , sink : sink }
+  }
+}
 
 exports.redirect = function(observerLike) {
   return function(project) {
