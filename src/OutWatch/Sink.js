@@ -7,8 +7,6 @@ function startWithMany(arr, obs) {
   }, obs)
 }
 
-
-
 exports.createHandlerImpl = function (arr) {
   var subject = new Rx.Subject()
   var sink = function(value) { return function() { subject.next(value)} }
