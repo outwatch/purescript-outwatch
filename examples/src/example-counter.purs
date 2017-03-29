@@ -1,4 +1,4 @@
-module Main where
+module Example.Counter where
 
 import Control.Monad.Eff (Eff)
 import OutWatch.Attributes (childShow, click, (<==), (==>))

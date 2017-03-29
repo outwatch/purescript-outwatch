@@ -1,4 +1,4 @@
-module Main where
+module Example.BMICalculator where
 
 import Control.Monad.Eff (Eff)
 import Data.Int (round)
