@@ -1,19 +1,19 @@
 # Examples
 
+This folder includes several examples
+
 |name|description|
 |---|---|
-|example-counter.purs|Example to increment a counter by clicking buttons.|
-|example-counter-store.purs|Increment a counter by using `store pattern `as described in chapter ["Managing state"](https://outwatch.github.io/managing-state.html?lang=purescript)|
-|example-bmi-calculator.purs|Example to calculate body mass index (BMI) using custom slider components.
-
+|BMICalculator.purs|Example to calculate body mass index (BMI) using custom slider components.
+|Counter.purs|Example to increment a counter by clicking buttons.|
+|CounterStore.purs|Increment a counter by using `store pattern `as described in chapter ["Managing state"](https://outwatch.github.io/managing-state.html?lang=purescript)|
 
 ### Build and run
 
-1. post-clone setup: install dependencies
+1. install dependencies
 
 ```shell
 npm install
-bower install
 ```
 
 2. compile example you want to run
@@ -24,11 +24,8 @@ npm run build:example-counter-store
 npm run build:example-bmi-calculator
 ```
 
-3. start a static webserver
+3. start a static webserver and visite the `examples/dist` folder
 
-Open `examples` with your browser.
-
-
-
-|
-
+```shell
+python3 -m http.server 8080 # example
+```

@@ -17,7 +17,7 @@ data Action
 type State = Int
 
 initialState :: State
-initialState = 0
+initialState = 11
 
 update :: Action -> State -> State
 update action state =

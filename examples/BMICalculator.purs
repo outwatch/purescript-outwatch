@@ -7,7 +7,7 @@ import OutWatch.Core (render)
 import OutWatch.Dom.Types (VDom)
 import OutWatch.Sink (SinkLike, createNumberHandler)
 import OutWatch.Tags (div, h3, input, text)
-import Prelude (Unit, map, (#), (*), (/), (<<<), ($))
+import Prelude (Unit, map, (#), (*), (/), (<<<))
 import RxJS.Observable (Observable, combineLatest, startWith)
 import Snabbdom (VDOM)
 
