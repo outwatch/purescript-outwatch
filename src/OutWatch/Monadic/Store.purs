@@ -1,4 +1,4 @@
-module OutWatch.Util.Store where
+module OutWatch.Monadic.Store where
 
 import OutWatch.Sink (Observer, createHandler)
 import Prelude ((#))
@@ -10,7 +10,7 @@ type Store eff state action  =
   , sink :: Observer eff action
   }
 
-createStore :: forall eff state action. state -> (action -> state -> state) -> Store eff state action
+createStore :: forall eff state action. state -> (action -> state -> state) -> Eff (vdom :: VDOM | e) (Store eff state action)
 createStore initialState reducer =
   let handler = createHandler[]
       src = handler.src

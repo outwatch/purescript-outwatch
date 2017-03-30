@@ -1,24 +1,22 @@
 module OutWatch.Monadic.Core where
 
 import Prelude
-
 import Control.Monad.Eff (Eff)
 import Control.Monad.RWS.Trans (lift)
 import Control.Monad.State (class MonadState, StateT, execStateT, modify)
 import DOM (DOM)
 import Data.Array (snoc)
 import Data.Array.Partial (head)
-
-import OutWatch.Dom.Receivers (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
+import OutWatch.Core (VDOM)
 import OutWatch.Dom.Emitters (class EmitterBuilder, emitFrom)
+import OutWatch.Dom.Receivers (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
 import OutWatch.Dom.Types (VDom)
 import OutWatch.Sink (Handler, SinkLike, createHandlerEff)
 import Partial.Unsafe (unsafePartial)
 
-
 ---- Core -----------------------------------------------------------------
 
-type HTML e a = StateT (Array (VDom e)) (Eff (dom::DOM|e)) a
+type HTML e a = StateT (Array (VDom e)) (Eff (vdom :: VDOM | e)) a
 
 push :: forall vdom m. (MonadState (Array vdom) m) => vdom -> m Unit
 push = (\e l -> snoc l e) >>> modify
@@ -26,7 +24,7 @@ push = (\e l -> snoc l e) >>> modify
 unsafeFirst :: forall a. Array a -> a 
 unsafeFirst a = unsafePartial (head a)
 
-build :: forall e a. HTML e a -> Eff (dom::DOM|e) (Array (VDom e))
+build :: forall e a. HTML e a -> Eff (vdom :: VDOM | e) (Array (VDom e))
 build b = execStateT b []
 
 -- Handlers, Observables, Sinks --------------------------------------------
@@ -56,9 +54,6 @@ wrapStreamReceiver b s = push (bindFrom b s)
 wrapConstantReceiver :: forall builder value e. AttributeBuilder builder value =>  
     builder -> value -> HTML e Unit
 wrapConstantReceiver b v = push (setTo b v)
-
-
-
 
 -- TODO
 

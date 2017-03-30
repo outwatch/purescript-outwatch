@@ -6,6 +6,7 @@ import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)
 import Data.Functor.Contravariant (class Contravariant, cmap)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested (Tuple3, tuple3)
+import OutWatch.Core (VDOM)
 import Prelude (Unit)
 import RxJS.Observable (Observable)
 
@@ -25,7 +26,7 @@ instance sinkContravariant :: Contravariant (Observer e) where
 
 foreign import createHandlerEffImpl :: forall a e. Array a -> Eff (dom::DOM|e) (Handler e a)
 
-createHandlerEff :: forall a e. Array a -> Eff (dom::DOM|e) (Handler e a)
+createHandlerEff :: forall a e. Array a -> Eff (vdom::VDOM|e) (Handler e a)
 createHandlerEff = createHandlerEffImpl
 
 foreign import createHandlerImpl :: forall a e. Array a -> Handler e a
