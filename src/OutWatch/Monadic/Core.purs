@@ -1,7 +1,7 @@
 module OutWatch.Monadic.Core where
 
 import Prelude
-import OutWatch.Attributes as Attr
+
 import Control.Monad.Eff (Eff)
 import Control.Monad.RWS.Trans (lift)
 import Control.Monad.State (class MonadState, StateT, execStateT, modify)
@@ -39,19 +39,11 @@ createHandler_ a = lift $ (createHandlerEff a)
 wrapTag :: forall e. (Array (VDom e) -> (VDom e)) -> HTML e Unit -> HTML e Unit
 wrapTag e b = lift (e <$> execStateT b []) >>= push 
 
-wrapTag_ :: forall attributes m e. (MonadState (Array (VDom e)) m) =>
-   attributes -> (attributes -> VDom e) -> m Unit
-wrapTag_ val tag =  push (tag val)
-
 -- Emitter -----------------------------------------------------------------
 
 wrapEmitter :: forall builder a e r. EmitterBuilder builder a e => 
   builder -> SinkLike e a r -> HTML e Unit
 wrapEmitter b s = push (emitFrom b s)
--- infix 5 emitFrom as ==>
-
-inputNumber_ :: forall e r. SinkLike e Number r -> HTML e Unit
-inputNumber_ = wrapEmitter Attr.inputNumber
 
 -- Receiver ----------------------------------------------------------------
 
@@ -59,13 +51,11 @@ inputNumber_ = wrapEmitter Attr.inputNumber
 wrapStreamReceiver :: forall builder stream e. ReceiverBuilder builder stream e => 
   builder -> stream -> HTML e Unit
 wrapStreamReceiver b s = push (bindFrom b s)
--- infix 5 bindFrom as <==
 
 -- Static receiver
 wrapConstantReceiver :: forall builder value e. AttributeBuilder builder value =>  
     builder -> value -> HTML e Unit
 wrapConstantReceiver b v = push (setTo b v)
--- infix 5 setTo as :=
 
 
 
