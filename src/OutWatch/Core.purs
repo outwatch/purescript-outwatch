@@ -4,9 +4,7 @@ import Control.Monad.Eff (Eff)
 import Data.Unit (Unit)
 import OutWatch.Dom.Types (VDom(..), VNode(..), toProxy)
 import Snabbdom (patchInitialSelector)
-import Snabbdom (VDOM) as Snabbdom
-
-type VDOM = Snabbdom.VDOM
+import Snabbdom (VDOM)
 
 render :: forall e. String -> VDom e -> Eff (vdom :: VDOM | e) Unit
 render sel mod = case mod of

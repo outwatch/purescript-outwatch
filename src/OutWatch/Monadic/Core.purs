@@ -4,15 +4,15 @@ import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.RWS.Trans (lift)
 import Control.Monad.State (class MonadState, StateT, execStateT, modify)
-import DOM (DOM)
 import Data.Array (snoc)
 import Data.Array.Partial (head)
-import OutWatch.Core (VDOM)
+import Data.Functor.Contravariant (cmap)
 import OutWatch.Dom.Emitters (class EmitterBuilder, emitFrom)
 import OutWatch.Dom.Receivers (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
 import OutWatch.Dom.Types (VDom)
 import OutWatch.Sink (Handler, SinkLike, createHandlerEff)
 import Partial.Unsafe (unsafePartial)
+import Snabbdom (VDOM)
 
 ---- Core -----------------------------------------------------------------
 
@@ -42,6 +42,10 @@ wrapTag e b = lift (e <$> execStateT b []) >>= push
 wrapEmitter :: forall builder a e r. EmitterBuilder builder a e => 
   builder -> SinkLike e a r -> HTML e Unit
 wrapEmitter b s = push (emitFrom b s)
+
+mapSink :: forall event action e r. 
+  (event -> action) -> SinkLike e action r -> SinkLike e event r
+mapSink fn s = s { sink = cmap fn s.sink }
 
 -- Receiver ----------------------------------------------------------------
 
