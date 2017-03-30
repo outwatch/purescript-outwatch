@@ -2,7 +2,6 @@ module Example.MonadicCounterStore where
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
-import DOM.Event.MouseEvent (MouseEvent)
 import Data.Function (const)
 import OutWatch (build, button_, childShow_, click_, div_, h1_, h3_, text_)
 import OutWatch.Core (render)
@@ -11,9 +10,7 @@ import OutWatch.Monadic.Store (createStore, Store)
 import Prelude (Unit, bind, (#), (+), (-))
 import Snabbdom (VDOM)
 
-data Action
-  = Increment
-  | Decrement
+data Action = Increment | Decrement
 
 type State = Int
 
@@ -27,8 +24,6 @@ update action state =
     Decrement -> state - 1
 
 type AppStore eff = Store eff State Action
-
-type OKOK = MouseEvent
 
 view :: forall eff. AppStore eff -> HTML eff Unit
 view store = 
@@ -50,4 +45,3 @@ main = do
   store <- createStore initialState update
   vdom <- build (view store)
   render "#app" (unsafeFirst vdom)
-
