@@ -1,4 +1,4 @@
-module OutWatch.Util.Http ( get
+module OutWatch.Http ( get
   , getWithBody
   , post
   , put
