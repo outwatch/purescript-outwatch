@@ -16,15 +16,15 @@ import Data.List.NonEmpty (NonEmptyList, head)
 import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap, fromFoldable, union)
 import Data.Tuple (Tuple(..), fst, snd)
+import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VNode, toProxy)
 import OutWatch.Helpers.Helpers (forEachMaybe, tupleMaybes)
 import OutWatch.Helpers.Promise (Promise, foreach, success)
 import OutWatch.Helpers.Promise (empty) as Promise
-import RxJS.Observable (Observable, pairwise, startWith, subscribeNext)
-import RxJS.Subscription (Subscription, unsubscribe)
 import OutWatch.Sink (Observer(..))
+import RxJS.Observable (Observable, RX, pairwise, startWith, subscribeNext)
+import RxJS.Subscription (Subscription, unsubscribe)
 import Snabbdom (VDOM, VNodeData, VNodeEventObject, VNodeProxy(..), getElement, h, patch, toVNodeEventObject, toVNodeHookObjectProxy, updateValueHook)
 import Unsafe.Coerce (unsafeCoerce)
-import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VNode, toProxy)
 
 
 type Properties e =
@@ -95,7 +95,7 @@ createDestroyHook promise hooks proxy =
 
 
 
-createSubscription :: forall e. Observable (Tuple (List Attribute) (List (VNode e))) -> VNodeProxy e -> Eff e Subscription
+createSubscription :: forall e. Observable (Tuple (List Attribute) (List (VNode e))) -> VNodeProxy e -> Eff (rx :: RX | e) Subscription
 createSubscription changables proxy = changables
   # map (changablesToProxy proxy)
   # startWith proxy
@@ -105,7 +105,7 @@ createSubscription changables proxy = changables
 createInsertHook :: forall e. Observable (Tuple (List Attribute) (List (VNode e)))
   -> Promise e Subscription -> List (InsertHook e) -> VNodeProxy e -> Eff e Unit
 createInsertHook changables promise hooks proxy =
-  let subscriptionEff = createSubscription changables proxy
+  let subscriptionEff = unsafeCoerceEff (createSubscription changables proxy)
       callbackEff = hooksToEff hooks proxy
   in do
     sub <- subscriptionEff

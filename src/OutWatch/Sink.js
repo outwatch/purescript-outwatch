@@ -12,12 +12,14 @@ function startWithMany(arr, obs) {
 exports.createHandlerImpl = function (arr) {
   var subject = new Rx.Subject()
   var sink = function(value) { return function() { subject.next(value)} }
-  return { src : startWithMany(arr, subject) , sink : sink }
+  return function() {
+    return { src : startWithMany(arr, subject) , sink : sink }
+  }
 }
 
 exports.redirect = function(observerLike) {
   return function(project) {
-    var forward = exports.createHandlerImpl([])
+    var forward = exports.createHandlerImpl([])()
     var projected = project(forward.src)
     if (observerLike.src) {
       projected.takeUntil(observerLike.src.ignoreElements().defaultIfEmpty())
@@ -32,8 +34,8 @@ exports.redirect = function(observerLike) {
 exports.redirect2Impl = function(observerLike) {
   return function(project) {
     return function(createTuple) {
-      var b = exports.createHandlerImpl([])
-      var c = exports.createHandlerImpl([])
+      var b = exports.createHandlerImpl([])()
+      var c = exports.createHandlerImpl([])()
       var projected = project(b.src)(c.src)
       if (observerLike.src) {
         projected.takeUntil(observerLike.src.ignoreElements().defaultIfEmpty())
@@ -49,9 +51,9 @@ exports.redirect2Impl = function(observerLike) {
 exports.redirect3Impl = function(observerLike) {
   return function(project) {
     return function(createTuple) {
-      var b = exports.createHandlerImpl([])
-      var c = exports.createHandlerImpl([])
-      var d = exports.createHandlerImpl([])
+      var b = exports.createHandlerImpl([])()
+      var c = exports.createHandlerImpl([])()
+      var d = exports.createHandlerImpl([])()
       var projected = project(b.src)(c.src)(d.src)
       if (observerLike.src) {
         projected.takeUntil(observerLike.src.ignoreElements().defaultIfEmpty())

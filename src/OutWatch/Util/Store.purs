@@ -13,7 +13,7 @@ type Store eff state action  =
 
 createStore :: forall eff state action. state -> (action -> state -> state) -> Store eff state action
 createStore initialState reducer =
-  let handler = createHandler[]
+  let handler = createHandler []
       src = handler.src
         # scan reducer initialState
         # startWith initialState

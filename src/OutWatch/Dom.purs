@@ -1,6 +1,7 @@
 module OutWatch.Dom where
 
 import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Unsafe (unsafePerformEff)
 import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)
 import Data.Traversable (class Traversable)
 import Data.Unit (unit, Unit)
@@ -481,22 +482,22 @@ infix 5 bindFrom as <==
 infix 5 setTo as :=
 
 createHandler :: forall a e. Array a -> Handler e a
-createHandler = createHandlerImpl
+createHandler arr = unsafePerformEff (createHandlerImpl arr)
 
 createInputHandler :: forall e. Array InputEvent -> Handler e InputEvent
-createInputHandler = createHandlerImpl
+createInputHandler arr = unsafePerformEff (createHandlerImpl arr)
 
 createMouseHandler :: forall e. Array MouseEvent -> Handler e MouseEvent
-createMouseHandler = createHandlerImpl
+createMouseHandler arr = unsafePerformEff (createHandlerImpl arr)
 
 createKeyboardHandler :: forall e. Array KeyboardEvent -> Handler e KeyboardEvent
-createKeyboardHandler = createHandlerImpl
+createKeyboardHandler arr = unsafePerformEff (createHandlerImpl arr)
 
 createStringHandler :: forall e. Array String -> Handler e String
-createStringHandler = createHandlerImpl
+createStringHandler arr = unsafePerformEff (createHandlerImpl arr)
 
 createBoolHandler :: forall e. Array Boolean -> Handler e Boolean
-createBoolHandler = createHandlerImpl
+createBoolHandler arr = unsafePerformEff (createHandlerImpl arr)
 
 createNumberHandler :: forall e. Array Number -> Handler e Number
-createNumberHandler = createHandlerImpl
+createNumberHandler arr = unsafePerformEff (createHandlerImpl arr)
