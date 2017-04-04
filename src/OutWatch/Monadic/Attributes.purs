@@ -327,9 +327,9 @@ role_ :: forall e. String
  -> HTML e Unit
 role_ = wrapConstantReceiver Attr.role
 
-tpe_ :: forall e. String
+type_ :: forall e. String
  -> HTML e Unit
-tpe_ = wrapConstantReceiver Attr.tpe
+type_ = wrapConstantReceiver Attr.tpe
 
 className_ :: forall e. String
  -> HTML e Unit
