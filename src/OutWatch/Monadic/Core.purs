@@ -3,20 +3,19 @@ module OutWatch.Monadic.Core where
 import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.RWS.Trans (lift)
-import Control.Monad.State (class MonadState, StateT, execStateT, modify)
+import Control.Monad.State (class MonadState, execStateT, modify)
 import Data.Array (snoc)
 import Data.Array.Partial (head)
 import Data.Functor.Contravariant (cmap)
 import OutWatch.Dom.Emitters (class EmitterBuilder, emitFrom)
 import OutWatch.Dom.Receivers (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
 import OutWatch.Dom.Types (VDom)
+import OutWatch.Monadic.Types (HTML)
 import OutWatch.Sink (Handler, SinkLike, createHandlerEff)
 import Partial.Unsafe (unsafePartial)
 import Snabbdom (VDOM)
 
 ---- Core -----------------------------------------------------------------
-
-type HTML e a = StateT (Array (VDom e)) (Eff (vdom :: VDOM | e)) a
 
 push :: forall vdom m. (MonadState (Array vdom) m) => vdom -> m Unit
 push = (\e l -> snoc l e) >>> modify
