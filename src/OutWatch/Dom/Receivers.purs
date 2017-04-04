@@ -89,4 +89,7 @@ instance childrenStreamReceiverBuilder :: (Traversable t) => ReceiverBuilder Chi
     let valueStream = map (\t -> fromFoldable (map modifierToVNode t)) obs
     in Receiver (ChildrenStreamReceiver valueStream)
 
-
+-- instance childrenStreamReceiverBuilderM :: ReceiverBuilder ChildrenStreamReceiverBuilder (Observable (StateT (Array (VDom e)) (Eff e) Unit)) e where
+--   bindFrom builder obs =
+--     let valueStream = map (\t -> fromFoldable (map modifierToVNode t)) obs
+--     in Receiver (ChildrenStreamReceiver valueStream)
