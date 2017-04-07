@@ -1,7 +1,7 @@
 {
   "name": "purescript-outwatch",
-  "version" : "0.6.0",
-  "license" : "Apache-2.0",
+  "version": "0.6.0",
+  "license": "Apache-2.0",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -9,7 +9,7 @@
     "output"
   ],
   "dependencies": {
-    "purescript-prelude": "2.1.0",
+    "purescript-prelude": "2.5.0",
     "purescript-console": "2.0.0",
     "purescript-snabbdom": "0.2.3",
     "purescript-foldable-traversable": "2.0.0",
@@ -71,7 +71,7 @@
     "purescript-tuples": "3.2.0",
     "purescript-unfoldable": "2.0.0",
     "purescript-unsafe-coerce": "2.0.0",
-    "purescript-rxjs": "https://github.com/LukaJCB/purescript-rxjs.git"
+    "purescript-rxjs": "https://github.com/LukaJCB/purescript-rxjs.git#8179fdbe031a09ddf3c0ba5a4695f209dc7dbf28"
   },
   "devDependencies": {
     "purescript-psci-support": "^2.0.0",
@@ -80,7 +80,7 @@
     "purescript-refs": "^2.0.0"
   },
   "repository": {
-      "type": "git",
-      "url": "git://github.com/OutWatch/purescript-outwatch.git"
-    }
+    "type": "git",
+    "url": "git://github.com/OutWatch/purescript-outwatch.git"
+  }
 }
