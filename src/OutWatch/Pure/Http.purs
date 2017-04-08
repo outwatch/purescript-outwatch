@@ -1,4 +1,4 @@
-module OutWatch.Util.Http ( get
+module OutWatch.Pure.Http ( get
   , getWithBody
   , post
   , put
@@ -13,7 +13,7 @@ import Control.Monad.Eff.Unsafe (unsafePerformEff)
 import Data.HTTP.Method (Method(..))
 import Data.StrMap (empty)
 import Network.HTTP.Affjax (AJAX)
-import OutWatch.Sink (Observer, createHandler)
+import OutWatch.Pure.Sink (Observer, createHandler)
 import Prelude (show, ($))
 import RxJS.Observable (Observable, Request, Response, ajax, ajaxWithBody, switchMap)
 

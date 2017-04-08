@@ -1,6 +1,6 @@
 module OutWatch.Monadic.Attributes where
 
-import OutWatch.Attributes as Attr
+import OutWatch.Pure.Attributes as Attr
 import DOM.Event.Event (Event)
 import DOM.Event.KeyboardEvent (KeyboardEvent)
 import DOM.Event.MouseEvent (MouseEvent)
@@ -13,7 +13,7 @@ import Data.Unit (Unit)
 import OutWatch.Dom.Types (VDom)
 import OutWatch.Monadic.Core (push, wrapEmitter, wrapConstantReceiver, wrapStreamReceiver)
 import OutWatch.Monadic.Types (HTML)
-import OutWatch.Sink (SinkLike)
+import OutWatch.Pure.Sink (SinkLike)
 import RxJS.Observable (Observable)
 
 -- Stream Receivers

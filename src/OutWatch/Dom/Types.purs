@@ -8,7 +8,7 @@ import Data.List (List)
 import Data.Tuple (Tuple)
 import Prelude (map)
 import RxJS.Observable (Observable)
-import OutWatch.Sink (Observer)
+import OutWatch.Pure.Sink (Observer)
 import Snabbdom (VNodeProxy, VNodeData, h, text)
 
 

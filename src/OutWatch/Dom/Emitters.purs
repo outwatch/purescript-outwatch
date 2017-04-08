@@ -7,7 +7,7 @@ import DOM.HTML.Event.Types (DragEvent)
 import DOM.Node.Types (Element)
 import Data.Tuple (Tuple)
 import Data.Unit (Unit)
-import OutWatch.Sink (Observer, SinkLike, redirect, redirectMap)
+import OutWatch.Pure.Sink (Observer, SinkLike, redirect, redirectMap)
 import RxJS.Observable (Observable, withLatestFrom)
 import OutWatch.Dom.Types (Emitter(..), Property(..), VDom(..))
 

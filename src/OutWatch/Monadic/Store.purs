@@ -2,7 +2,7 @@ module OutWatch.Monadic.Store where
 
 import Control.Alternative (pure)
 import Control.Monad.Eff (Eff)
-import OutWatch.Sink (Observer, createHandlerEff)
+import OutWatch.Pure.Sink (Observer, createHandlerEff)
 import Prelude ((#), bind)
 import RxJS.Observable (Observable, scan, startWith)
 import Snabbdom (VDOM)

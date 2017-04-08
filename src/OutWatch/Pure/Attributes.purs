@@ -1,4 +1,4 @@
-module OutWatch.Attributes where
+module OutWatch.Pure.Attributes where
 
 import OutWatch.Dom.Receivers (BoolAttributeBuilder(..), ChildStreamReceiverBuilder(..), ChildStringReceiverBuilder(..), ChildrenStreamReceiverBuilder(..), IntAttributeBuilder, NumberAttributeBuilder, ShowAttributeBuilder(..), StringAttributeBuilder(..), bindFrom, setTo)
 import Data.Unit (unit)

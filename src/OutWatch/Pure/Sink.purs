@@ -1,4 +1,4 @@
-module OutWatch.Sink where
+module OutWatch.Pure.Sink where
 
 import Control.Monad.Eff (Eff)
 import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)

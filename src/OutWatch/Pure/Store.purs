@@ -1,6 +1,6 @@
-module OutWatch.Util.Store where
+module OutWatch.Pure.Store where
 
-import OutWatch.Sink (Observer, createHandler)
+import OutWatch.Pure.Sink (Observer, createHandler)
 import Prelude ((#))
 import RxJS.Observable (Observable, scan, startWith)
 

@@ -11,7 +11,7 @@ import OutWatch.Dom.Emitters (class EmitterBuilder, emitFrom)
 import OutWatch.Dom.Receivers (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
 import OutWatch.Dom.Types (VDom)
 import OutWatch.Monadic.Types (HTML)
-import OutWatch.Sink (Handler, SinkLike, createHandlerEff)
+import OutWatch.Pure.Sink (Handler, SinkLike, createHandlerEff)
 import Partial.Unsafe (unsafePartial)
 import Snabbdom (VDOM)
 

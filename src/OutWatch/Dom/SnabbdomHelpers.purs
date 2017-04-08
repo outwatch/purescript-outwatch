@@ -21,7 +21,7 @@ import OutWatch.Helpers.Promise (Promise, foreach, success)
 import OutWatch.Helpers.Promise (empty) as Promise
 import RxJS.Observable (Observable, pairwise, startWith, subscribeNext)
 import RxJS.Subscription (Subscription, unsubscribe)
-import OutWatch.Sink (Observer(..))
+import OutWatch.Pure.Sink (Observer(..))
 import Snabbdom (VDOM, VNodeData, VNodeEventObject, VNodeProxy(..), getElement, h, patch, toVNodeEventObject, toVNodeHookObjectProxy, updateValueHook)
 import Unsafe.Coerce (unsafeCoerce)
 import OutWatch.Dom.Types (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VNode, toProxy)

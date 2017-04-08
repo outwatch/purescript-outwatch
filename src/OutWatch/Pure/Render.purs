@@ -1,4 +1,4 @@
-module OutWatch.Core where
+module OutWatch.Pure.Render where
 
 import Control.Monad.Eff (Eff)
 import Data.Unit (Unit)

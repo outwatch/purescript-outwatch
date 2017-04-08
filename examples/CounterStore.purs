@@ -1,12 +1,12 @@
 module Example.CounterStore where
 
 import Control.Monad.Eff (Eff)
-import OutWatch.Attributes (childShow, click, (<==), (==>))
-import OutWatch.Core (render)
+import OutWatch.Pure.Attributes (childShow, click, (<==), (==>))
+import OutWatch.Pure.Render (render)
 import OutWatch.Dom.Emitters (mapE)
 import OutWatch.Dom.Types (VDom)
-import OutWatch.Tags (button, div, h1, h3, text)
-import OutWatch.Util.Store (Store, createStore)
+import OutWatch.Pure.Tags (button, div, h1, h3, text)
+import OutWatch.Pure.Store (Store, createStore)
 import Prelude (Unit, (+), (-), ($), const)
 import Snabbdom (VDOM)
 

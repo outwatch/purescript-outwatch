@@ -1,4 +1,4 @@
-module OutWatch.Tags where
+module OutWatch.Pure.Tags where
 
 import Data.Traversable (class Traversable)
 import OutWatch.Dom.Utils (hyperscriptHelper)

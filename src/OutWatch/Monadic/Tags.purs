@@ -1,7 +1,7 @@
 module OutWatch.Monadic.Tags where
 
 
-import OutWatch.Tags as Tag
+import OutWatch.Pure.Tags as Tag
 import Control.Monad.State (class MonadState)
 import Data.Unit (Unit)
 import OutWatch.Dom.Types (VDom)
