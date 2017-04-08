@@ -28,8 +28,7 @@ update action state =
 app :: forall eff. VDom eff
 app =
   div
-    [ h1 [ text "counter-store example" ]
-    , button
+    [ button
         [ text "Decrement"
         , mapE click (const Decrement) ==> store
         ]

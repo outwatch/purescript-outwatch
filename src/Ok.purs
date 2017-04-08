@@ -17,11 +17,12 @@ import Data.StrMap (StrMap, fromFoldable, keys)
 import Data.Tuple (Tuple(..))
 import Example.Monadic.CounterStore (app) as MonadicCounterStore
 import Example.Monadic.LifeCycle (app) as MonadicLifeCycle
+import Example.Monadic.LifeCycle2 (app) as MonadicLifeCycle2
 import Example.Monadic.Counter (app) as MonadicCounter
 import Example.Pure.BMICalculator (app) as BMICalculator
 import Example.Pure.Counter (app) as Counter
 import Example.Pure.CounterStore (app) as CounterStore
-import OutWatch (build, childShow_, child_, createHandler_, div_, h1_, option_, push, select_, selected_, style_, text_, value_)
+import OutWatch (build, child_, createHandler_, div_, h1_, option_, push, select_, selected_, style_, text_, value_)
 import OutWatch.Dom.Types (VDom)
 import OutWatch.Monadic.Attributes (children_, inputString_)
 import OutWatch.Monadic.Core (unsafeFirst)
@@ -50,9 +51,10 @@ examples = fromFoldable
   [ Tuple "BMICalculator.purs"       (Pure BMICalculator.app)
   , Tuple "Counter.purs"             (Pure Counter.app )
   , Tuple "CounterStore.purs"        (Pure CounterStore.app)
-  , Tuple "MonadicCounter.purs"      (Monadic MonadicCounter.app)
+  , Tuple "MonadicCounter.purs"      (Monadic (unsafeCoerce MonadicCounter.app))
   , Tuple "MonadicCounterStore.purs" (Monadic (unsafeCoerce MonadicCounterStore.app))
   , Tuple "MonadicLifeCycle.purs"    (Monadic (unsafeCoerce MonadicLifeCycle.app))
+  , Tuple "MonadicLifeCycle2.purs"    (Monadic (unsafeCoerce MonadicLifeCycle2.app))
   ]
 
 
