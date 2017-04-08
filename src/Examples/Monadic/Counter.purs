@@ -19,10 +19,10 @@ app = do
                 # startWith 0
         button_ do
             text_ "Decrement"
-            click_ (decrementHandlder # cmapSink (const (-1)))
+            click_ (decrementHandlder # cmapSink (const (-2)))
         button_ do
             text_ "Increment"
-            click_ (incrementHandlder # cmapSink (const ( 1)))
+            click_ (incrementHandlder # cmapSink (const ( 2)))
         h3_ do
             text_ "Monadic Counter: "
             childShow_ count

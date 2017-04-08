@@ -1,4 +1,4 @@
-module Ok where
+module Example.Launcher where
 
 
 import Data.StrMap as StrMap

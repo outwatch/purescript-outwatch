@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 // https://github.com/webpack/docs/wiki/webpack-dev-server
 module.exports = {
-  entry: ['./example.js'],
+  entry: ['./main.js'],
   output: {
     filename: '[name].js',
     path: resolve(__dirname, 'dist'),
