@@ -15,17 +15,17 @@ import Data.Function (($))
 import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap, fromFoldable, keys)
 import Data.Tuple (Tuple(..))
+import Example.Monadic.Counter (app) as MonadicCounter
 import Example.Monadic.CounterStore (app) as MonadicCounterStore
 import Example.Monadic.LifeCycle (app) as MonadicLifeCycle
 import Example.Monadic.LifeCycle2 (app) as MonadicLifeCycle2
-import Example.Monadic.Counter (app) as MonadicCounter
 import Example.Pure.BMICalculator (app) as BMICalculator
 import Example.Pure.Counter (app) as Counter
 import Example.Pure.CounterStore (app) as CounterStore
-import OutWatch (build, child_, createHandler_, div_, h1_, option_, push, select_, selected_, style_, text_, value_)
-import OutWatch.Dom.Types (VDom)
+import OutWatch (build, child_, createHandler_, div_, h1_, hr_, option_, push, select_, selected_, style_, text_, value_)
+import OutWatch.Core.Types (VDom)
 import OutWatch.Monadic.Attributes (children_, inputString_)
-import OutWatch.Monadic.Core (unsafeFirst)
+import OutWatch.Monadic.Utils (unsafeFirst)
 import OutWatch.Monadic.Types (HTML)
 import OutWatch.Pure.Render (render)
 import OutWatch.Pure.Tags (text)
@@ -48,17 +48,17 @@ data Example e
 
 examples :: forall e. StrMap (Example e)
 examples = fromFoldable 
-  [ Tuple "BMICalculator.purs"       (Pure BMICalculator.app)
-  , Tuple "Counter.purs"             (Pure Counter.app )
-  , Tuple "CounterStore.purs"        (Pure CounterStore.app)
+  [ Tuple "BMICalculator.purs"       (Pure                  BMICalculator.app)
+  , Tuple "Counter.purs"             (Pure                  Counter.app )
+  , Tuple "CounterStore.purs"        (Pure                  CounterStore.app)
   , Tuple "MonadicCounter.purs"      (Monadic (unsafeCoerce MonadicCounter.app))
   , Tuple "MonadicCounterStore.purs" (Monadic (unsafeCoerce MonadicCounterStore.app))
   , Tuple "MonadicLifeCycle.purs"    (Monadic (unsafeCoerce MonadicLifeCycle.app))
-  , Tuple "MonadicLifeCycle2.purs"    (Monadic (unsafeCoerce MonadicLifeCycle2.app))
+  , Tuple "MonadicLifeCycle2.purs"   (Monadic (unsafeCoerce MonadicLifeCycle2.app))
   ]
 
 
-view :: forall eff. Boolean -> HTML (random :: RANDOM | eff) Unit
+view :: forall eff. Boolean -> HTML (console:: CONSOLE, random :: RANDOM | eff) Unit
 view b = do
   -- initialExample <- lift $ pickOneFrom (keys examples)
   let initialExample = "MonadicCounter.purs"
@@ -69,7 +69,6 @@ view b = do
             Just (Pure e) -> push e
             Just (Monadic e) -> e
   test <- lift (unwrap (map build eee))
-  
   div_ do    
     text_ "example: "
     select_ do 
@@ -79,7 +78,15 @@ view b = do
     div_ do 
       children_ test
       style_ "border:1px solid black;"
-
+    hr_
+    -- push BMICalculator.app
+    -- push Counter.app
+    -- push CounterStore.app
+    MonadicCounter.app
+    -- MonadicCounterStore.app
+    -- MonadicLifeCycle.app
+    -- MonadicLifeCycle2.app
+  
 
 mkOption :: forall e. String -> String -> HTML e Unit
 mkOption def s = option_ do
@@ -91,3 +98,4 @@ pickOneFrom :: forall a e.Array a -> Eff (random :: RANDOM|e) a
 pickOneFrom arr = do 
   ix <- randomInt 0 (length arr - 1)
   pure (unsafePartial $ unsafeIndex arr ix)
+

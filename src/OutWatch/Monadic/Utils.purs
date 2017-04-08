@@ -1,4 +1,4 @@
-module OutWatch.Monadic.Core where
+module OutWatch.Monadic.Utils where
 
 import Prelude
 import Control.Monad.Eff (Eff)
@@ -7,9 +7,9 @@ import Control.Monad.State (class MonadState, execStateT, modify)
 import Data.Array (snoc)
 import Data.Array.Partial (head)
 import Data.Functor.Contravariant (cmap)
-import OutWatch.Dom.Emitters (class EmitterBuilder, emitFrom)
-import OutWatch.Dom.Receivers (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
-import OutWatch.Dom.Types (VDom)
+import OutWatch.Core.Emitters (class EmitterBuilder, emitFrom)
+import OutWatch.Core.Receivers (class AttributeBuilder, class ReceiverBuilder, bindFrom, setTo)
+import OutWatch.Core.Types (VDom)
 import OutWatch.Monadic.Types (HTML)
 import OutWatch.Pure.Sink (Handler, SinkLike, createHandlerEff)
 import Partial.Unsafe (unsafePartial)

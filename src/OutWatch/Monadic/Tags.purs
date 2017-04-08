@@ -4,8 +4,8 @@ module OutWatch.Monadic.Tags where
 import OutWatch.Pure.Tags as Tag
 import Control.Monad.State (class MonadState)
 import Data.Unit (Unit)
-import OutWatch.Dom.Types (VDom)
-import OutWatch.Monadic.Core (push, wrapTag)
+import OutWatch.Core.Types (VDom)
+import OutWatch.Monadic.Utils (push, wrapTag)
 import OutWatch.Monadic.Types (HTML)
 
 -- Without attributes ----------------

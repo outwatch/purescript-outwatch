@@ -1,4 +1,4 @@
-module OutWatch.Dom.Emitters where
+module OutWatch.Core.Emitters where
 
 import DOM.Event.Event (Event)
 import DOM.Event.KeyboardEvent (KeyboardEvent)
@@ -9,7 +9,7 @@ import Data.Tuple (Tuple)
 import Data.Unit (Unit)
 import OutWatch.Pure.Sink (Observer, SinkLike, redirect, redirectMap)
 import RxJS.Observable (Observable, withLatestFrom)
-import OutWatch.Dom.Types (Emitter(..), Property(..), VDom(..))
+import OutWatch.Core.Types (Emitter(..), Property(..), VDom(..))
 
 newtype EventEmitterBuilder = EventEmitterBuilder String
 newtype InputEmitterBuilder = InputEmitterBuilder String

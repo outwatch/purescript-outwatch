@@ -1,4 +1,4 @@
-module OutWatch.Dom.SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties) where
+module OutWatch.Core.SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties) where
 
 import Prelude
 import Control.Monad.Eff (Eff)
@@ -24,7 +24,7 @@ import RxJS.Subscription (Subscription, unsubscribe)
 import OutWatch.Pure.Sink (Observer(..))
 import Snabbdom (VDOM, VNodeData, VNodeEventObject, VNodeProxy(..), getElement, h, patch, toVNodeEventObject, toVNodeHookObjectProxy, updateValueHook)
 import Unsafe.Coerce (unsafeCoerce)
-import OutWatch.Dom.Types (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VNode, toProxy)
+import OutWatch.Core.Types (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VNode, toProxy)
 
 
 type Properties e =

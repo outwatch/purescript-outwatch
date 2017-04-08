@@ -5,5 +5,5 @@ module OutWatch
   ) where
 
 import OutWatch.Monadic.Tags as Tags
-import OutWatch.Monadic.Core as Core
+import OutWatch.Monadic.Utils as Core
 import OutWatch.Monadic.Attributes as Attr

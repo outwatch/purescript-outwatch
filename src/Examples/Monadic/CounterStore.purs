@@ -5,7 +5,7 @@ import Control.Monad.Eff.Console (CONSOLE, log)
 
 import Data.Function (const)
 import OutWatch (button_, childShow_, click_, div_, h3_, text_)
-import OutWatch.Monadic.Core (cmapSink, toVDom)
+import OutWatch.Monadic.Utils (cmapSink, toVDom)
 import OutWatch.Monadic.Store (Store, createStore_)
 import OutWatch.Monadic.Types (HTML)
 import OutWatch.Pure.Render (render)

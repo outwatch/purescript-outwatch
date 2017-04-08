@@ -1,4 +1,4 @@
-module OutWatch.Dom.Receivers where
+module OutWatch.Core.Receivers where
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.State (StateT(..))
@@ -6,8 +6,8 @@ import Data.Functor (map)
 import Data.List (fromFoldable)
 import Data.Show (show)
 import Data.Traversable (class Traversable)
-import OutWatch.Dom.Types (Property(..), Receiver(..), VDom(..), VNode(..))
-import OutWatch.Dom.Utils (modifierToVNode)
+import OutWatch.Core.Types (Property(..), Receiver(..), VDom(..), VNode(..))
+import OutWatch.Core.Utils (modifierToVNode)
 import OutWatch.Monadic.Types (HTML)
 import Prelude (class Show, Unit)
 import RxJS.Observable (Observable)

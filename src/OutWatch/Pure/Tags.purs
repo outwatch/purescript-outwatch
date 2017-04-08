@@ -1,8 +1,8 @@
 module OutWatch.Pure.Tags where
 
 import Data.Traversable (class Traversable)
-import OutWatch.Dom.Utils (hyperscriptHelper)
-import OutWatch.Dom.Types (VDom(..), VNode(..))
+import OutWatch.Core.Utils (hyperscriptHelper)
+import OutWatch.Core.Types (VDom(..), VNode(..))
 
 div :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 div = hyperscriptHelper "div"

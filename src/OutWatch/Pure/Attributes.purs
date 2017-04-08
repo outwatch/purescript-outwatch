@@ -1,9 +1,9 @@
 module OutWatch.Pure.Attributes where
 
-import OutWatch.Dom.Receivers (BoolAttributeBuilder(..), ChildStreamReceiverBuilder(..), ChildStringReceiverBuilder(..), ChildrenStreamReceiverBuilder(..), IntAttributeBuilder, NumberAttributeBuilder, ShowAttributeBuilder(..), StringAttributeBuilder(..), bindFrom, setTo)
+import OutWatch.Core.Receivers (BoolAttributeBuilder(..), ChildStreamReceiverBuilder(..), ChildStringReceiverBuilder(..), ChildrenStreamReceiverBuilder(..), IntAttributeBuilder, NumberAttributeBuilder, ShowAttributeBuilder(..), StringAttributeBuilder(..), bindFrom, setTo)
 import Data.Unit (unit)
-import OutWatch.Dom.Emitters (BoolEmitterBuilder(..), DestroyHookEmitterBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookEmitterkBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookEmitterBuilder(..), emitFrom)
-import OutWatch.Dom.Types (VDom(..), VNode(..))
+import OutWatch.Core.Emitters (BoolEmitterBuilder(..), DestroyHookEmitterBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookEmitterkBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookEmitterBuilder(..), emitFrom)
+import OutWatch.Core.Types (VDom(..), VNode(..))
 
 infix 5 emitFrom as ==>
 infix 5 bindFrom as <==

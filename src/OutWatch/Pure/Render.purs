@@ -2,7 +2,7 @@ module OutWatch.Pure.Render where
 
 import Control.Monad.Eff (Eff)
 import Data.Unit (Unit)
-import OutWatch.Dom.Types (VDom(..), VNode(..), toProxy)
+import OutWatch.Core.Types (VDom(..), VNode(..), toProxy)
 import Snabbdom (patchInitialSelector)
 import Snabbdom (VDOM)
 
