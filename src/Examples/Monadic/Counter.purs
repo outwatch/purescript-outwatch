@@ -2,8 +2,10 @@ module Example.Monadic.Counter where
 
 import Control.Monad.Eff.Random (RANDOM, randomInt)
 import Control.Monad.Except.Trans (lift)
-import OutWatch (button_, childShow_, click_, cmapSink, createHandler_, div_, h3_, text_)
+import OutWatch.Monadic.Attributes (childShow_, click_, text_)
+import OutWatch.Monadic.Tags (button_, div_, h3_)
 import OutWatch.Monadic.Types (HTML)
+import OutWatch.Monadic.Utils (createHandler_, cmapSink)
 import Prelude (bind, Unit, (+), (#), const, negate, ($), show)
 import RxJS.Observable (merge, scan, startWith)
 

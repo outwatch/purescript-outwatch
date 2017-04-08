@@ -22,11 +22,11 @@ import Example.Monadic.LifeCycle2 (app) as MonadicLifeCycle2
 import Example.Pure.BMICalculator (app) as BMICalculator
 import Example.Pure.Counter (app) as Counter
 import Example.Pure.CounterStore (app) as CounterStore
-import OutWatch (build, child_, createHandler_, div_, h1_, option_, push, select_, selected_, style_, text_, value_)
 import OutWatch.Core.Types (VDom)
-import OutWatch.Monadic.Attributes (children_, inputString_)
-import OutWatch.Monadic.Utils (unsafeFirst)
+import OutWatch.Monadic.Attributes (child_, children_, inputString_, selected_, style_, text_, value_)
+import OutWatch.Monadic.Tags (div_, h1_, option_, select_)
 import OutWatch.Monadic.Types (HTML)
+import OutWatch.Monadic.Utils (build, createHandler_, push, unsafeFirst)
 import OutWatch.Pure.Render (render)
 import OutWatch.Pure.Tags (text)
 import Partial.Unsafe (unsafePartial)
