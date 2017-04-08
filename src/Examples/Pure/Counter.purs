@@ -1,6 +1,5 @@
 module Example.Pure.Counter where
 
-import Prelude (bind)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
 import OutWatch.Core.Emitters (mapE)
@@ -8,8 +7,8 @@ import OutWatch.Core.Types (VDom)
 import OutWatch.Pure.Attributes (childShow, click, (<==), (==>))
 import OutWatch.Pure.Render (render)
 import OutWatch.Pure.Sink (createHandler)
-import OutWatch.Pure.Tags (button, div, h1, h3, text)
-import Prelude (Unit, (+), (#), const, negate)
+import OutWatch.Pure.Tags (button, div, h3, text)
+import Prelude (Unit, (+), (#), const, negate, bind)
 import RxJS.Observable (merge, scan, startWith)
 import Snabbdom (VDOM)
 

@@ -5,9 +5,9 @@ import OutWatch.Pure.Attributes (childShow, click, (<==), (==>))
 import OutWatch.Pure.Render (render)
 import OutWatch.Core.Emitters (mapE)
 import OutWatch.Core.Types (VDom)
-import OutWatch.Pure.Tags (button, div, h1, h3, text)
+import OutWatch.Pure.Tags (button, div, h3, text)
 import OutWatch.Pure.Store (Store, createStore)
-import Prelude (Unit, (+), (-), ($), const)
+import Prelude (Unit, const, (+), (-))
 import Snabbdom (VDOM)
 
 data Action

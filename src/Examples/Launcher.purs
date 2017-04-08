@@ -22,7 +22,7 @@ import Example.Monadic.LifeCycle2 (app) as MonadicLifeCycle2
 import Example.Pure.BMICalculator (app) as BMICalculator
 import Example.Pure.Counter (app) as Counter
 import Example.Pure.CounterStore (app) as CounterStore
-import OutWatch (build, child_, createHandler_, div_, h1_, hr_, option_, push, select_, selected_, style_, text_, value_)
+import OutWatch (build, child_, createHandler_, div_, h1_, option_, push, select_, selected_, style_, text_, value_)
 import OutWatch.Core.Types (VDom)
 import OutWatch.Monadic.Attributes (children_, inputString_)
 import OutWatch.Monadic.Utils (unsafeFirst)
@@ -78,11 +78,11 @@ view b = do
     div_ do 
       children_ test
       style_ "border:1px solid black;"
-    hr_
+    -- hr_
     -- push BMICalculator.app
     -- push Counter.app
     -- push CounterStore.app
-    MonadicCounter.app
+    -- MonadicCounter.app
     -- MonadicCounterStore.app
     -- MonadicLifeCycle.app
     -- MonadicLifeCycle2.app
