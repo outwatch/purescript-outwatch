@@ -22,3 +22,5 @@ tupleMaybes ma mb = (ma # map Tuple) <*> mb
 
 combineLatestAll :: forall a. List (Observable a) -> Observable (List a)
 combineLatestAll list = foldl (\acc cur -> combineLatest (\x y -> y : x) acc cur) (just Nil) list
+
+foreign import debug :: forall e a. a -> Eff e Unit

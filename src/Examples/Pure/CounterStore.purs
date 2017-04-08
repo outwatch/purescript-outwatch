@@ -1,4 +1,4 @@
-module Example.CounterStore where
+module Example.Pure.CounterStore where
 
 import Control.Monad.Eff (Eff)
 import OutWatch.Pure.Attributes (childShow, click, (<==), (==>))
@@ -25,10 +25,8 @@ update action state =
     Increment -> state + 1
     Decrement -> state - 1
 
-type AppStore eff = Store eff State Action
-
-view :: forall eff. AppStore eff -> VDom eff
-view store =
+app :: forall eff. VDom eff
+app =
   div
     [ h1 [ text "counter-store example" ]
     , button
@@ -45,9 +43,10 @@ view store =
         ]
     ]
 
+type AppStore eff = Store eff State Action
+
+store :: forall eff. AppStore eff
+store = createStore initialState update
+
 main :: forall eff. Eff ( vdom :: VDOM | eff ) Unit
-main =
-  let
-    store :: AppStore eff
-    store = createStore initialState update in
-  render "#app" $ view store
+main = render "#app" app

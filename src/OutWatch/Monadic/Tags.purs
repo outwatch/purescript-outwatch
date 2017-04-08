@@ -17,6 +17,7 @@ hr_ :: forall m e. (MonadState (Array (VDom e)) m) => m Unit
 hr_ = push (Tag.hr [])
 
 -- With attributes -----------------
+
 a_ :: forall e. HTML e Unit -> HTML e Unit 
 a_ = wrapTag Tag.a
 

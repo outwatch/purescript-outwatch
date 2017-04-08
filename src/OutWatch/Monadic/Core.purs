@@ -26,6 +26,9 @@ unsafeFirst a = unsafePartial (head a)
 build :: forall e a. HTML e a -> Eff (vdom :: VDOM | e) (Array (VDom e))
 build b = execStateT b []
 
+toVDom :: forall e. HTML e Unit -> Eff (vdom :: VDOM | e) (VDom e)
+toVDom widget = unsafeFirst <$> build widget
+
 -- Handlers, Observables, Sinks --------------------------------------------
 
 createHandler_ :: forall a e. Array a -> HTML e (Handler e a)
@@ -42,9 +45,9 @@ wrapEmitter :: forall builder a e r. EmitterBuilder builder a e =>
   builder -> SinkLike e a r -> HTML e Unit
 wrapEmitter b s = push (emitFrom b s)
 
-mapSink :: forall event action e r. 
+cmapSink :: forall event action e r. 
   (event -> action) -> SinkLike e action r -> SinkLike e event r
-mapSink fn s = s { sink = cmap fn s.sink }
+cmapSink fn s = s { sink = cmap fn s.sink }
 
 -- Receiver ----------------------------------------------------------------
 

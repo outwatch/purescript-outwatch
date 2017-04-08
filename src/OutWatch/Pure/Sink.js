@@ -14,6 +14,7 @@ exports.createHandlerImpl = function (arr) {
 }
 exports.createHandlerEffImpl = function (arr) {
   return function(){
+    console.log("createHandlerEffImpl")
     var subject = new Rx.Subject()
     var sink = function(value) { return function() { subject.next(value)} }
     return { src : startWithMany(arr, subject) , sink : sink }

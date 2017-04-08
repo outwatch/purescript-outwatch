@@ -1,4 +1,4 @@
-module Example.BMICalculator where
+module Example.Pure.BMICalculator where
 
 import Control.Monad.Eff (Eff)
 import Data.Int (round)
@@ -55,7 +55,10 @@ sliderView props =
   ]
 
 main :: forall e. Eff ( vdom :: VDOM | e ) Unit
-main =
+main = render "#app" app
+ 
+app :: forall e. VDom e
+app =
     let weightHandler = createNumberHandler[initialState.weight]
         heightHandler = createNumberHandler[initialState.height]
 
@@ -84,4 +87,4 @@ main =
               ]
           ]
 
-    in render "#app" root
+    in root
