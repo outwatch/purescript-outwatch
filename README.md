@@ -34,6 +34,42 @@ npm install
 npm test
 ```
 
+## OutWatch Live-reload capabilities
+
+to configure fast live reloading with hot module replacement for included examples, just:
+
+  1. clone this repo and install deps
+  
+  ```shell
+  npm install
+  pulp build
+  ```
+  
+  2. start webpack-dev-server
+  
+  ```shell
+  ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot
+  ```
+  
+  3. open `http://localhost:8080/`
+  
+  4. start `pscid`
+
+  ```shell 
+  pscid # you can install it with npm i -g pscid
+  ```
+
+  5. Edit one of the examples
+  
+  As soon as the module has been recompiled (via pscid, or your ide plugin),
+  The webpage is updated with the new app.
+
+
+to understand the setup, check 
+
+ - [main.js](main.js)
+ - [webpack.config.js](webpack.config.js)
+
 
 ## Bugs and Feedback
 

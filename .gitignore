@@ -9,3 +9,8 @@
 /index.js
 .DS_STORE
 yarn.lock
+
+.vscode/
+.psc-ide-port
+examples/dist/app.js
+
