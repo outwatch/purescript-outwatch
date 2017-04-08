@@ -40,24 +40,24 @@ to configure fast live reloading with hot module replacement for included exampl
 
   1. clone this repo and install deps
   
-    ```shell
-    npm install
-    pulp build
-    ```
+  ```shell
+  npm install
+  pulp build
+  ```
   
   2. start webpack-dev-server
   
-    ```shell
-    ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot
-    ```
+  ```shell
+  ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot
+  ```
   
   3. open `http://localhost:8080/`
   
   4. start `pscid`
 
-    ```shell 
-    pscid # you can install it with npm i -g pscid
-    ```
+  ```shell 
+  pscid # you can install it with npm i -g pscid
+  ```
 
   5. Edit one of the examples
   
