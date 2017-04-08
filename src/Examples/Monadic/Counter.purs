@@ -11,7 +11,9 @@ app :: forall e. HTML (random :: RANDOM|e) Unit
 app = do
     rnd <- lift $ randomInt 10 90
     div_ do
-        text_ (show rnd)
+        div_ do 
+            text_ "some random number:"
+            text_ (show rnd)
         incrementHandlder <- createHandler_ [0]
         decrementHandlder <- createHandler_ [0]
         let count = merge incrementHandlder.src decrementHandlder.src

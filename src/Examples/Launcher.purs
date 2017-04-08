@@ -71,8 +71,7 @@ view b = do
   test <- lift (unwrap (map build eee))
   
   div_ do    
-    h1_ (text_ "Examples")
-    text_ "pickOneFrom one example:"
+    text_ "example: "
     select_ do 
         sequence_ (keys examples # map (mkOption initialExample))
         inputString_  exampleH
