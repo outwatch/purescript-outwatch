@@ -16,7 +16,7 @@ import DOM.Node.ParentNode (QuerySelector(QuerySelector), querySelector)
 import DOM.Node.Types (Document, Element, documentToParentNode, elementToNode)
 import Data.Maybe (Maybe(Just, Nothing))
 import Partial.Unsafe (unsafeCrashWith)
-import Prelude (Unit, bind, pure, ($), (<>))
+import Prelude (Unit, bind, pure, ($), (<#>), (<>), (>>=))
 import Unsafe.Coerce (unsafeCoerce)
 
 
@@ -29,10 +29,7 @@ unsafeFindElement queryStr = liftEff do
     Just elem -> pure elem
 
 getDocument :: forall e m. (MonadEff (dom :: DOM | e) m) => m Document
-getDocument = liftEff do
-  wndow <- window
-  doc <- document wndow
-  pure $ htmlDocumentToDocument doc
+getDocument = liftEff $ window >>= document <#> htmlDocumentToDocument
 
 createDomRoot :: forall e m. (MonadEff (dom :: DOM | e) m) => m Unit
 createDomRoot = liftEff do
