@@ -33,15 +33,13 @@ getDocument = liftEff $ window >>= document <#> htmlDocumentToDocument
 
 createDomRoot :: forall e m. (MonadEff (dom :: DOM | e) m) => m Unit
 createDomRoot = liftEff do
-  doc <- getDocument
   bdy <- unsafeFindElement "body"
-  node <- createElement "div" doc
+  node <- getDocument >>= createElement "div"
   child <- appendChild (elementToNode node) (elementToNode bdy)
   setAttribute "id" "app" (unsafeCoerce child)
 
 afterAll :: forall e m. (MonadEff (dom :: DOM | e) m) => m Unit
 afterAll = liftEff do
-  doc <- getDocument
-  node <- createElement "div" doc
+  node <- getDocument >>= createElement "div"
   bdy <- unsafeFindElement "body"
   setTextContent "" (unsafeCoerce bdy)
