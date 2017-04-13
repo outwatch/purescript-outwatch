@@ -1,10 +1,10 @@
 module OutWatch.Helpers.Promise where
 
 import Prelude
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
 
 
-foreign import data Promise :: # ! -> * -> *
+foreign import data Promise :: # Effect -> Type -> Type
 
 
 foreign import success :: forall e a. Promise e a -> a -> Eff e Unit
