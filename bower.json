@@ -9,18 +9,18 @@
     "output"
   ],
   "dependencies": {
-    "purescript-prelude": "^2.1.0",
-    "purescript-console": "^2.0.0",
-    "purescript-snabbdom": "^0.2.0",
-    "purescript-foldable-traversable": "^2.0.0",
-    "purescript-affjax": "^3.0.2",
-    "purescript-rxjs": "https://github.com/LukaJCB/purescript-rxjs.git"
+    "purescript-prelude": "^3.0.0",
+    "purescript-console": "^3.0.0",
+    "purescript-snabbdom": "https://github.com/sloosch/purescript-snabbdom.git#purs0.11",
+    "purescript-foldable-traversable": "^3.0.0",
+    "purescript-affjax": "^4.0.0",
+    "purescript-rxjs": "https://github.com/sloosch/purescript-rxjs.git#purs0.11"
   },
   "devDependencies": {
-    "purescript-psci-support": "^2.0.0",
-    "purescript-test-unit": "^10.1.0",
-    "purescript-quickcheck": "^3.1.1",
-    "purescript-refs": "^2.0.0"
+    "purescript-psci-support": "^3.0.0",
+    "purescript-test-unit": "^11.0.0",
+    "purescript-quickcheck": "^4.0.0",
+    "purescript-refs": "^3.0.0"
   },
   "repository": {
       "type": "git",
