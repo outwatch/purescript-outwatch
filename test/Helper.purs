@@ -16,7 +16,7 @@ import DOM.Node.ParentNode (QuerySelector(QuerySelector), querySelector)
 import DOM.Node.Types (Document, Element, documentToParentNode, elementToNode)
 import Data.Maybe (Maybe(Just, Nothing))
 import Partial.Unsafe (unsafeCrashWith)
-import Prelude (Unit, bind, discard, pure, unit, ($), (<>))
+import Prelude (Unit, bind, pure, ($), (<>))
 import Unsafe.Coerce (unsafeCoerce)
 
 
@@ -41,7 +41,6 @@ createDomRoot = liftEff do
   node <- createElement "div" doc
   child <- appendChild (elementToNode node) (elementToNode bdy)
   setAttribute "id" "app" (unsafeCoerce child)
-  pure unit
 
 afterAll :: forall e m. (MonadEff (dom :: DOM | e) m) => m Unit
 afterAll = liftEff do
