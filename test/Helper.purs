@@ -28,7 +28,7 @@ unsafeFindElement queryStr = liftEff do
     Nothing -> unsafeCrashWith $ "Element for query '" <> queryStr <> "' was not found."
     Just elem -> pure elem
 
-getDocument ::  forall e m. (MonadEff (dom :: DOM | e) m) => m Document
+getDocument :: forall e m. (MonadEff (dom :: DOM | e) m) => m Document
 getDocument = liftEff do
   wndow <- window
   doc <- document wndow
