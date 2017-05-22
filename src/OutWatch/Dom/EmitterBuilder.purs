@@ -106,7 +106,7 @@ instance genericEmitterBuilder :: EmitterBuilder (GenericMappedEmitterBuilder a 
 
 instance latestFromEmitterBuilder :: EmitterBuilder (WithLatestFromEmitterBuilder a) a e where
   emitFrom (WithLatestFromEmitterBuilder { event , stream }) sink =
-    let proxy = redirect sink (\obs -> withLatestFrom (\a b -> b) obs stream)
+    let proxy = redirect sink (\obs -> withLatestFrom (\a b -> b) stream obs)
     in  Emitter (EventEmitter { event : event, sink : proxy.sink })
 
 instance eventEmitterBuilder :: EmitterBuilder EventEmitterBuilder Event e where

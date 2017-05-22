@@ -14,8 +14,8 @@ import Data.HTTP.Method (Method(..))
 import Data.StrMap (empty)
 import Network.HTTP.Affjax (AJAX)
 import OutWatch.Sink (Observer, createHandler)
-import Prelude (show, ($))
-import RxJS.Observable (Observable, Request, Response, ajax, ajaxWithBody, switchMap)
+import Prelude (show, (#), pure)
+import RxJS.Observable (Observable, Request, Response, ajax, ajaxUrl, switchMap, runObservableT, ObservableT(..))
 
 
 get :: forall eff a. (Observable a -> Observable String) -> HttpBus (ajax :: AJAX | eff) a
@@ -61,7 +61,8 @@ requestWithUrl :: forall e a. (Observable a -> Observable Url) -> HttpBus (ajax 
 requestWithUrl transform =
   let handler = createHandler[]
       transformed = transform handler.src
-      responses = switchMap transformed (\url -> unsafePerformEff $ ajax url)
+      toHttp url = ajaxUrl url # runObservableT # unsafePerformEff # pure # ObservableT
+      responses = transformed # switchMap toHttp
   in {responses, sink : handler.sink}
 
 
@@ -69,8 +70,8 @@ requestWithBody :: forall e a. Method -> (Observable a -> Observable Request) ->
 requestWithBody method transform =
   let handler = createHandler[]
       transformed = transform handler.src
-      responses = switchMap transformed
-        (\req -> unsafePerformEff $ ajaxWithBody (setMethod req method))
+      toHttp url = ajax url # runObservableT # unsafePerformEff # pure # ObservableT
+      responses = transformed # switchMap toHttp
   in {responses, sink : handler.sink}
 
 

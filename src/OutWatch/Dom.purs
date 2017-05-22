@@ -8,7 +8,7 @@ import OutWatch.Dom.Builder (BoolAttributeBuilder(..), ChildStreamReceiverBuilde
 import OutWatch.Dom.DomUtils (hyperscriptHelper)
 import OutWatch.Dom.EmitterBuilder (BoolEmitterBuilder(..), DestroyHookBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookBuilder(..), emitFrom)
 import OutWatch.Dom.VDomModifier (VDom(..), VNode(..), toProxy)
-import OutWatch.Sink (Handler, createHandlerImpl)
+import OutWatch.Sink (Handler, createHandler)
 import Snabbdom (patchInitialSelector)
 import Snabbdom (VDOM) as Snabbdom
 
@@ -480,23 +480,20 @@ infix 5 emitFrom as ==>
 infix 5 bindFrom as <==
 infix 5 setTo as :=
 
-createHandler :: forall a e. Array a -> Handler e a
-createHandler = createHandlerImpl
-
 createInputHandler :: forall e. Array InputEvent -> Handler e InputEvent
-createInputHandler = createHandlerImpl
+createInputHandler = createHandler
 
 createMouseHandler :: forall e. Array MouseEvent -> Handler e MouseEvent
-createMouseHandler = createHandlerImpl
+createMouseHandler = createHandler
 
 createKeyboardHandler :: forall e. Array KeyboardEvent -> Handler e KeyboardEvent
-createKeyboardHandler = createHandlerImpl
+createKeyboardHandler = createHandler
 
 createStringHandler :: forall e. Array String -> Handler e String
-createStringHandler = createHandlerImpl
+createStringHandler = createHandler
 
 createBoolHandler :: forall e. Array Boolean -> Handler e Boolean
-createBoolHandler = createHandlerImpl
+createBoolHandler = createHandler
 
 createNumberHandler :: forall e. Array Number -> Handler e Number
-createNumberHandler = createHandlerImpl
+createNumberHandler = createHandler

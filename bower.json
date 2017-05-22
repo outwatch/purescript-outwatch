@@ -14,7 +14,8 @@
     "purescript-snabbdom": "1.0.0",
     "purescript-foldable-traversable": "^3.0.0",
     "purescript-affjax": "^4.0.0",
-    "purescript-rxjs": "https://github.com/LukaJCB/purescript-rxjs.git"
+    "purescript-profunctor": "3.0.0",
+    "purescript-rxps": "1.4.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^3.0.0",

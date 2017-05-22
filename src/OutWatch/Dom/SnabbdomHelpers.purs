@@ -3,12 +3,12 @@ module OutWatch.Dom.SnabbdomHelpers (createVNodeData, emittersToEventObject, Pro
 import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Unsafe (unsafeCoerceEff, unsafePerformEff)
+import Control.Comonad (extract)
 import DOM (DOM)
 import DOM.Event.Event (Event, target)
 import DOM.HTML.HTMLInputElement (checked, value, valueAsNumber)
 import DOM.HTML.Types (HTMLInputElement)
 import DOM.Node.Types (Element)
-import Data.Array (index)
 import Data.Array (fromFoldable) as Array
 import Data.Foldable (traverse_)
 import Data.List (List, groupBy)
@@ -21,7 +21,7 @@ import OutWatch.Helpers.Helpers (forEachMaybe, tupleMaybes)
 import OutWatch.Helpers.Promise (Promise, foreach, success)
 import OutWatch.Helpers.Promise (empty) as Promise
 import OutWatch.Sink (Observer(..))
-import RxJS.Observable (Observable, RX, pairwise, startWith, subscribeNext)
+import RxJS.Observable (Observable, pairwise, startWith, subscribeNext)
 import RxJS.Subscription (Subscription, unsubscribe)
 import Snabbdom (VDOM, VNodeData, VNodeEventObject, VNodeProxy(..), getElement, h, patch, toVNodeEventObject, toVNodeHookObjectProxy, updateValueHook)
 import Unsafe.Coerce (unsafeCoerce)
@@ -95,12 +95,13 @@ createDestroyHook promise hooks proxy =
 
 
 
-createSubscription :: forall e. Observable (Tuple (List Attribute) (List (VNode e))) -> VNodeProxy e -> Eff (rx :: RX | e) Subscription
+createSubscription :: forall e. Observable (Tuple (List Attribute) (List (VNode e))) -> VNodeProxy e -> Eff e Subscription
 createSubscription changables proxy = changables
   # map (changablesToProxy proxy)
   # startWith proxy
   # pairwise
   # subscribeNext (unsafeCoerce patchPair)
+  # extract
 
 createInsertHook :: forall e. Observable (Tuple (List Attribute) (List (VNode e)))
   -> Promise e Subscription -> List (InsertHook e) -> VNodeProxy e -> Eff e Unit
@@ -162,12 +163,8 @@ createReceiverVNodeData changables valueExists props handlers =
 
 
 
-patchPair :: forall e. Array (VNodeProxy e) -> Eff (vdom :: VDOM | e) Unit
-patchPair arr =
-  let maybeFirst = index arr 0
-      maybeSecond = index arr 1
-      maybeTuple = tupleMaybes maybeFirst maybeSecond
-  in forEachMaybe (map (\tuple -> patch (fst tuple) (snd tuple)) maybeTuple)
+patchPair :: forall e. Tuple (VNodeProxy e) (VNodeProxy e) -> Eff (vdom :: VDOM | e) Unit
+patchPair tuple = patch (fst tuple) (snd tuple)
 
 
 changablesToProxy :: forall e. VNodeProxy e -> Tuple (List Attribute) (List (VNode e)) -> VNodeProxy e

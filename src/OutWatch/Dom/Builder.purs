@@ -2,11 +2,12 @@ module OutWatch.Dom.Builder where
 
 import Data.Functor (map)
 import Data.List (fromFoldable)
+import Data.Identity (Identity)
 import Data.Show (show)
 import Data.Traversable (class Traversable)
 import OutWatch.Dom.DomUtils (modifierToVNode)
 import Prelude (class Show, Unit)
-import RxJS.Observable (Observable)
+import RxJS.Observable (ObservableT)
 import OutWatch.Dom.VDomModifier (Property(..), Receiver(..), VDom(..), VNode(..))
 
 newtype ShowAttributeBuilder a = ShowAttributeBuilder String
@@ -39,32 +40,32 @@ newtype ChildrenStreamReceiverBuilder = ChildrenStreamReceiverBuilder Unit
 class ReceiverBuilder builder stream eff | stream -> eff, builder -> stream where
   bindFrom :: builder -> stream -> VDom eff
 
-instance stringAttributeReceiverBuilder :: ReceiverBuilder StringAttributeBuilder (Observable String) e where
+instance stringAttributeReceiverBuilder :: ReceiverBuilder StringAttributeBuilder (ObservableT Identity String) e where
   bindFrom (StringAttributeBuilder name) obs =
     let attributeStream = map (\s -> { name : name , value : s }) obs
     in Receiver (AttributeStreamReceiver { attr : name, stream : attributeStream })
 
-instance attributeReceiverBuilder :: (Show a) => ReceiverBuilder (ShowAttributeBuilder a) (Observable a) e where
+instance attributeReceiverBuilder :: (Show a) => ReceiverBuilder (ShowAttributeBuilder a) (ObservableT Identity a) e where
   bindFrom (ShowAttributeBuilder name) obs =
     let attributeStream = map (\a -> { name : name , value : show a }) obs
     in Receiver (AttributeStreamReceiver { attr : name, stream : attributeStream })
 
-instance boolReceiverBuilder :: ReceiverBuilder BoolAttributeBuilder (Observable Boolean) e where
+instance boolReceiverBuilder :: ReceiverBuilder BoolAttributeBuilder (ObservableT Identity Boolean) e where
   bindFrom (BoolAttributeBuilder name) obs =
     let attributeStream = map (\b -> { name : name , value : toEmptyIfFalse b }) obs
     in Receiver (AttributeStreamReceiver { attr : name, stream : attributeStream })
 
-instance childReceiverBuilder :: ReceiverBuilder ChildStreamReceiverBuilder (Observable (VDom e)) e  where
+instance childReceiverBuilder :: ReceiverBuilder ChildStreamReceiverBuilder (ObservableT Identity (VDom e)) e  where
   bindFrom builder obs =
     let valueStream = map modifierToVNode obs
     in Receiver (ChildStreamReceiver valueStream)
 
-instance childShowReceiverBuilder :: (Show a) => ReceiverBuilder ChildStringReceiverBuilder (Observable a) e where
+instance childShowReceiverBuilder :: (Show a) => ReceiverBuilder ChildStringReceiverBuilder (ObservableT Identity a) e where
   bindFrom builder obs =
     let valueStream = map (\a -> StringNode (show a)) obs
     in Receiver (ChildStreamReceiver valueStream)
 
-instance childrenStreamReceiverBuilder :: (Traversable t) => ReceiverBuilder ChildrenStreamReceiverBuilder (Observable (t (VDom e))) e where
+instance childrenStreamReceiverBuilder :: (Traversable t) => ReceiverBuilder ChildrenStreamReceiverBuilder (ObservableT Identity (t (VDom e))) e where
   bindFrom builder obs =
     let valueStream = map (\t -> fromFoldable (map modifierToVNode t)) obs
     in Receiver (ChildrenStreamReceiver valueStream)
