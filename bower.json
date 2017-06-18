@@ -15,7 +15,7 @@
     "purescript-foldable-traversable": "^3.0.0",
     "purescript-affjax": "^4.0.0",
     "purescript-profunctor": "3.0.0",
-    "purescript-rxps": "1.4.3"
+    "purescript-rxps": "1.5.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^3.0.0",
