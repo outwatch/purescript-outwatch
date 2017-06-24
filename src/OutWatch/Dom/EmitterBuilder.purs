@@ -6,10 +6,10 @@ import DOM.Event.Types (InputEvent, MouseEvent)
 import DOM.HTML.Event.Types (DragEvent)
 import DOM.Node.Types (Element)
 import Data.Tuple (Tuple)
-import Data.Unit (Unit)
+import Prelude
+import OutWatch.Dom.VDomModifier (Emitter(..), Property(..), VDom(..), VDomB)
 import OutWatch.Sink (Observer, SinkLike, redirect, redirectMap)
 import RxJS.Observable (Observable, withLatestFrom)
-import OutWatch.Dom.VDomModifier (Emitter(..), Property(..), VDom(..))
 
 newtype EventEmitterBuilder = EventEmitterBuilder String
 newtype InputEmitterBuilder = InputEmitterBuilder String
@@ -98,48 +98,48 @@ instance mappableBoolBuilder :: MappableBuilder BoolEmitterBuilder a Boolean e w
 
 
 class EmitterBuilder builder a eff | builder -> eff, builder -> a where
-  emitFrom :: forall r. builder -> SinkLike eff a r  -> VDom eff
+  emitFrom :: forall r. builder -> SinkLike eff a r  -> VDomB eff
 
 instance genericEmitterBuilder :: EmitterBuilder (GenericMappedEmitterBuilder a b e) a e where
   emitFrom (GenericMappedEmitterBuilder { constructor , mapping }) {sink} =
-    Emitter (constructor (redirectMap { sink } mapping).sink)
+    pure $ Emitter (constructor (redirectMap { sink } mapping).sink)
 
 instance latestFromEmitterBuilder :: EmitterBuilder (WithLatestFromEmitterBuilder a) a e where
   emitFrom (WithLatestFromEmitterBuilder { event , stream }) sink =
     let proxy = redirect sink (\obs -> withLatestFrom (\a b -> b) stream obs)
-    in  Emitter (EventEmitter { event : event, sink : proxy.sink })
+    in pure $ Emitter (EventEmitter { event : event, sink : proxy.sink })
 
 instance eventEmitterBuilder :: EmitterBuilder EventEmitterBuilder Event e where
   emitFrom (EventEmitterBuilder event) {sink} =
-    Emitter (EventEmitter { event : event, sink : sink })
+    pure $ Emitter (EventEmitter { event : event, sink : sink })
 
 instance inputEmitterBuilder :: EmitterBuilder InputEmitterBuilder InputEvent e where
   emitFrom (InputEmitterBuilder event) {sink} =
-    Emitter (InputEventEmitter { event : event, sink : sink })
+    pure $ Emitter (InputEventEmitter { event : event, sink : sink })
 
 instance mouseEmitterBuilder :: EmitterBuilder MouseEmitterBuilder MouseEvent e where
   emitFrom (MouseEmitterBuilder event) {sink} =
-    Emitter (MouseEventEmitter { event : event, sink : sink })
+    pure $ Emitter (MouseEventEmitter { event : event, sink : sink })
 
 instance dragEmitterBuilder :: EmitterBuilder DragEmitterBuilder DragEvent e where
   emitFrom (DragEmitterBuilder event) {sink} =
-    Emitter (DragEventEmitter { event : event, sink : sink })
+    pure $ Emitter (DragEventEmitter { event : event, sink : sink })
 
 instance keyEmitterBuilder :: EmitterBuilder KeyEmitterBuilder KeyboardEvent e where
   emitFrom (KeyEmitterBuilder event) {sink} =
-    Emitter (KeyboardEventEmitter { event : event, sink : sink })
+    pure $ Emitter (KeyboardEventEmitter { event : event, sink : sink })
 
 instance stringEmitterBuilder :: EmitterBuilder StringEmitterBuilder String e where
   emitFrom (StringEmitterBuilder event) {sink} =
-    Emitter (StringEventEmitter { event : event, sink : sink })
+    pure $ Emitter (StringEventEmitter { event : event, sink : sink })
 
 instance boolEmitterBuilder :: EmitterBuilder BoolEmitterBuilder Boolean e where
   emitFrom (BoolEmitterBuilder event) {sink} =
-    Emitter (BoolEventEmitter { event : event, sink : sink })
+    pure $ Emitter (BoolEventEmitter { event : event, sink : sink })
 
 instance numberEmitterBuilder :: EmitterBuilder NumberEmitterBuilder Number e where
   emitFrom (NumberEmitterBuilder event) {sink} =
-    Emitter (NumberEventEmitter { event : event, sink : sink })
+    pure $ Emitter (NumberEventEmitter { event : event, sink : sink })
 
 
 
@@ -150,12 +150,12 @@ newtype UpdateHookBuilder = UpdateHookBuilder Unit
 
 instance insertHookBuilder :: EmitterBuilder InsertHookBuilder Element e where
   emitFrom builder {sink} =
-    Property (InsertHook sink)
+    pure $ Property (InsertHook sink)
 
 instance destroyHookBuilder :: EmitterBuilder DestroyHookBuilder Element e where
   emitFrom builder {sink} =
-    Property (DestroyHook sink)
+    pure $ Property (DestroyHook sink)
 
 instance updateHookBuilder :: EmitterBuilder UpdateHookBuilder (Tuple Element Element) e where
   emitFrom builder {sink} =
-    Property (UpdateHook sink)
+    pure $ Property (UpdateHook sink)

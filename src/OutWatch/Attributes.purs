@@ -278,6 +278,3 @@ childShow = ChildStringReceiverBuilder unit
 infix 5 emitFrom as ==>
 infix 5 bindFrom as <==
 infix 5 setTo as :=
-
-text ::forall e. String -> VDom e
-text str = VNode (StringNode str)

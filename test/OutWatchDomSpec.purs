@@ -4,16 +4,17 @@ import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Control.Monad.Eff.Random (RANDOM)
+import Control.Monad.Eff.Unsafe (unsafePerformEff)
 import DOM (DOM)
 import DOM.HTML.HTMLInputElement (value) as HTML
 import DOM.Node.Node (textContent)
 import Data.String (length)
-import OutWatch.Attributes (className, id, text, value, (:=), (<==))
+import OutWatch.Attributes (className, id, value, (:=), (<==))
 import OutWatch.Core (render)
 import OutWatch.Dom.Builder (toEmptyIfFalse)
-import OutWatch.Dom.DomUtils (hyperscriptHelper, modifierToVNode)
-import OutWatch.Dom.VDomModifier (toProxy)
-import OutWatch.Tags (div, input, strong)
+import OutWatch.Dom.DomUtils (hyperscriptHelper)
+import OutWatch.Dom.VDomModifier (modifierToVNode, runVDomB, toProxy)
+import OutWatch.Tags (div, input, strong, text)
 import Prelude (bind, discard, (#), ($), (==), (>))
 import RxJS.Observable (fromArray)
 import Snabbdom (VDOM)
@@ -31,14 +32,22 @@ outWatchDomSuite =
   suite "OutWatch Dom Suite" do
     test "Nested VTrees should be constructed correctly" do
       let json = {"sel":"div","data":{"attrs":{"class":"red","id":"msg"},"on":{},"hook":{}},"children":[{"sel":"div","data":{"attrs":{},"on":{},"hook":{}},"children":[{"text":"ABC"}]}]}
-          vtree = div [className := "red", id := "msg", div [text "ABC"]] # modifierToVNode # toProxy
+          vtree = div [className := "red", id := "msg", div [text "ABC"]]
+            # runVDomB
+            # unsafePerformEff
+            # modifierToVNode
+            # toProxy
       equal (stringify json) (stringify vtree)
     test "Builders should map falsy booleans to empty strings" do
       assert "falsy booleans should be empty strings" $ (false # toEmptyIfFalse # length) == 0
     test "Builders should map truthy booleans to non-empty strings" do
       assert "falsy booleans should be non-empty strings" $ (true # toEmptyIfFalse # length) > 0
     test "The hyperscriptHelper should construct correct Vtrees" do
-      let vtree = hyperscriptHelper "div" [className := "red", id := "msg", text "Hello World!"] # modifierToVNode # toProxy
+      let vtree = hyperscriptHelper "div" [className := "red", id := "msg", text "Hello World!"]
+            # runVDomB
+            # unsafePerformEff
+            # modifierToVNode
+            # toProxy
           json = {"sel":"div","data":{"attrs":{"class":"red","id":"msg"},"on":{},"hook":{}},"children":[{"text":"Hello World!"}]}
       assert "should be equal when encoded to json" ((vtree # stringify) == (stringify json))
     test "The hyperscriptHelper should be able to patch into DOM correctly" do
@@ -51,7 +60,11 @@ outWatchDomSuite =
       assert "Should be equal" $ val == msg
       afterAll
     test "The DOM Api should construct correct Vtrees" do
-      let vtree = div [className := "red", id := "msg", text "Hello World!"] # modifierToVNode # toProxy
+      let vtree = div [className := "red", id := "msg", text "Hello World!"]
+            # runVDomB
+            # unsafePerformEff
+            # modifierToVNode
+            # toProxy
           json = {"sel":"div","data":{"attrs":{"class":"red","id":"msg"},"on":{},"hook":{}},"children":[{"text":"Hello World!"}]}
       assert "should be equal when encoded to json" ((vtree # stringify) == (stringify json))
     test "The DOM Api should be able to patch into DOM correctly" do

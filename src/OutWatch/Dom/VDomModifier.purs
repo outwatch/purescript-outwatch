@@ -6,9 +6,11 @@ import DOM.HTML.Event.Types (DragEvent)
 import DOM.Node.Types (Element)
 import Data.List (List)
 import Data.Tuple (Tuple)
-import Prelude (map)
-import RxJS.Observable (Observable)
-import OutWatch.Sink (Observer)
+import Prelude
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Unsafe (unsafeCoerceEff)
+import RxJS.Observable (Observable, ObservableT(..))
+import OutWatch.Sink (Observer, Handler, HandlerImpl, createHandlerImpl)
 import Snabbdom (VNodeProxy, VNodeData, h, text)
 
 
@@ -16,7 +18,7 @@ type VTree e = {
   nodeType :: String,
   children :: Array (VNode e),
   attributes :: VNodeData e,
-  changables :: Observable (Tuple (List Attribute) (List (VNode e)))
+  changables :: Observable (Tuple (List Attribute) (List (VDomB e)))
 }
 
 data VNode e = VTree (VTree e)
@@ -33,8 +35,8 @@ data Property e = Attribute Attribute
   | UpdateHook (UpdateHook e)
 
 
-type ChildStreamReceiver e = Observable (VNode e)
-type ChildrenStreamReceiver e = Observable (List (VNode e))
+type ChildStreamReceiver e = Observable (VDomB e)
+type ChildrenStreamReceiver e = Observable (List (VDomB e))
 type AttributeStreamReceiver = { attr :: String, stream :: Observable Attribute }
 
 data Receiver e = AttributeStreamReceiver AttributeStreamReceiver
@@ -59,6 +61,36 @@ data VDom e = Emitter (Emitter e)
   | Property (Property e)
   | Receiver (Receiver e)
   | VNode (VNode e)
+
+
+newtype VDomEff e a = VDomEff (Eff e a)
+derive newtype instance vdomMonad :: Monad (VDomEff e)
+derive newtype instance vdomBind :: Bind (VDomEff e)
+derive newtype instance vdomApplicative :: Applicative (VDomEff e)
+derive newtype instance vdomApply :: Apply (VDomEff e)
+derive newtype instance vdomFunctor :: Functor (VDomEff e)
+
+type VDomB e = VDomEff () (VDom e)
+
+runVDomB :: forall e a. VDomEff () a -> Eff e a
+runVDomB (VDomEff v) = unsafeCoerceEff v
+
+handlerImplToHandler' :: forall e e2 a. Eff e2 (HandlerImpl e a) -> VDomEff e2 (Handler e a)
+handlerImplToHandler' eff = VDomEff do
+  handler <- eff
+  let sink = handler.sink
+  let src = ObservableT (pure handler.src)
+  pure {src, sink}
+
+createHandler' :: forall a e e2. Array a -> VDomEff e2 (Handler e a)
+createHandler' = createHandlerImpl >>> handlerImplToHandler'
+
+modifierToVNode :: forall e. VDom e -> VNode e
+modifierToVNode mod = case mod of
+  (VNode vnode) -> vnode
+  (Emitter _) -> StringNode ""
+  (Receiver _) -> StringNode ""
+  (Property _) -> StringNode ""
 
 toProxy :: forall e. VNode e -> VNodeProxy e
 toProxy node = case node of

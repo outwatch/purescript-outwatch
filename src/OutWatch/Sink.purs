@@ -1,9 +1,11 @@
 module OutWatch.Sink
   ( Handler
   , Observer(..)
+  , HandlerImpl
   , SinkLike
   , Sink
   , createHandler
+  , createHandlerImpl
   , create
   , createStringHandler
   , createMouseHandler
@@ -18,9 +20,9 @@ module OutWatch.Sink
   )
   where
 
+import Control.Comonad (extract)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Unsafe (unsafePerformEff)
-import Control.Comonad (extract)
 import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)
 import Data.Functor.Contravariant (class Contravariant, cmap)
 import Data.Profunctor (dimap)
@@ -63,7 +65,6 @@ handlerImplToHandler eff =
   in {src, sink}
 
 
-
 removeObserverEff :: forall e a. Eff e (Observer e a) -> Observer e a
 removeObserverEff eff = Observer (\a -> (bind eff (\(Observer f) -> f a)))
 
@@ -72,7 +73,7 @@ type Sink e a = { sink :: Observer e a }
 instance sinkContravariant :: Contravariant (Observer e) where
   cmap project (Observer observer) = Observer (\b -> observer (project b))
 
-foreign import createHandlerImpl :: forall a e. Array a -> Eff e (HandlerImpl e a)
+foreign import createHandlerImpl :: forall a e e2. Array a -> Eff e (HandlerImpl e2 a)
 
 createHandler :: forall a e. Array a -> Handler e a
 createHandler = createHandlerImpl >>> handlerImplToHandler
