@@ -1,47 +1,44 @@
-module OutWatch.Dom.DomUtils (hyperscriptHelper, modifierToVNode, separateModifiers, separateReceivers, separateProperties) where
+module OutWatch.Dom.DomUtils (hyperscriptHelper, separateModifiers, separateReceivers, separateProperties) where
 
+import Prelude
 import Data.Array (fromFoldable)
 import Data.Foldable (class Foldable, elem, foldr)
 import Data.List (List(..), head, null)
 import Data.Maybe (maybe)
-import Data.Traversable (class Traversable)
+import Data.Traversable (class Traversable, sequence)
 import Data.Tuple (Tuple(..))
-import OutWatch.Helpers.Helpers (combineLatestAll)
-import Prelude (id, map, (&&), not)
-import RxJS.Observable (Observable, combineLatest)
 import OutWatch.Dom.SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties)
-import OutWatch.Dom.VDomModifier (Attribute, AttributeStreamReceiver, ChildStreamReceiver, ChildrenStreamReceiver, Emitter, Property(..), Receiver(..), VDom(..), VNode(..))
+import OutWatch.Dom.VDomModifier (Attribute, AttributeStreamReceiver, ChildStreamReceiver, ChildrenStreamReceiver, Emitter, Property(..), Receiver(..), VDom(..), VDomB(..), VNode(..), runVDomB)
+import OutWatch.Helpers.Helpers (combineLatestAll)
+import RxJS.Observable (Observable, combineLatest)
 
 
-hyperscriptHelper :: forall e f. (Traversable f) => String -> f (VDom e) -> VDom e
-hyperscriptHelper sel args =
+hyperscriptHelper :: forall e f. (Traversable f) => String -> f (VDomB e) -> VDomB e
+hyperscriptHelper sel ts = do
+  args <- sequence ts
   let modifiers = separateModifiers args
       receivers = separateReceivers modifiers.receivers
       changables = toChangables receivers
-      recsEmpty = (null receivers.childStreams) && (null receivers.childrenStreams) && (null receivers.attrStreams)
+      recsEmpty = (null receivers.childStreams) &&
+        (null receivers.childrenStreams) && (null receivers.attrStreams)
       valueStreamExists = elem "value" (map (\rec -> rec.attr) receivers.attrStreams)
       eventHandlers = emittersToEventObject modifiers.emitters
       props = separateProperties modifiers.props
       children = fromFoldable modifiers.vnodes
       vnodeData = createVNodeData (not recsEmpty) changables props eventHandlers valueStreamExists
-  in VNode (VTree { nodeType : sel , children : children , attributes : vnodeData , changables : changables })
+  pure $ VNode $ VTree
+    { nodeType : sel , children : children , attributes : vnodeData , changables : changables }
 
-modifierToVNode :: forall e. VDom e -> VNode e
-modifierToVNode mod = case mod of
-  (VNode vnode) -> vnode
-  (Emitter _) -> StringNode ""
-  (Receiver _) -> StringNode ""
-  (Property _) -> StringNode ""
 
 -- Private
 
-toChangables :: forall e. Receivers e -> Observable (Tuple (List Attribute) (List (VNode e)))
+toChangables :: forall e. Receivers e -> Observable (Tuple (List Attribute) (List (VDomB e)))
 toChangables { childStreams, childrenStreams, attrStreams } =
   let childReceivers = combineLatestAll childStreams
       attributeReceivers = combineLatestAll (map (\attr -> attr.stream) attrStreams)
       childMaybe = head childrenStreams
       allChildReceivers = maybe childReceivers id childMaybe
-  in combineLatest (\attrs children -> Tuple attrs children) attributeReceivers allChildReceivers
+  in combineLatest Tuple attributeReceivers allChildReceivers
 
 type Modifiers eff =
   { emitters :: List (Emitter eff)

@@ -1,9 +1,9 @@
 module OutWatch.Dom.SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties) where
 
 import Prelude
+import Control.Comonad (extract)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Unsafe (unsafeCoerceEff, unsafePerformEff)
-import Control.Comonad (extract)
 import DOM (DOM)
 import DOM.Event.Event (Event, target)
 import DOM.HTML.HTMLInputElement (checked, value, valueAsNumber)
@@ -15,8 +15,9 @@ import Data.List (List, groupBy)
 import Data.List.NonEmpty (NonEmptyList, head)
 import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap, fromFoldable, union)
+import Data.Traversable (sequence)
 import Data.Tuple (Tuple(..), fst, snd)
-import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VNode, toProxy)
+import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VDomB, VDomEff(..), VNode, modifierToVNode, runVDomB, toProxy)
 import OutWatch.Helpers.Helpers (forEachMaybe, tupleMaybes)
 import OutWatch.Helpers.Promise (Promise, foreach, success)
 import OutWatch.Helpers.Promise (empty) as Promise
@@ -41,7 +42,7 @@ emittersToEventObject list =
       strMap = fromFoldable tupled
   in toVNodeEventObject strMap
 
-createVNodeData :: forall e. Boolean -> Observable (Tuple (List Attribute) (List (VNode e)))
+createVNodeData :: forall e. Boolean -> Observable (Tuple (List Attribute) (List (VDomB e)))
   -> Properties e -> VNodeEventObject e -> Boolean -> VNodeData e
 createVNodeData recsNonEmpty changables props handlers valueExists =
   if recsNonEmpty then
@@ -95,15 +96,15 @@ createDestroyHook promise hooks proxy =
 
 
 
-createSubscription :: forall e. Observable (Tuple (List Attribute) (List (VNode e))) -> VNodeProxy e -> Eff e Subscription
+createSubscription :: forall e. Observable (Tuple (List Attribute) (List (VDomB e))) -> VNodeProxy e -> Eff e Subscription
 createSubscription changables proxy = changables
   # map (changablesToProxy proxy)
   # startWith proxy
   # pairwise
-  # subscribeNext (unsafeCoerce patchPair)
+  # subscribeNext (patchPair >>> unsafeCoerceEff)
   # extract
 
-createInsertHook :: forall e. Observable (Tuple (List Attribute) (List (VNode e)))
+createInsertHook :: forall e. Observable (Tuple (List Attribute) (List (VDomB e)))
   -> Promise e Subscription -> List (InsertHook e) -> VNodeProxy e -> Eff e Unit
 createInsertHook changables promise hooks proxy =
   let subscriptionEff = unsafeCoerceEff (createSubscription changables proxy)
@@ -150,7 +151,7 @@ hooksToCallback hooks (VNodeProxy proxy) element =
 
 
 
-createReceiverVNodeData :: forall e. Observable (Tuple (List Attribute) (List (VNode e)))
+createReceiverVNodeData :: forall e. Observable (Tuple (List Attribute) (List (VDomB e)))
   -> Boolean -> Properties e -> VNodeEventObject e -> VNodeData e
 createReceiverVNodeData changables valueExists props handlers =
   let attrs = attrsToSnabbdom props.attrs
@@ -164,13 +165,16 @@ createReceiverVNodeData changables valueExists props handlers =
 
 
 patchPair :: forall e. Tuple (VNodeProxy e) (VNodeProxy e) -> Eff (vdom :: VDOM | e) Unit
-patchPair tuple = patch (fst tuple) (snd tuple)
+patchPair (Tuple first second) =
+  patch first second
 
 
-changablesToProxy :: forall e. VNodeProxy e -> Tuple (List Attribute) (List (VNode e)) -> VNodeProxy e
-changablesToProxy (VNodeProxy proxy)(Tuple attributes vnodes) =
-  let updatedData = updateVNodeData attributes proxy.data
-      updatedChildren =  proxy.children <> (Array.fromFoldable (map toProxy vnodes))
+changablesToProxy :: forall e e2. VNodeProxy e -> Tuple (List Attribute) (List (VDomB e)) -> VNodeProxy e
+changablesToProxy (VNodeProxy proxy)(Tuple attributes builders) =
+  let vnodes = builders # sequence # runVDomB # unsafePerformEff
+      updatedData = updateVNodeData attributes proxy.data
+      nodeProxies = Array.fromFoldable (vnodes # map (modifierToVNode >>> toProxy))
+      updatedChildren = proxy.children <> nodeProxies
   in h proxy.sel updatedData updatedChildren
 
 updateVNodeData :: forall e. List Attribute -> VNodeData e -> VNodeData e
