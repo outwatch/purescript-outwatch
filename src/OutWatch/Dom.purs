@@ -7,8 +7,8 @@ import Data.Unit (unit, Unit)
 import OutWatch.Dom.Builder (BoolAttributeBuilder(..), ChildStreamReceiverBuilder(..), ChildStringReceiverBuilder(..), ChildrenStreamReceiverBuilder(..), IntAttributeBuilder, NumberAttributeBuilder, ShowAttributeBuilder(..), StringAttributeBuilder(..), bindFrom, setTo)
 import OutWatch.Dom.DomUtils (hyperscriptHelper)
 import OutWatch.Dom.EmitterBuilder (BoolEmitterBuilder(..), DestroyHookBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookBuilder(..), emitFrom)
-import OutWatch.Dom.VDomModifier (VDom(..), VNode(..), VDomB, toProxy, runVDomB)
-import OutWatch.Sink (Handler, createHandler)
+import OutWatch.Dom.VDomModifier (VDom, VNode(..), VDomRepresentation(..), toProxy)
+import OutWatch.Sink (Handler, createHandler, toEff, VDomEff(..))
 import Snabbdom (patchInitialSelector)
 import Snabbdom (VDOM) as Snabbdom
 import Prelude
@@ -16,197 +16,197 @@ import Prelude
 type VDOM = Snabbdom.VDOM
 
 
-renderRepresentation :: forall e. String -> VDom e -> Eff (vdom :: VDOM | e) Unit
+renderRepresentation :: forall e. String -> VDomRepresentation e -> Eff (vdom :: VDOM | e) Unit
 renderRepresentation sel mod = case mod of
   (VNode vnode) -> patchInitialSelector sel (toProxy vnode)
   (Emitter _) -> patchInitialSelector "" (toProxy (StringNode ""))
   (Receiver _) -> patchInitialSelector "" (toProxy (StringNode ""))
   (Property _) -> patchInitialSelector "" (toProxy (StringNode ""))
 
-render :: forall e. String -> VDomB e -> Eff (vdom :: VDOM | e) Unit
+render :: forall e. String -> VDom e -> Eff (vdom :: VDOM | e) Unit
 render sel builder = do
-  mod <- runVDomB builder
+  mod <- toEff builder
   renderRepresentation sel mod
 
-div :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+div :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 div = hyperscriptHelper "div"
-span :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+span :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 span = hyperscriptHelper "span"
-h1 :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+h1 :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 h1= hyperscriptHelper "h1"
-button :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+button :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 button = hyperscriptHelper "button"
-a :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+a :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 a = hyperscriptHelper "a"
-label :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+label :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 label = hyperscriptHelper "label"
-input :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+input :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 input = hyperscriptHelper "input"
-hr :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+hr :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 hr = hyperscriptHelper "hr"
-ul :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+ul :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 ul = hyperscriptHelper "ul"
-abbr :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+abbr :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 abbr = hyperscriptHelper "abbr"
-address :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+address :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 address = hyperscriptHelper "address"
-area :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+area :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 area = hyperscriptHelper "area"
-article :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+article :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 article = hyperscriptHelper "article"
-aside :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+aside :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 aside = hyperscriptHelper "aside"
-audio :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+audio :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 audio = hyperscriptHelper "audio"
-b :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+b :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 b = hyperscriptHelper "b"
-base :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+base :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 base = hyperscriptHelper "base"
-bdi :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+bdi :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 bdi = hyperscriptHelper "bdi"
-blockquote :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+blockquote :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 blockquote = hyperscriptHelper "blockquote"
-br :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+br :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 br = hyperscriptHelper "br"
-li :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+li :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 li = hyperscriptHelper "li"
-bdo :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+bdo :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 bdo = hyperscriptHelper "bdo"
-canvas :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+canvas :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 canvas = hyperscriptHelper "canvas"
-caption :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+caption :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 caption = hyperscriptHelper "caption"
-cite :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+cite :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 cite = hyperscriptHelper "cite"
-code :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+code :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 code = hyperscriptHelper "code"
-col :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+col :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 col = hyperscriptHelper "col"
-colgroup :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+colgroup :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 colgroup = hyperscriptHelper "colgroup"
-datalist :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+datalist :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 datalist = hyperscriptHelper "datalist"
-dd :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+dd :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 dd = hyperscriptHelper "dd"
-del :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+del :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 del = hyperscriptHelper "del"
-details :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+details :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 details = hyperscriptHelper "details"
-dfn :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+dfn :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 dfn = hyperscriptHelper "dfn"
-dialog :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+dialog :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 dialog = hyperscriptHelper "dialog"
-dl :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+dl :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 dl = hyperscriptHelper "dl"
-dt :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+dt :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 dt = hyperscriptHelper "dt"
-em :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+em :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 em = hyperscriptHelper "em"
-embed :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+embed :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 embed = hyperscriptHelper "embed"
-fieldset :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+fieldset :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 fieldset = hyperscriptHelper "fieldset"
-figcaption :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+figcaption :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 figcaption = hyperscriptHelper "figcaption"
-figure :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+figure :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 figure = hyperscriptHelper "figure"
-footer :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+footer :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 footer = hyperscriptHelper "footer"
-form :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+form :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 form = hyperscriptHelper "form"
-header :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+header :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 header = hyperscriptHelper "header"
-h2 :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+h2 :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 h2 = hyperscriptHelper "h2"
-h3 :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+h3 :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 h3 = hyperscriptHelper "h3"
-h4 :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+h4 :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 h4 = hyperscriptHelper "h4"
-h5 :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+h5 :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 h5 = hyperscriptHelper "h5"
-h6 :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+h6 :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 h6 = hyperscriptHelper "h6"
-i :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+i :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 i = hyperscriptHelper "i"
-iframe :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+iframe :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 iframe = hyperscriptHelper "iframe"
-img :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+img :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 img = hyperscriptHelper "img"
-ins :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+ins :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 ins = hyperscriptHelper "ins"
-keygen :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+keygen :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 keygen = hyperscriptHelper "keygen"
-legend :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+legend :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 legend = hyperscriptHelper "legend"
-main :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+main :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 main = hyperscriptHelper "main"
-mark :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+mark :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 mark = hyperscriptHelper "mark"
-menu :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+menu :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 menu = hyperscriptHelper "menu"
-menuitem :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+menuitem :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 menuitem = hyperscriptHelper "menuitem"
-meter :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+meter :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 meter = hyperscriptHelper "meter"
-nav :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+nav :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 nav = hyperscriptHelper "nav"
-ol :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+ol :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 ol = hyperscriptHelper "ol"
-optgroup :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+optgroup :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 optgroup = hyperscriptHelper "optgroup"
-option :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+option :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 option = hyperscriptHelper "option"
-output :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+output :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 output = hyperscriptHelper "output"
-p :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+p :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 p = hyperscriptHelper "p"
-param :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+param :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 param = hyperscriptHelper "param"
-pre :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+pre :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 pre = hyperscriptHelper "pre"
-progress :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+progress :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 progress = hyperscriptHelper "progress"
-section :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+section :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 section = hyperscriptHelper "section"
-select :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+select :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 select = hyperscriptHelper "select"
-small :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+small :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 small = hyperscriptHelper "small"
-strong :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+strong :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 strong = hyperscriptHelper "strong"
-sub :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+sub :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 sub = hyperscriptHelper "sub"
-summary :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+summary :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 summary = hyperscriptHelper "summary"
-sup :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+sup :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 sup = hyperscriptHelper "sup"
-table :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+table :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 table = hyperscriptHelper "table"
-tbody :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+tbody :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 tbody = hyperscriptHelper "tbody"
-td :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+td :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 td = hyperscriptHelper "td"
-textarea :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+textarea :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 textarea = hyperscriptHelper "textarea"
-tfoot :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+tfoot :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 tfoot = hyperscriptHelper "tfoot"
-th :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+th :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 th = hyperscriptHelper "th"
-thead :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+thead :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 thead = hyperscriptHelper "thead"
-time :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+time :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 time = hyperscriptHelper "time"
-tr :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+tr :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 tr = hyperscriptHelper "tr"
-track :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+track :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 track = hyperscriptHelper "track"
-video :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+video :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 video = hyperscriptHelper "video"
-wbr :: forall e f. (Traversable f) => f (VDomB e) -> VDomB e
+wbr :: forall e f. (Traversable f) => f (VDom e) -> VDom e
 wbr = hyperscriptHelper "wbr"
 
 
-text ::forall e. String -> VDomB e
+text ::forall e. String -> VDom e
 text str = pure $ VNode (StringNode str)
 
 
@@ -485,20 +485,20 @@ infix 5 emitFrom as ==>
 infix 5 bindFrom as <==
 infix 5 setTo as :=
 
-createInputHandler :: forall e. Array InputEvent -> Handler e InputEvent
+createInputHandler :: forall e e2. Array InputEvent -> VDomEff e2 (Handler e InputEvent)
 createInputHandler = createHandler
 
-createMouseHandler :: forall e. Array MouseEvent -> Handler e MouseEvent
+createMouseHandler :: forall e e2. Array MouseEvent -> VDomEff e2 (Handler e MouseEvent)
 createMouseHandler = createHandler
 
-createKeyboardHandler :: forall e. Array KeyboardEvent -> Handler e KeyboardEvent
+createKeyboardHandler :: forall e e2. Array KeyboardEvent -> VDomEff e2 (Handler e KeyboardEvent)
 createKeyboardHandler = createHandler
 
-createStringHandler :: forall e. Array String -> Handler e String
+createStringHandler :: forall e e2. Array String -> VDomEff e2 (Handler e String)
 createStringHandler = createHandler
 
-createBoolHandler :: forall e. Array Boolean -> Handler e Boolean
+createBoolHandler :: forall e e2. Array Boolean -> VDomEff e2 (Handler e Boolean)
 createBoolHandler = createHandler
 
-createNumberHandler :: forall e. Array Number -> Handler e Number
+createNumberHandler :: forall e e2. Array Number -> VDomEff e2 (Handler e Number)
 createNumberHandler = createHandler

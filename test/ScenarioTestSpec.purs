@@ -30,15 +30,16 @@ scenarioSuite =
   suite "Real Scenario Suite" do
     test "A simple counter application should work correctly" do
       createDomRoot
-      let plusHandler = createHandler []
-          minusHandler = createHandler []
-          counters = merge plusHandler.src minusHandler.src
-            # scan (+) 0
-            # startWith 0
-          root = div [ button [id := "plus", mapE click (const 1) ==> plusHandler ]
-            , button [id := "minus", mapE click (const (-1)) ==> minusHandler ]
-            , span [ id := "counter", childShow <== counters ]
-          ]
+      let root = do
+            plusHandler <- createHandler []
+            minusHandler <- createHandler []
+            let counters = merge plusHandler.src minusHandler.src
+                 # scan (+) 0
+                 # startWith 0
+            div [ button [id := "plus", mapE click (const 1) ==> plusHandler ]
+             , button [id := "minus", mapE click (const (-1)) ==> minusHandler ]
+             , span [ id := "counter", childShow <== counters ]
+            ]
       liftEff (render "#app" root)
       plusElem <-  unsafeFindElement "#plus"
       minusElem <-  unsafeFindElement "#minus"

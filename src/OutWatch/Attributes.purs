@@ -3,7 +3,7 @@ module OutWatch.Attributes where
 import OutWatch.Dom.Builder (BoolAttributeBuilder(..), ChildStreamReceiverBuilder(..), ChildStringReceiverBuilder(..), ChildrenStreamReceiverBuilder(..), IntAttributeBuilder, NumberAttributeBuilder, ShowAttributeBuilder(..), StringAttributeBuilder(..), bindFrom, setTo)
 import Data.Unit (unit)
 import OutWatch.Dom.EmitterBuilder (BoolEmitterBuilder(..), DestroyHookBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookBuilder(..), emitFrom)
-import OutWatch.Dom.VDomModifier (VDom(..), VNode(..))
+import OutWatch.Dom.VDomModifier (VDom, VNode(..))
 
 hidden :: BoolAttributeBuilder
 hidden = BoolAttributeBuilder "hidden"

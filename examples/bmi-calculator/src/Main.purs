@@ -7,7 +7,7 @@ import OutWatch.Core (render)
 import OutWatch.Dom.VDomModifier (VDom)
 import OutWatch.Sink (SinkLike, createNumberHandler)
 import OutWatch.Tags (div, h3, input, text)
-import Prelude (Unit, map, (#), (*), (/), (<<<), ($))
+import Prelude (Unit, map, (#), (*), (/), (<<<), bind)
 import RxJS.Observable (Observable, combineLatest, startWith)
 import Snabbdom (VDOM)
 
@@ -55,33 +55,36 @@ sliderView props =
   ]
 
 main :: forall e. Eff ( vdom :: VDOM | e ) Unit
-main =
-    let weightHandler = createNumberHandler[initialState.weight]
-        heightHandler = createNumberHandler[initialState.height]
+main = render "#app" program
 
-        state = combineLatest (\w h -> { weight: w, height: h, bmi: calculateBMI w h })
+program :: forall e. VDom e
+program =
+    do  weightHandler <- createNumberHandler[initialState.weight]
+        heightHandler <- createNumberHandler[initialState.height]
+
+        let state = combineLatest (\w h -> { weight: w, height: h, bmi: calculateBMI w h })
                   weightHandler.src heightHandler.src
                 # startWith initialState
 
-        root = div
-          [ sliderView
-              { label: "weight (kg): "
-              , min: 40.0
-              , max: 140.0
-              , value: map _.weight state
-              , changeHandler: weightHandler
-              }
-          , sliderView
-              { label: "height (cm): "
-              , min: 140.0
-              , max: 210.0
-              , value: map _.height state
-              , changeHandler: heightHandler
-              }
-          , h3
-              [ text "bmi: "
-              , childShow <== map (round <<< _.bmi) state
+            root = div
+              [ sliderView
+                  { label: "weight (kg): "
+                  , min: 40.0
+                  , max: 140.0
+                  , value: map _.weight state
+                  , changeHandler: weightHandler
+                  }
+              , sliderView
+                  { label: "height (cm): "
+                  , min: 140.0
+                  , max: 210.0
+                  , value: map _.height state
+                  , changeHandler: heightHandler
+                  }
+              , h3
+                  [ text "bmi: "
+                  , childShow <== map (round <<< _.bmi) state
+                  ]
               ]
-          ]
 
-    in render "#app" root
+        root

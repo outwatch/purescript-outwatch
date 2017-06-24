@@ -8,12 +8,12 @@ import Data.Maybe (maybe)
 import Data.Traversable (class Traversable, sequence)
 import Data.Tuple (Tuple(..))
 import OutWatch.Dom.SnabbdomHelpers (createVNodeData, emittersToEventObject, Properties)
-import OutWatch.Dom.VDomModifier (Attribute, AttributeStreamReceiver, ChildStreamReceiver, ChildrenStreamReceiver, Emitter, Property(..), Receiver(..), VDom(..), VDomB(..), VNode(..), runVDomB)
+import OutWatch.Dom.VDomModifier (Attribute, AttributeStreamReceiver, ChildStreamReceiver, ChildrenStreamReceiver, Emitter, Property(..), Receiver(..), VDom, VDomRepresentation(..), VNode(..))
 import OutWatch.Helpers.Helpers (combineLatestAll)
 import RxJS.Observable (Observable, combineLatest)
 
 
-hyperscriptHelper :: forall e f. (Traversable f) => String -> f (VDomB e) -> VDomB e
+hyperscriptHelper :: forall e f. (Traversable f) => String -> f (VDom e) -> VDom e
 hyperscriptHelper sel ts = do
   args <- sequence ts
   let modifiers = separateModifiers args
@@ -32,7 +32,7 @@ hyperscriptHelper sel ts = do
 
 -- Private
 
-toChangables :: forall e. Receivers e -> Observable (Tuple (List Attribute) (List (VDomB e)))
+toChangables :: forall e. Receivers e -> Observable (Tuple (List Attribute) (List (VDom e)))
 toChangables { childStreams, childrenStreams, attrStreams } =
   let childReceivers = combineLatestAll childStreams
       attributeReceivers = combineLatestAll (map (\attr -> attr.stream) attrStreams)
@@ -50,10 +50,10 @@ type Modifiers eff =
 emptyMods :: forall eff . Modifiers eff
 emptyMods = { emitters : Nil , receivers : Nil, props : Nil, vnodes : Nil }
 
-separateModifiers :: forall eff f. (Foldable f) => f (VDom eff) -> Modifiers eff
+separateModifiers :: forall eff f. (Foldable f) => f (VDomRepresentation eff) -> Modifiers eff
 separateModifiers modifiers = foldr separateMod emptyMods modifiers
 
-separateMod :: forall eff . VDom eff -> Modifiers eff -> Modifiers eff
+separateMod :: forall eff . VDomRepresentation eff -> Modifiers eff -> Modifiers eff
 separateMod (Emitter e) mods = mods { emitters = Cons e mods.emitters }
 separateMod (Receiver r) mods = mods { receivers = Cons r  mods.receivers }
 separateMod (Property p) mods = mods { props = Cons p  mods.props }
