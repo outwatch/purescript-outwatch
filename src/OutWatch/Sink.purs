@@ -1,11 +1,10 @@
 module OutWatch.Sink
   ( Handler
   , Observer(..)
-  , HandlerImpl
   , SinkLike
   , Sink
+  , VDomEff
   , createHandler
-  , createHandlerImpl
   , create
   , createStringHandler
   , createMouseHandler
@@ -17,18 +16,19 @@ module OutWatch.Sink
   , redirect2
   , redirect3
   , redirectMap
+  , toEff
   )
   where
 
 import Control.Comonad (extract)
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Unsafe (unsafePerformEff)
+import Control.Monad.Eff.Unsafe (unsafeCoerceEff)
 import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)
 import Data.Functor.Contravariant (class Contravariant, cmap)
 import Data.Profunctor (dimap)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested (Tuple3, tuple3)
-import Prelude (Unit, (#), bind, map, (>>>), pure)
+import Prelude
 import RxJS.Observable (Observable, ObservableImpl, ObservableT(..), runObservableT)
 
 newtype Observer e a = Observer (a -> Eff e Unit)
@@ -51,49 +51,61 @@ type HandlerImpl eff a =
   }
 
 
-handlerImplToHandlerT :: forall e a. Eff e (HandlerImpl e a) -> HandlerT e a
-handlerImplToHandlerT eff =
-  let sink = eff # map (_.sink) # removeObserverEff
-      src = eff # map (_.src) # ObservableT
-  in {src , sink}
-
-handlerImplToHandler :: forall e a. Eff e (HandlerImpl e a) -> Handler e a
-handlerImplToHandler eff =
-  let handler = unsafePerformEff eff
-      sink = handler.sink
-      src = ObservableT (pure handler.src)
-  in {src, sink}
-
 
 removeObserverEff :: forall e a. Eff e (Observer e a) -> Observer e a
 removeObserverEff eff = Observer (\a -> (bind eff (\(Observer f) -> f a)))
 
 type Sink e a = { sink :: Observer e a }
 
+newtype VDomEff e a = VDomEff (Eff e a)
+derive newtype instance vdomMonad :: Monad (VDomEff e)
+derive newtype instance vdomBind :: Bind (VDomEff e)
+derive newtype instance vdomApplicative :: Applicative (VDomEff e)
+derive newtype instance vdomApply :: Apply (VDomEff e)
+derive newtype instance vdomFunctor :: Functor (VDomEff e)
+
+
+toEff :: forall e a. VDomEff () a -> Eff e a
+toEff (VDomEff v) = unsafeCoerceEff v
+
+handlerImplToHandlerT :: forall e a. Eff e (HandlerImpl e a) -> HandlerT e a
+handlerImplToHandlerT eff =
+  let sink = eff # map (_.sink) # removeObserverEff
+      src = eff # map (_.src) # ObservableT
+  in {src , sink}
+
+handlerImplToHandler :: forall e e2 a. Eff e2 (HandlerImpl e a) -> VDomEff e2 (Handler e a)
+handlerImplToHandler eff = VDomEff do
+  handler <- eff
+  let sink = handler.sink
+  let src = ObservableT (pure handler.src)
+  pure {src, sink}
+
+
 instance sinkContravariant :: Contravariant (Observer e) where
   cmap project (Observer observer) = Observer (\b -> observer (project b))
 
 foreign import createHandlerImpl :: forall a e e2. Array a -> Eff e (HandlerImpl e2 a)
 
-createHandler :: forall a e. Array a -> Handler e a
+createHandler :: forall a e e2. Array a -> VDomEff e2 (Handler e a)
 createHandler = createHandlerImpl >>> handlerImplToHandler
 
-createInputHandler :: forall e. Array InputEvent -> Handler e InputEvent
+createInputHandler :: forall e e2. Array InputEvent -> VDomEff e2 (Handler e InputEvent)
 createInputHandler = createHandler
 
-createMouseHandler :: forall e. Array MouseEvent -> Handler e MouseEvent
+createMouseHandler :: forall e e2. Array MouseEvent -> VDomEff e2 (Handler e MouseEvent)
 createMouseHandler = createHandler
 
-createKeyboardHandler :: forall e. Array KeyboardEvent -> Handler e KeyboardEvent
+createKeyboardHandler :: forall e e2. Array KeyboardEvent -> VDomEff e2 (Handler e KeyboardEvent)
 createKeyboardHandler = createHandler
 
-createStringHandler :: forall e. Array String -> Handler e String
+createStringHandler :: forall e e2. Array String -> VDomEff e2 (Handler e String)
 createStringHandler = createHandler
 
-createBoolHandler :: forall e. Array Boolean -> Handler e Boolean
+createBoolHandler :: forall e e2. Array Boolean -> VDomEff e2 (Handler e Boolean)
 createBoolHandler = createHandler
 
-createNumberHandler :: forall e. Array Number -> Handler e Number
+createNumberHandler :: forall e e2. Array Number -> VDomEff e2 (Handler e Number)
 createNumberHandler = createHandler
 
 create :: forall a e. (a -> Eff e Unit) -> Sink e a

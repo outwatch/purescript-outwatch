@@ -13,8 +13,8 @@ import Control.Monad.Eff.Unsafe (unsafePerformEff)
 import Data.HTTP.Method (Method(..))
 import Data.StrMap (empty)
 import Network.HTTP.Affjax (AJAX)
-import OutWatch.Sink (Observer, createHandler)
-import Prelude (show, (#), pure)
+import OutWatch.Sink (Observer, createHandler, toEff)
+import Prelude
 import RxJS.Observable (Observable, Request, Response, ajax, ajaxUrl, switchMap, runObservableT, ObservableT(..))
 
 
@@ -59,7 +59,7 @@ type Url = String
 
 requestWithUrl :: forall e a. (Observable a -> Observable Url) -> HttpBus (ajax :: AJAX | e) a
 requestWithUrl transform =
-  let handler = createHandler[]
+  let handler =  unsafePerformEff $ toEff $ createHandler[]
       transformed = transform handler.src
       toHttp url = ajaxUrl url # runObservableT # unsafePerformEff # pure # ObservableT
       responses = transformed # switchMap toHttp
@@ -68,7 +68,7 @@ requestWithUrl transform =
 
 requestWithBody :: forall e a. Method -> (Observable a -> Observable Request) -> HttpBus (ajax :: AJAX | e) a
 requestWithBody method transform =
-  let handler = createHandler[]
+  let handler =  unsafePerformEff $ toEff $ createHandler[]
       transformed = transform handler.src
       toHttp url = ajax url # runObservableT # unsafePerformEff # pure # ObservableT
       responses = transformed # switchMap toHttp

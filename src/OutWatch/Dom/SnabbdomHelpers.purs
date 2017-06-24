@@ -17,11 +17,11 @@ import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap, fromFoldable, union)
 import Data.Traversable (sequence)
 import Data.Tuple (Tuple(..), fst, snd)
-import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VDomB, VDomEff(..), VNode, modifierToVNode, runVDomB, toProxy)
+import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VDom, VNode, modifierToVNode, toProxy)
 import OutWatch.Helpers.Helpers (forEachMaybe, tupleMaybes)
 import OutWatch.Helpers.Promise (Promise, foreach, success)
 import OutWatch.Helpers.Promise (empty) as Promise
-import OutWatch.Sink (Observer(..))
+import OutWatch.Sink (Observer(..), VDomEff(..), toEff)
 import RxJS.Observable (Observable, pairwise, startWith, subscribeNext)
 import RxJS.Subscription (Subscription, unsubscribe)
 import Snabbdom (VDOM, VNodeData, VNodeEventObject, VNodeProxy(..), getElement, h, patch, toVNodeEventObject, toVNodeHookObjectProxy, updateValueHook)
@@ -42,7 +42,7 @@ emittersToEventObject list =
       strMap = fromFoldable tupled
   in toVNodeEventObject strMap
 
-createVNodeData :: forall e. Boolean -> Observable (Tuple (List Attribute) (List (VDomB e)))
+createVNodeData :: forall e. Boolean -> Observable (Tuple (List Attribute) (List (VDom e)))
   -> Properties e -> VNodeEventObject e -> Boolean -> VNodeData e
 createVNodeData recsNonEmpty changables props handlers valueExists =
   if recsNonEmpty then
@@ -96,7 +96,7 @@ createDestroyHook promise hooks proxy =
 
 
 
-createSubscription :: forall e. Observable (Tuple (List Attribute) (List (VDomB e))) -> VNodeProxy e -> Eff e Subscription
+createSubscription :: forall e. Observable (Tuple (List Attribute) (List (VDom e))) -> VNodeProxy e -> Eff e Subscription
 createSubscription changables proxy = changables
   # map (changablesToProxy proxy)
   # startWith proxy
@@ -104,7 +104,7 @@ createSubscription changables proxy = changables
   # subscribeNext (patchPair >>> unsafeCoerceEff)
   # extract
 
-createInsertHook :: forall e. Observable (Tuple (List Attribute) (List (VDomB e)))
+createInsertHook :: forall e. Observable (Tuple (List Attribute) (List (VDom e)))
   -> Promise e Subscription -> List (InsertHook e) -> VNodeProxy e -> Eff e Unit
 createInsertHook changables promise hooks proxy =
   let subscriptionEff = unsafeCoerceEff (createSubscription changables proxy)
@@ -151,7 +151,7 @@ hooksToCallback hooks (VNodeProxy proxy) element =
 
 
 
-createReceiverVNodeData :: forall e. Observable (Tuple (List Attribute) (List (VDomB e)))
+createReceiverVNodeData :: forall e. Observable (Tuple (List Attribute) (List (VDom e)))
   -> Boolean -> Properties e -> VNodeEventObject e -> VNodeData e
 createReceiverVNodeData changables valueExists props handlers =
   let attrs = attrsToSnabbdom props.attrs
@@ -169,9 +169,9 @@ patchPair (Tuple first second) =
   patch first second
 
 
-changablesToProxy :: forall e e2. VNodeProxy e -> Tuple (List Attribute) (List (VDomB e)) -> VNodeProxy e
+changablesToProxy :: forall e e2. VNodeProxy e -> Tuple (List Attribute) (List (VDom e)) -> VNodeProxy e
 changablesToProxy (VNodeProxy proxy)(Tuple attributes builders) =
-  let vnodes = builders # sequence # runVDomB # unsafePerformEff
+  let vnodes = builders # sequence # toEff # unsafePerformEff
       updatedData = updateVNodeData attributes proxy.data
       nodeProxies = Array.fromFoldable (vnodes # map (modifierToVNode >>> toProxy))
       updatedChildren = proxy.children <> nodeProxies

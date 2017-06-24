@@ -13,7 +13,8 @@ import OutWatch.Attributes (className, id, value, (:=), (<==))
 import OutWatch.Core (render)
 import OutWatch.Dom.Builder (toEmptyIfFalse)
 import OutWatch.Dom.DomUtils (hyperscriptHelper)
-import OutWatch.Dom.VDomModifier (modifierToVNode, runVDomB, toProxy)
+import OutWatch.Dom.VDomModifier (modifierToVNode, toProxy)
+import OutWatch.Sink (toEff)
 import OutWatch.Tags (div, input, strong, text)
 import Prelude (bind, discard, (#), ($), (==), (>))
 import RxJS.Observable (fromArray)
@@ -33,7 +34,7 @@ outWatchDomSuite =
     test "Nested VTrees should be constructed correctly" do
       let json = {"sel":"div","data":{"attrs":{"class":"red","id":"msg"},"on":{},"hook":{}},"children":[{"sel":"div","data":{"attrs":{},"on":{},"hook":{}},"children":[{"text":"ABC"}]}]}
           vtree = div [className := "red", id := "msg", div [text "ABC"]]
-            # runVDomB
+            # toEff
             # unsafePerformEff
             # modifierToVNode
             # toProxy
@@ -44,7 +45,7 @@ outWatchDomSuite =
       assert "falsy booleans should be non-empty strings" $ (true # toEmptyIfFalse # length) > 0
     test "The hyperscriptHelper should construct correct Vtrees" do
       let vtree = hyperscriptHelper "div" [className := "red", id := "msg", text "Hello World!"]
-            # runVDomB
+            # toEff
             # unsafePerformEff
             # modifierToVNode
             # toProxy
@@ -61,7 +62,7 @@ outWatchDomSuite =
       afterAll
     test "The DOM Api should construct correct Vtrees" do
       let vtree = div [className := "red", id := "msg", text "Hello World!"]
-            # runVDomB
+            # toEff
             # unsafePerformEff
             # modifierToVNode
             # toProxy

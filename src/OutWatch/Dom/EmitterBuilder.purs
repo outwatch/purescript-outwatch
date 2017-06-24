@@ -7,7 +7,7 @@ import DOM.HTML.Event.Types (DragEvent)
 import DOM.Node.Types (Element)
 import Data.Tuple (Tuple)
 import Prelude
-import OutWatch.Dom.VDomModifier (Emitter(..), Property(..), VDom(..), VDomB)
+import OutWatch.Dom.VDomModifier (Emitter(..), Property(..), VDom, VDomRepresentation(..))
 import OutWatch.Sink (Observer, SinkLike, redirect, redirectMap)
 import RxJS.Observable (Observable, withLatestFrom)
 
@@ -98,7 +98,7 @@ instance mappableBoolBuilder :: MappableBuilder BoolEmitterBuilder a Boolean e w
 
 
 class EmitterBuilder builder a eff | builder -> eff, builder -> a where
-  emitFrom :: forall r. builder -> SinkLike eff a r  -> VDomB eff
+  emitFrom :: forall r. builder -> SinkLike eff a r  -> VDom eff
 
 instance genericEmitterBuilder :: EmitterBuilder (GenericMappedEmitterBuilder a b e) a e where
   emitFrom (GenericMappedEmitterBuilder { constructor , mapping }) {sink} =
