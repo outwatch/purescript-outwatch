@@ -60,7 +60,7 @@ data VDomRepresentation e = Emitter (Emitter e)
   | Receiver (Receiver e)
   | VNode (VNode e)
 
-type VDom e = VDomEff () (VDomRepresentation e)
+type VDom e = VDomEff (VDomRepresentation e)
 
 modifierToVNode :: forall e. VDomRepresentation e -> VNode e
 modifierToVNode mod = case mod of

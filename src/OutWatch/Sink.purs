@@ -57,15 +57,15 @@ removeObserverEff eff = Observer (\a -> (bind eff (\(Observer f) -> f a)))
 
 type Sink e a = { sink :: Observer e a }
 
-newtype VDomEff e a = VDomEff (Eff e a)
-derive newtype instance vdomMonad :: Monad (VDomEff e)
-derive newtype instance vdomBind :: Bind (VDomEff e)
-derive newtype instance vdomApplicative :: Applicative (VDomEff e)
-derive newtype instance vdomApply :: Apply (VDomEff e)
-derive newtype instance vdomFunctor :: Functor (VDomEff e)
+newtype VDomEff a = VDomEff (Eff () a)
+derive newtype instance vdomMonad :: Monad VDomEff
+derive newtype instance vdomBind :: Bind VDomEff
+derive newtype instance vdomApplicative :: Applicative VDomEff
+derive newtype instance vdomApply :: Apply VDomEff
+derive newtype instance vdomFunctor :: Functor VDomEff
 
 
-toEff :: forall e a. VDomEff () a -> Eff e a
+toEff :: forall e a. VDomEff a -> Eff e a
 toEff (VDomEff v) = unsafeCoerceEff v
 
 handlerImplToHandlerT :: forall e a. Eff e (HandlerImpl e a) -> HandlerT e a
@@ -74,9 +74,9 @@ handlerImplToHandlerT eff =
       src = eff # map (_.src) # ObservableT
   in {src , sink}
 
-handlerImplToHandler :: forall e e2 a. Eff e2 (HandlerImpl e a) -> VDomEff e2 (Handler e a)
+handlerImplToHandler :: forall e e2 a. Eff e2 (HandlerImpl e a) -> VDomEff (Handler e a)
 handlerImplToHandler eff = VDomEff do
-  handler <- eff
+  handler <- unsafeCoerceEff eff
   let sink = handler.sink
   let src = ObservableT (pure handler.src)
   pure {src, sink}
@@ -87,25 +87,25 @@ instance sinkContravariant :: Contravariant (Observer e) where
 
 foreign import createHandlerImpl :: forall a e e2. Array a -> Eff e (HandlerImpl e2 a)
 
-createHandler :: forall a e e2. Array a -> VDomEff e2 (Handler e a)
+createHandler :: forall a e. Array a -> VDomEff (Handler e a)
 createHandler = createHandlerImpl >>> handlerImplToHandler
 
-createInputHandler :: forall e e2. Array InputEvent -> VDomEff e2 (Handler e InputEvent)
+createInputHandler :: forall e. Array InputEvent -> VDomEff (Handler e InputEvent)
 createInputHandler = createHandler
 
-createMouseHandler :: forall e e2. Array MouseEvent -> VDomEff e2 (Handler e MouseEvent)
+createMouseHandler :: forall e. Array MouseEvent -> VDomEff (Handler e MouseEvent)
 createMouseHandler = createHandler
 
-createKeyboardHandler :: forall e e2. Array KeyboardEvent -> VDomEff e2 (Handler e KeyboardEvent)
+createKeyboardHandler :: forall e. Array KeyboardEvent -> VDomEff (Handler e KeyboardEvent)
 createKeyboardHandler = createHandler
 
-createStringHandler :: forall e e2. Array String -> VDomEff e2 (Handler e String)
+createStringHandler :: forall e. Array String -> VDomEff (Handler e String)
 createStringHandler = createHandler
 
-createBoolHandler :: forall e e2. Array Boolean -> VDomEff e2 (Handler e Boolean)
+createBoolHandler :: forall e. Array Boolean -> VDomEff (Handler e Boolean)
 createBoolHandler = createHandler
 
-createNumberHandler :: forall e e2. Array Number -> VDomEff e2 (Handler e Number)
+createNumberHandler :: forall e. Array Number -> VDomEff (Handler e Number)
 createNumberHandler = createHandler
 
 create :: forall a e. (a -> Eff e Unit) -> Sink e a
