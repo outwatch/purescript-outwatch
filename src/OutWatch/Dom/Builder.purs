@@ -1,13 +1,11 @@
 module OutWatch.Dom.Builder where
 
 import Prelude
-import Data.Functor (map)
 import Data.Identity (Identity)
 import Data.List (fromFoldable)
-import Data.Show (show)
 import Data.Traversable (class Traversable)
 import OutWatch.Sink (VDomEff)
-import OutWatch.Dom.VDomModifier (Property(..), Receiver(..), VDom, VDomRepresentation(..), VNode(..), modifierToVNode)
+import OutWatch.Dom.VDomModifier (Property(Attribute), Receiver(ChildrenStreamReceiver, ChildStreamReceiver, AttributeStreamReceiver), VDom, VDomRepresentation(Receiver, VNode, Property), VNode(StringNode))
 import RxJS.Observable (ObservableT)
 
 newtype ShowAttributeBuilder a = ShowAttributeBuilder String
@@ -59,7 +57,7 @@ instance boolReceiverBuilder :: ReceiverBuilder BoolAttributeBuilder (Observable
     in pure $ Receiver
          (AttributeStreamReceiver { attr : name, stream : attributeStream })
 
-instance childReceiverBuilder :: ReceiverBuilder ChildStreamReceiverBuilder (ObservableT Identity (VDomEff () (VDomRepresentation e))) e  where
+instance childReceiverBuilder :: ReceiverBuilder ChildStreamReceiverBuilder (ObservableT Identity (VDomEff (VDomRepresentation e))) e  where
   bindFrom builder obs =
     pure $ Receiver (ChildStreamReceiver obs)
 
@@ -68,7 +66,7 @@ instance childShowReceiverBuilder :: (Show a) => ReceiverBuilder ChildStringRece
     let valueStream = map (show >>> StringNode >>> VNode >>> pure) obs
     in pure $ Receiver (ChildStreamReceiver valueStream)
 
-instance childrenStreamReceiverBuilder :: (Traversable t) => ReceiverBuilder ChildrenStreamReceiverBuilder (ObservableT Identity (t (VDomEff () (VDomRepresentation e)))) e where
+instance childrenStreamReceiverBuilder :: (Traversable t) => ReceiverBuilder ChildrenStreamReceiverBuilder (ObservableT Identity (t (VDomEff (VDomRepresentation e)))) e where
   bindFrom builder obs =
     let valueStream = map (\t -> fromFoldable t) obs
     in pure $ Receiver (ChildrenStreamReceiver valueStream)

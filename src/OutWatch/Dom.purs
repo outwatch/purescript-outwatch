@@ -3,12 +3,11 @@ module OutWatch.Dom where
 import Control.Monad.Eff (Eff)
 import DOM.Event.Types (InputEvent, KeyboardEvent, MouseEvent)
 import Data.Traversable (class Traversable)
-import Data.Unit (unit, Unit)
 import OutWatch.Dom.Builder (BoolAttributeBuilder(..), ChildStreamReceiverBuilder(..), ChildStringReceiverBuilder(..), ChildrenStreamReceiverBuilder(..), IntAttributeBuilder, NumberAttributeBuilder, ShowAttributeBuilder(..), StringAttributeBuilder(..), bindFrom, setTo)
 import OutWatch.Dom.DomUtils (hyperscriptHelper)
 import OutWatch.Dom.EmitterBuilder (BoolEmitterBuilder(..), DestroyHookBuilder(..), DragEmitterBuilder(..), EventEmitterBuilder(..), InputEmitterBuilder(..), InsertHookBuilder(..), KeyEmitterBuilder(..), MouseEmitterBuilder(..), NumberEmitterBuilder(..), StringEmitterBuilder(..), UpdateHookBuilder(..), emitFrom)
 import OutWatch.Dom.VDomModifier (VDom, VNode(..), VDomRepresentation(..), toProxy)
-import OutWatch.Sink (Handler, createHandler, toEff, VDomEff(..))
+import OutWatch.Sink (Handler, createHandler, toEff, VDomEff)
 import Snabbdom (patchInitialSelector)
 import Snabbdom (VDOM) as Snabbdom
 import Prelude
@@ -485,20 +484,20 @@ infix 5 emitFrom as ==>
 infix 5 bindFrom as <==
 infix 5 setTo as :=
 
-createInputHandler :: forall e e2. Array InputEvent -> VDomEff e2 (Handler e InputEvent)
+createInputHandler :: forall e. Array InputEvent -> VDomEff (Handler e InputEvent)
 createInputHandler = createHandler
 
-createMouseHandler :: forall e e2. Array MouseEvent -> VDomEff e2 (Handler e MouseEvent)
+createMouseHandler :: forall e. Array MouseEvent -> VDomEff (Handler e MouseEvent)
 createMouseHandler = createHandler
 
-createKeyboardHandler :: forall e e2. Array KeyboardEvent -> VDomEff e2 (Handler e KeyboardEvent)
+createKeyboardHandler :: forall e. Array KeyboardEvent -> VDomEff (Handler e KeyboardEvent)
 createKeyboardHandler = createHandler
 
-createStringHandler :: forall e e2. Array String -> VDomEff e2 (Handler e String)
+createStringHandler :: forall e. Array String -> VDomEff (Handler e String)
 createStringHandler = createHandler
 
-createBoolHandler :: forall e e2. Array Boolean -> VDomEff e2 (Handler e Boolean)
+createBoolHandler :: forall e. Array Boolean -> VDomEff (Handler e Boolean)
 createBoolHandler = createHandler
 
-createNumberHandler :: forall e e2. Array Number -> VDomEff e2 (Handler e Number)
+createNumberHandler :: forall e. Array Number -> VDomEff (Handler e Number)
 createNumberHandler = createHandler
