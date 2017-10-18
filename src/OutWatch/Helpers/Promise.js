@@ -28,6 +28,7 @@ exports.newSingle = window.SingleRef
 exports.put = function(a) {
   return function(ref){
     return function() {
+      window.SingleRef = {};
       window.SingleRef.value = a;
     }
   }

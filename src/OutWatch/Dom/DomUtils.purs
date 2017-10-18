@@ -30,8 +30,6 @@ hyperscriptHelper sel ts = do
     { nodeType : sel , children : children , attributes : vnodeData , changables : changables }
 
 
--- Private
-
 toChangables :: forall e. Receivers e -> Observable (Tuple (List Attribute) (List (VDom e)))
 toChangables { childStreams, childrenStreams, attrStreams } =
   let childReceivers = combineLatestAll childStreams
