@@ -1,6 +1,9 @@
 module OutWatch.Util.Store ( Store
   , getStore
+  , Reducer
+  , renderWithStore
   ) where
+
 import Prelude
 import Control.Monad.Aff (Aff, runAff)
 import Control.Monad.Eff (Eff)
@@ -14,6 +17,7 @@ import OutWatch.Dom.VDomModifier (VDom)
 import OutWatch.Helpers.Promise (SingleRef, newSingle, put, get)
 import OutWatch.Sink (Handler, Observer(..), VDomEff(..), createHandler, toEff)
 import RxJS.Observable (Observable, ObservableT(..), runObservableT, scanM, share, startWith, unwrapEff)
+
 
 type Store eff state action  =
   { src :: Observable state
@@ -59,3 +63,4 @@ renderWithStore initialState reducer selector root = unsafeCoerceEff do
   store <- newStore initialState reducer handler
   put store storeRef
   unsafeCoerceEff $ render selector root
+

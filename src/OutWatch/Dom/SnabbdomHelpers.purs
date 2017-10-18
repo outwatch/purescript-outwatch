@@ -17,7 +17,7 @@ import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap, fromFoldable, union)
 import Data.Traversable (sequence)
 import Data.Tuple (Tuple(..))
-import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(NumberEventEmitter, BoolEventEmitter, StringEventEmitter, KeyboardEventEmitter, DragEventEmitter, MouseEventEmitter, InputEventEmitter, EventEmitter), InsertHook, UpdateHook, VDom, modifierToVNode, toProxy)
+import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VDom, modifierToVNode, toProxy)
 import OutWatch.Helpers.Helpers (forEachMaybe, tupleMaybes)
 import OutWatch.Helpers.Promise (Promise, foreach, success)
 import OutWatch.Helpers.Promise (empty) as Promise
@@ -165,6 +165,7 @@ createReceiverVNodeData changables valueExists props handlers =
 patchPair :: forall e. Tuple (VNodeProxy e) (VNodeProxy e) -> Eff (vdom :: VDOM | e) Unit
 patchPair (Tuple first second) =
   patch first second
+
 
 
 changablesToProxy :: forall e. VNodeProxy e -> Tuple (List Attribute) (List (VDom e)) -> VNodeProxy e
