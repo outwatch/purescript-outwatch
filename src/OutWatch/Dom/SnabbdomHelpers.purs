@@ -16,12 +16,12 @@ import Data.List.NonEmpty (NonEmptyList, head)
 import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap, fromFoldable, union)
 import Data.Traversable (sequence)
-import Data.Tuple (Tuple(..), fst, snd)
-import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VDom, VNode, modifierToVNode, toProxy)
+import Data.Tuple (Tuple(..))
+import OutWatch.Dom.VDomModifier (Attribute, DestroyHook, Emitter(..), InsertHook, UpdateHook, VDom, modifierToVNode, toProxy)
 import OutWatch.Helpers.Helpers (forEachMaybe, tupleMaybes)
 import OutWatch.Helpers.Promise (Promise, foreach, success)
 import OutWatch.Helpers.Promise (empty) as Promise
-import OutWatch.Sink (Observer(..), VDomEff(..), toEff)
+import OutWatch.Sink (Observer(Observer), toEff)
 import RxJS.Observable (Observable, pairwise, startWith, subscribeNext)
 import RxJS.Subscription (Subscription, unsubscribe)
 import Snabbdom (VDOM, VNodeData, VNodeEventObject, VNodeProxy(..), getElement, h, patch, toVNodeEventObject, toVNodeHookObjectProxy, updateValueHook)
@@ -90,9 +90,7 @@ createDestroyHook :: forall e. Promise e Subscription -> List (DestroyHook e) ->
 createDestroyHook promise hooks proxy =
   let callbackEff = hooksToEff hooks proxy
       promisedEff = foreach promise unsubscribe
-  in do
-    callbackEff
-    promisedEff
+  in callbackEff *> promisedEff
 
 
 
@@ -169,7 +167,8 @@ patchPair (Tuple first second) =
   patch first second
 
 
-changablesToProxy :: forall e e2. VNodeProxy e -> Tuple (List Attribute) (List (VDom e)) -> VNodeProxy e
+
+changablesToProxy :: forall e. VNodeProxy e -> Tuple (List Attribute) (List (VDom e)) -> VNodeProxy e
 changablesToProxy (VNodeProxy proxy)(Tuple attributes builders) =
   let vnodes = builders # sequence # toEff # unsafePerformEff
       updatedData = updateVNodeData attributes proxy.data

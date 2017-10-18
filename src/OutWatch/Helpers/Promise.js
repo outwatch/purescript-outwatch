@@ -19,3 +19,32 @@ exports.foreach = function(promise) {
     }
   }
 }
+
+
+
+exports.newSingle = window.SingleRef
+
+
+exports.put = function(a) {
+  return function(ref){
+    return function() {
+      window.SingleRef.value = a;
+    }
+  }
+}
+
+
+exports.get = function(ref) {
+  return function(){
+    return window.SingleRef.value;
+  }
+}
+
+exports.update = function(f) {
+  return function(ref){
+    return function() {
+      window.SingleRef.value = f(window.SingleRef.value);
+      return window.SingleRef.value;
+    }
+  }
+}
