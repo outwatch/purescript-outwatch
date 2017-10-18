@@ -3,7 +3,7 @@ module OutWatch.Sink
   , Observer(..)
   , SinkLike
   , Sink
-  , VDomEff
+  , VDomEff(..)
   , createHandler
   , create
   , createStringHandler
@@ -20,6 +20,7 @@ module OutWatch.Sink
   )
   where
 
+import Prelude
 import Control.Comonad (extract)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Unsafe (unsafeCoerceEff)
@@ -28,7 +29,6 @@ import Data.Functor.Contravariant (class Contravariant, cmap)
 import Data.Profunctor (dimap)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested (Tuple3, tuple3)
-import Prelude
 import RxJS.Observable (Observable, ObservableImpl, ObservableT(..), runObservableT)
 
 newtype Observer e a = Observer (a -> Eff e Unit)
